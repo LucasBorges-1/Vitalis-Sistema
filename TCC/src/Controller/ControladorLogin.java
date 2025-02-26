@@ -33,8 +33,9 @@ public class ControladorLogin {
             @Override
             public void actionPerformed(ActionEvent e) {
                telaPrincipal.edName.setText(telaDeLogin.edUsuario.getText());
-                telaDeLogin.setVisible(false);
-                abrirTelaPrincipal();
+               telaDeLogin.setVisible(false);
+               abrirTelaPrincipal();
+               
 
             }
         });

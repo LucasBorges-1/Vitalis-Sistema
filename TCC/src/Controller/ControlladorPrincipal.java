@@ -5,6 +5,7 @@
 package Controller;
 
 import Wiew.TelaDeLogin;
+import Wiew.TelaDeRelatorio;
 import Wiew.TelaPrincipal;
 
 import java.awt.Color;
@@ -19,10 +20,18 @@ import javax.swing.SwingUtilities;
 public class ControlladorPrincipal {
     private TelaPrincipal telaPrincipal;
     private TelaDeLogin telaDeLogin;
-
+    private TelaDeRelatorio telaDeRelatorio;
+    private ControladorLogin controladorLogin;
+    
+    
+    private GerenciadorDeDocumentos gdd;
+    
+    
     public ControlladorPrincipal() {
         telaPrincipal=new TelaPrincipal();
-        
+        telaDeLogin=new TelaDeLogin(telaPrincipal, true);
+        gdd=new GerenciadorDeDocumentos();
+        telaDeRelatorio=new TelaDeRelatorio(telaPrincipal, true);
         inicializarComponentes();
     }
     
@@ -41,15 +50,46 @@ public class ControlladorPrincipal {
                  telaPrincipal.setVisible(false);
                  telaDeLogin.setVisible(true);
                  
+                
              }
         });
          
+         telaDeLogin.btEntrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+               telaDeLogin.setVisible(false);
+               abrirTelaPrincipal();
+               
+
+            }
+        });
+         
+          telaPrincipal.BtAbrirTelaDeRelatorio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+               abrirTelaDeRelatorio();
+               
+
+            }
+        });
+         
+          
+          
           
     }
+    
+    
+    
     
     public void limparTelaLogin(){
         telaDeLogin.edSenha.setText("");
         telaDeLogin.edUsuario.setText("");
+    }
+    
+    public void abrirTelaDeRelatorio(){
+        gdd.abrirRelatorio();
     }
 
     }
