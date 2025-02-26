@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Consultas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <nav style="justify-content: center;">
+            <div class="logo">Agendamento de Consulta</div>
+        </nav>
+    </header>
+
+    <div class="scheduling-container">
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="consulta">Tipo de Consulta</label>
+                <select id="consulta" name="consulta">
+                    <option value="">Selecione o tipo de consulta</option>
+                    <option value="cardiologia">Cardiologia</option>
+                    <option value="dermatologia">Dermatologia</option>
+                    <option value="ortopedia">Ortopedia</option>
+                    <option value="neurologia">Neurologia</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="medico">Médico</label>
+                <select id="medico" name="medico">
+                    <option value="">Selecione o médico</option>
+                    <option value="dr1">Dr. João Silva</option>
+                    <option value="dr2">Dra. Maria Oliveira</option>
+                    <option value="dr3">Dr. Pedro Santos</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Data e Horário</label>
+                <div class="calendar-container">
+                    <table class="calendar">
+                        <thead>
+                            <tr>
+                                <th>Dom</th>
+                                <th>Seg</th>
+                                <th>Ter</th>
+                                <th>Qua</th>
+                                <th>Qui</th>
+                                <th>Sex</th>
+                                <th>Sáb</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                                <td>11</td>
+                                <td>12</td>
+                                <td>13</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>15</td>
+                                <td>16</td>
+                                <td>17</td>
+                                <td>18</td>
+                                <td>19</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td>22</td>
+                                <td>23</td>
+                                <td>24</td>
+                                <td>25</td>
+                                <td>26</td>
+                                <td>27</td>
+                            </tr>
+                            <tr>
+                                <td>28</td>
+                                <td>29</td>
+                                <td>30</td>
+                                <td>31</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="time-slots">
+                    <div class="time-slot">09:00</div>
+                    <div class="time-slot">10:00</div>
+                    <div class="time-slot">11:00</div>
+                    <div class="time-slot">14:00</div>
+                    <div class="time-slot">15:00</div>
+                    <div class="time-slot">16:00</div>
+                </div>
+                <input type="hidden" id="selected-date" name="selected_date">
+                <input type="hidden" id="selected-time" name="selected_time">
+            </div>
+            <button type="submit" class="scheduling-btn">Agendar Consulta</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 Sistema de Agendamento de Consultas Médicas</p>
+    </footer>
+
+<script src="script.js"></script>
+</body>
+
+</html>
