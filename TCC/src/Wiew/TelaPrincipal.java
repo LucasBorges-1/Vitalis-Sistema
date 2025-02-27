@@ -4,6 +4,9 @@
  */
 package Wiew;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -36,10 +39,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal() {
         initComponents();
+        this.jTabbedPane1.setBorder(BorderFactory.createEmptyBorder());
+        this.jPanel3.setBorder(BorderFactory.createEmptyBorder());
         
-    }
 
-    
+    }
 
     class jPanelGradient extends JPanel {
 
@@ -58,12 +62,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             g2d.fillRect(0, 0, width, height);
         }
     }
-    
-     
 
-        
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,6 +88,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         BtAbrirTelaDeRelatorio = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TabelaConsultas = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -104,13 +105,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1361, 730));
 
         jPanel1.setBackground(new java.awt.Color(244, 244, 244));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(4, 119, 191));
 
-        btCalendario.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btCalendario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btCalendario.setForeground(new java.awt.Color(242, 242, 242));
         btCalendario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/simbolo-de-ferramentas-de-organizacao-e-administracao-de-horario-de-calendario-e-relogio (1).png"))); // NOI18N
         btCalendario.setText(" Calendario");
@@ -131,7 +133,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btHistórico.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btHistórico.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btHistórico.setForeground(new java.awt.Color(242, 242, 242));
         btHistórico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/historia.png"))); // NOI18N
         btHistórico.setText(" Historico");
@@ -152,7 +154,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btPendentes.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btPendentes.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btPendentes.setForeground(new java.awt.Color(242, 242, 242));
         btPendentes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/expirado.png"))); // NOI18N
         btPendentes.setText(" Pendentes");
@@ -173,7 +175,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btEdicao.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btEdicao.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btEdicao.setForeground(new java.awt.Color(242, 242, 242));
         btEdicao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/edicao.png"))); // NOI18N
         btEdicao.setText(" Edição");
@@ -194,7 +196,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btConfig.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btConfig.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btConfig.setForeground(new java.awt.Color(242, 242, 242));
         btConfig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/configuracoes.png"))); // NOI18N
         btConfig.setText(" Configurações");
@@ -215,7 +217,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btDesconectar.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btDesconectar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btDesconectar.setForeground(new java.awt.Color(242, 242, 242));
         btDesconectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/sair.png"))); // NOI18N
         btDesconectar.setText(" Desconectar");
@@ -236,13 +238,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        edName.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        edName.setFont(new java.awt.Font("Verdana", 1, 22)); // NOI18N
         edName.setForeground(new java.awt.Color(242, 242, 242));
         edName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/user 32.png"))); // NOI18N
         edName.setText("YourName");
 
         btTelaPrincipal.setBackground(new java.awt.Color(4, 119, 191));
-        btTelaPrincipal.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btTelaPrincipal.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btTelaPrincipal.setForeground(new java.awt.Color(242, 242, 242));
         btTelaPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/user (24.png"))); // NOI18N
         btTelaPrincipal.setText(" Menu Principal");
@@ -268,49 +270,46 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btConfig)
+                    .addComponent(btDesconectar)
+                    .addComponent(btHistórico)
+                    .addComponent(btPendentes)
+                    .addComponent(btEdicao)
+                    .addComponent(btTelaPrincipal)
+                    .addComponent(btCalendario)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btPendentes)
-                            .addComponent(btEdicao)
-                            .addComponent(btConfig)
-                            .addComponent(btDesconectar))
-                        .addContainerGap(44, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btHistórico)
-                            .addComponent(btCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btTelaPrincipal)
-                            .addComponent(edName, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(9, 9, 9)
+                        .addComponent(edName)))
+                .addGap(0, 15, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(edName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(114, 114, 114)
+                .addGap(155, 155, 155)
                 .addComponent(btTelaPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addGap(36, 36, 36)
                 .addComponent(btCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addGap(39, 39, 39)
                 .addComponent(btHistórico, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addGap(38, 38, 38)
                 .addComponent(btPendentes, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addGap(38, 38, 38)
                 .addComponent(btEdicao, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
                 .addComponent(btConfig)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btDesconectar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addContainerGap())
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 650));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 730));
 
         jPanel6.setBackground(new java.awt.Color(213, 229, 242));
+        jPanel6.setPreferredSize(new java.awt.Dimension(1366, 30));
 
         jButton4.setBackground(new java.awt.Color(4, 119, 191));
         jButton4.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
@@ -329,7 +328,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 860, Short.MAX_VALUE)
+                .addGap(0, 1330, Short.MAX_VALUE)
                 .addComponent(jButton4))
         );
         jPanel6Layout.setVerticalGroup(
@@ -339,11 +338,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 890, 30));
+        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, 30));
 
         jTabbedPane1.setBackground(new java.awt.Color(244, 244, 244));
 
         jPanel3.setBackground(new java.awt.Color(240, 240, 240));
+        jPanel3.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -351,28 +351,48 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         BtAbrirTelaDeRelatorio.setText("Abrir tela de relatório");
 
+        TabelaConsultas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(TabelaConsultas);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
-                        .addComponent(BtAbrirTelaDeRelatorio)))
-                .addContainerGap(470, Short.MAX_VALUE))
+                .addGap(158, 158, 158)
+                .addComponent(jLabel1)
+                .addGap(69, 69, 69)
+                .addComponent(BtAbrirTelaDeRelatorio)
+                .addContainerGap(764, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(84, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1092, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(24, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addComponent(jLabel1)
-                .addGap(125, 125, 125)
-                .addComponent(BtAbrirTelaDeRelatorio)
-                .addContainerGap(353, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(BtAbrirTelaDeRelatorio))
+                .addContainerGap(647, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(193, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(20, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("tab1", jPanel3);
@@ -390,14 +410,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(192, 192, 192)
                 .addComponent(jLabel2)
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addContainerGap(940, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addComponent(jLabel2)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(542, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab2", jPanel4);
@@ -415,14 +435,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(192, 192, 192)
                 .addComponent(jLabel3)
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addContainerGap(940, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addComponent(jLabel3)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(542, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab3", jPanel5);
@@ -440,14 +460,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(192, 192, 192)
                 .addComponent(jLabel4)
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addContainerGap(940, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addComponent(jLabel4)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(542, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab4", jPanel7);
@@ -465,14 +485,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(192, 192, 192)
                 .addComponent(jLabel5)
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addContainerGap(940, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addComponent(jLabel5)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(542, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab5", jPanel8);
@@ -490,19 +510,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(192, 192, 192)
                 .addComponent(jLabel6)
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addContainerGap(940, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addComponent(jLabel6)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(542, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab6", jPanel9);
 
         jPanel10.setBackground(new java.awt.Color(244, 244, 244));
+        jPanel10.setPreferredSize(new java.awt.Dimension(1202, 705));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
@@ -515,29 +536,31 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(192, 192, 192)
                 .addComponent(jLabel7)
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addContainerGap(940, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addComponent(jLabel7)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(542, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab7", jPanel10);
 
-        jPanel1.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, -10, 840, 660));
+        jPanel1.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, -10, 1200, 740));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1366, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -637,9 +660,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     
+    
+    
+
+   
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton BtAbrirTelaDeRelatorio;
+    public javax.swing.JTable TabelaConsultas;
     public javax.swing.JButton btCalendario;
     public javax.swing.JButton btConfig;
     public javax.swing.JButton btDesconectar;
@@ -648,24 +678,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public javax.swing.JButton btPendentes;
     public javax.swing.JButton btTelaPrincipal;
     public javax.swing.JLabel edName;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    protected javax.swing.JButton jButton4;
+    protected javax.swing.JLabel jLabel1;
+    protected javax.swing.JLabel jLabel2;
+    protected javax.swing.JLabel jLabel3;
+    protected javax.swing.JLabel jLabel4;
+    protected javax.swing.JLabel jLabel5;
+    protected javax.swing.JLabel jLabel6;
+    protected javax.swing.JLabel jLabel7;
+    protected javax.swing.JPanel jPanel1;
+    protected javax.swing.JPanel jPanel10;
+    protected javax.swing.JPanel jPanel2;
+    protected javax.swing.JPanel jPanel3;
+    protected javax.swing.JPanel jPanel4;
+    protected javax.swing.JPanel jPanel5;
+    protected javax.swing.JPanel jPanel6;
+    protected javax.swing.JPanel jPanel7;
+    protected javax.swing.JPanel jPanel8;
+    protected javax.swing.JPanel jPanel9;
+    protected javax.swing.JScrollPane jScrollPane1;
+    protected javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

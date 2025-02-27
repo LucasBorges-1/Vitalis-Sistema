@@ -4,14 +4,27 @@
  */
 package Controller;
 
+
 import Wiew.TelaDeLogin;
 import Wiew.TelaDeRelatorio;
 import Wiew.TelaPrincipal;
+import java.awt.BorderLayout;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,8 +35,7 @@ public class ControlladorPrincipal {
     private TelaDeLogin telaDeLogin;
     private TelaDeRelatorio telaDeRelatorio;
     private ControladorLogin controladorLogin;
-    
-    
+  
     private GerenciadorDeDocumentos gdd;
     
     
@@ -32,7 +44,9 @@ public class ControlladorPrincipal {
         telaDeLogin=new TelaDeLogin(telaPrincipal, true);
         gdd=new GerenciadorDeDocumentos();
         telaDeRelatorio=new TelaDeRelatorio(telaPrincipal, true);
+       
         inicializarComponentes();
+       
     }
     
     
@@ -91,6 +105,9 @@ public class ControlladorPrincipal {
     public void abrirTelaDeRelatorio(){
         gdd.abrirRelatorio();
     }
+    
+    
+   
 
     }
 
