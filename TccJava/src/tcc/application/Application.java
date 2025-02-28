@@ -1,4 +1,4 @@
-package raven.application;
+package tcc.application;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
@@ -10,9 +10,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import raven.application.form.ControllerPrincipal;
-import raven.application.form.LoginForm;
-import raven.application.form.RegisterForm;
+import tcc.application.form.ControllerPrincipal;
+import tcc.application.form.LoginForm;
+
 import raven.toast.Notifications;
 
 /**
@@ -24,7 +24,7 @@ public class Application extends javax.swing.JFrame {
     private static Application app;
     private final ControllerPrincipal mainForm;
     private final LoginForm loginForm;
-    private final RegisterForm registerForm;
+
     
     public Application() {
         initComponents();
@@ -32,7 +32,7 @@ public class Application extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         mainForm = new ControllerPrincipal();
         loginForm = new LoginForm();
-        registerForm=new RegisterForm();
+      
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
         Notifications.getInstance().setJFrame(this);
@@ -97,7 +97,7 @@ public class Application extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         FlatRobotoFont.install();
-        FlatLaf.registerCustomDefaultsSource("raven.theme");
+        FlatLaf.registerCustomDefaultsSource("tcc.theme");
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(() -> {

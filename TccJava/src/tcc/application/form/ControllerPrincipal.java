@@ -1,4 +1,4 @@
-package raven.application.form;
+package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -17,14 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import raven.application.Application;
-import raven.application.form.other.FormCalendar;
-import raven.application.form.other.FormDashboard;
-import raven.application.form.other.FormImpressão;
-import raven.application.form.other.FormInbox;
-import raven.application.form.other.FormRead;
-import raven.menu.Menu;
-import raven.menu.MenuAction;
+import tcc.application.Application;
+import tcc.application.form.other.FormCalendar;
+import tcc.application.form.other.FormDashboard;
+import tcc.application.form.other.FormImpressão;
+import tcc.application.form.other.FormInbox;
+import tcc.application.form.other.FormRead;
+import tcc.menu.Menu;
+import tcc.menu.MenuAction;
 
 /**
  *
@@ -68,7 +68,7 @@ public class ControllerPrincipal extends JLayeredPane {
             menuButton = new JButton();
         }
        String icon = (getComponentOrientation().isLeftToRight()) ? "menu_left.svg" : "menu_right.svg";
-        menuButton.setIcon(new FlatSVGIcon("raven/icon/svg/" + icon, 0.8f));
+        menuButton.setIcon(new FlatSVGIcon("tcc/icon/svg/" + icon, 0.8f));
     }
 
     private void initMenuEvent() {
@@ -143,7 +143,7 @@ public class ControllerPrincipal extends JLayeredPane {
         } else {
             icon = (full) ? "menu_right.svg" : "menu_left.svg";
         }
- menuButton.setIcon(new FlatSVGIcon("raven/icon/svg/" + icon, 0.8f));
+ menuButton.setIcon(new FlatSVGIcon("tcc/icon/svg/" + icon, 0.8f));
         menu.setMenuFull(full);
         revalidate();
     }

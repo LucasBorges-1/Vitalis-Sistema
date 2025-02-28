@@ -1,4 +1,4 @@
-package raven.menu.mode;
+package tcc.menu.mode;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
@@ -21,7 +21,7 @@ import javax.swing.JToolBar;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import raven.menu.Menu;
+import tcc.menu.Menu;
 
 /**
  *

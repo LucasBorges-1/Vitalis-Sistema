@@ -1,6 +1,6 @@
-package raven.menu;
+package tcc.menu;
 
-import raven.menu.mode.LightDarkMode;
+import tcc.menu.mode.LightDarkMode;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import raven.menu.mode.ToolBarAccentColor;
+import tcc.menu.mode.ToolBarAccentColor;
 
 /**
  *
@@ -60,7 +60,7 @@ public class Menu extends JPanel {
 
     private final List<MenuEvent> events = new ArrayList<>();
     private boolean menuFull = true;
-    private final String headerName = "Agende Aqui";
+    private final String headerName = "  Agende Aqui";
 
     protected final boolean hideMenuTitleOnMinimum = true;
     protected final int menuTitleLeftInset = 5;
@@ -80,7 +80,7 @@ public class Menu extends JPanel {
                 + "background:$Menu.background;"
                 + "arc:10");
         header = new JLabel(headerName);
-        header.setIcon(new ImageIcon(getClass().getResource("/raven/icon/png/logo.png")));
+        header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logo.svg")));
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$Menu.header.font;"
                 + "foreground:$Menu.foreground");

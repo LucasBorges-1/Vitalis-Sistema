@@ -1,16 +1,16 @@
-package raven.application.form;
+package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
-import raven.application.Application;
+import tcc.application.Application;
 
 /**
  *
  * @author Raven
  */
-public class RegisterForm extends javax.swing.JPanel {
+public class LoginForm extends javax.swing.JPanel {
 
-    public RegisterForm() {
+    public LoginForm() {
         initComponents();
         init();
     }
@@ -35,33 +35,42 @@ public class RegisterForm extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelLogin1 = new raven.application.form.PanelLogin();
+        panelLogin1 = new tcc.application.form.PanelLogin();
         lbTitle = new javax.swing.JLabel();
         lbUser = new javax.swing.JLabel();
         txtUser = new javax.swing.JTextField();
         lbPass = new javax.swing.JLabel();
         txtPass = new javax.swing.JPasswordField();
         cmdLogin = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         lbTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTitle.setText("Sign in");
+        lbTitle.setText("Login");
         panelLogin1.add(lbTitle);
 
-        lbUser.setText("User Name");
+        lbUser.setText("Nome de usuário");
         panelLogin1.add(lbUser);
         panelLogin1.add(txtUser);
 
-        lbPass.setText("Password");
+        lbPass.setText("Senha");
         panelLogin1.add(lbPass);
         panelLogin1.add(txtPass);
 
-        cmdLogin.setText("sent");
+        cmdLogin.setText("Login");
         cmdLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdLoginActionPerformed(evt);
             }
         });
         panelLogin1.add(cmdLogin);
+
+        jLabel1.setText("                                            Arêa do colaborador");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        panelLogin1.add(jLabel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -77,7 +86,7 @@ public class RegisterForm extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(panelLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -85,12 +94,17 @@ public class RegisterForm extends javax.swing.JPanel {
         Application.login();
     }//GEN-LAST:event_cmdLoginActionPerformed
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        System.out.println("teste");
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdLogin;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbPass;
     private javax.swing.JLabel lbTitle;
     private javax.swing.JLabel lbUser;
-    private raven.application.form.PanelLogin panelLogin1;
+    private tcc.application.form.PanelLogin panelLogin1;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables

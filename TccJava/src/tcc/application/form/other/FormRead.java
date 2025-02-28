@@ -1,4 +1,4 @@
-package raven.application.form.other;
+package tcc.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
@@ -6,9 +6,9 @@ import com.formdev.flatlaf.FlatClientProperties;
  *
  * @author Raven
  */
-public class FormInbox extends javax.swing.JPanel {
+public class FormRead extends javax.swing.JPanel {
 
-    public FormInbox() {
+    public FormRead() {
         initComponents();
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
@@ -21,7 +21,7 @@ public class FormInbox extends javax.swing.JPanel {
         lb = new javax.swing.JLabel();
 
         lb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lb.setText("Histórico");
+        lb.setText("Pendentes");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
