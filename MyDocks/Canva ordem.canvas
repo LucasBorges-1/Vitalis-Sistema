@@ -1,0 +1,30 @@
+{
+	"nodes":[
+		{"id":"7a736e916d8b9246","type":"file","file":"Telas/Tela Principal.md","x":-1640,"y":-480,"width":440,"height":400,"color":"4"},
+		{"id":"157dcc836ebbacb0","type":"file","file":"Telas/Tela principal -Divisão/Calendário.md","x":-1440,"y":-1360,"width":400,"height":400,"color":"6"},
+		{"id":"f3ef0821fd7b9936","type":"file","file":"Telas/Tela principal -Divisão/Pendentes.md","x":-960,"y":-960,"width":400,"height":400,"color":"6"},
+		{"id":"669a9733a34e0cab","type":"file","file":"Telas/Tela principal -Divisão/Menu principal.md","x":-560,"y":-480,"width":400,"height":400,"color":"6"},
+		{"id":"d8fcbf54ebf36b42","type":"file","file":"Telas/Tela principal -Divisão/Impressão.md","x":-960,"y":0,"width":400,"height":400,"color":"6"},
+		{"id":"8f37bd31ee18bf93","type":"file","file":"Telas/Tela principal -Divisão/Configurações.md","x":-1440,"y":400,"width":400,"height":400,"color":"6"},
+		{"id":"4d0dbd084a97bd79","type":"file","file":"Telas/Verificação -Divisão-/Login.md","x":-2880,"y":-1160,"width":400,"height":400,"color":"2"},
+		{"id":"2dc1d3104a283a1e","type":"file","file":"Telas/Verificação -Divisão-/Cadastro.md","x":-2880,"y":200,"width":400,"height":400,"color":"2"},
+		{"id":"2787599c355cbb24","x":-2480,"y":-480,"width":400,"height":400,"color":"6","type":"file","file":"Telas/Tela principal -Divisão/Histórico.md"}
+	],
+	"edges":[
+		{"id":"4522f677df48fa2d","fromNode":"4d0dbd084a97bd79","fromSide":"left","toNode":"2dc1d3104a283a1e","toSide":"left","color":"5"},
+		{"id":"28514e9ecb3c75d7","fromNode":"2dc1d3104a283a1e","fromSide":"top","toNode":"4d0dbd084a97bd79","toSide":"bottom","color":"3"},
+		{"id":"f12d145cddc472c2","fromNode":"7a736e916d8b9246","fromSide":"bottom","toNode":"8f37bd31ee18bf93","toSide":"top","color":"5"},
+		{"id":"d90885b4f00b1bec","fromNode":"7a736e916d8b9246","fromSide":"right","toNode":"d8fcbf54ebf36b42","toSide":"top","color":"5"},
+		{"id":"7557d88f0bf2d2b3","fromNode":"7a736e916d8b9246","fromSide":"right","toNode":"669a9733a34e0cab","toSide":"left","color":"5"},
+		{"id":"dac7a22683abcfd2","fromNode":"7a736e916d8b9246","fromSide":"right","toNode":"f3ef0821fd7b9936","toSide":"bottom","color":"5"},
+		{"id":"d3dd4c35bb0d19c2","fromNode":"7a736e916d8b9246","fromSide":"top","toNode":"157dcc836ebbacb0","toSide":"bottom","color":"5"},
+		{"id":"90bf735160725639","fromNode":"8f37bd31ee18bf93","fromSide":"left","toNode":"7a736e916d8b9246","toSide":"left","color":"3"},
+		{"id":"1f18965fbf6af519","fromNode":"d8fcbf54ebf36b42","fromSide":"left","toNode":"7a736e916d8b9246","toSide":"bottom","color":"3"},
+		{"id":"39782193b04e6b63","fromNode":"669a9733a34e0cab","fromSide":"left","toNode":"7a736e916d8b9246","toSide":"bottom","color":"3"},
+		{"id":"00296cd0fadf76de","fromNode":"f3ef0821fd7b9936","fromSide":"left","toNode":"7a736e916d8b9246","toSide":"top","color":"3"},
+		{"id":"e25d6f335d90f471","fromNode":"157dcc836ebbacb0","fromSide":"left","toNode":"7a736e916d8b9246","toSide":"left","color":"3"},
+		{"id":"e15e17c6bc9c880d","fromNode":"4d0dbd084a97bd79","fromSide":"right","toNode":"7a736e916d8b9246","toSide":"left","color":"5"},
+		{"id":"966c1734b537f617","fromNode":"2787599c355cbb24","fromSide":"right","toNode":"7a736e916d8b9246","toSide":"left","color":"5"},
+		{"id":"71a242683ccd91ec","fromNode":"2787599c355cbb24","fromSide":"bottom","toNode":"7a736e916d8b9246","toSide":"bottom","color":"3"}
+	]
+}

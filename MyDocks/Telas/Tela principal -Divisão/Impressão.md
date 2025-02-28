@@ -1,0 +1,1 @@
+-impressao de receitas, avisos etc
