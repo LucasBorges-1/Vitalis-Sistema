@@ -2,10 +2,7 @@ package tcc.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-/**
- *
- * @author Raven
- */
+
 public class FormInbox extends javax.swing.JPanel {
 
     public FormInbox() {

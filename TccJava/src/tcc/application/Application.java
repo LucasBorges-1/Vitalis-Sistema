@@ -15,10 +15,6 @@ import tcc.application.form.LoginForm;
 
 import raven.toast.Notifications;
 
-/**
- *
- * @author Raven
- */
 public class Application extends javax.swing.JFrame {
 
     private static Application app;

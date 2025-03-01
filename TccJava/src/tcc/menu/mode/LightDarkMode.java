@@ -16,13 +16,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import tcc.application.form.other.FormDashboard;
 
-/**
- *
- * @author Raven
- */
+
 public class LightDarkMode extends JPanel {
-
+private tcc.application.form.other.FormDashboard dashboard;
     public void setMenuFull(boolean menuFull) {
         this.menuFull = menuFull;
         if (menuFull) {
@@ -39,7 +37,19 @@ public class LightDarkMode extends JPanel {
     private boolean menuFull = true;
 
     public LightDarkMode() {
+         
         init();
+       
+    }
+    
+    public boolean themeActive(){
+        boolean isDark = FlatLaf.isLafDark();
+        if (isDark) {
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
     private void init() {
@@ -60,13 +70,16 @@ public class LightDarkMode extends JPanel {
                 + "innerFocusWidth:0");
         buttonLighDark.addActionListener((ActionEvent e) -> {
             changeMode(!FlatLaf.isLafDark());
+           
         });
         checkStyle();
         buttonDark.addActionListener((ActionEvent e) -> {
             changeMode(true);
+          
         });
         buttonLight.addActionListener((ActionEvent e) -> {
             changeMode(false);
+           
         });
 
         add(buttonLight);
@@ -80,6 +93,7 @@ public class LightDarkMode extends JPanel {
                 EventQueue.invokeLater(() -> {
                     FlatAnimatedLafChange.showSnapshot();
                     FlatMacDarkLaf.setup();
+                    
                     FlatLaf.updateUI();
                     checkStyle();
                     FlatAnimatedLafChange.hideSnapshotWithAnimation();

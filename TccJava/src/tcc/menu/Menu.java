@@ -18,10 +18,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import tcc.menu.mode.ToolBarAccentColor;
 
-/**
- *
- * @author Raven
- */
+
 public class Menu extends JPanel {
 
     private final String menuItems[][] = {
@@ -80,7 +77,7 @@ public class Menu extends JPanel {
                 + "background:$Menu.background;"
                 + "arc:10");
         header = new JLabel(headerName);
-        header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logo.svg")));
+        header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logo.png")));
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$Menu.header.font;"
                 + "foreground:$Menu.foreground");
@@ -91,6 +88,7 @@ public class Menu extends JPanel {
         panelMenu.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:5,5,5,5;"
                 + "background:$Menu.background");
+        
 
         scroll.setViewportView(panelMenu);
         scroll.putClientProperty(FlatClientProperties.STYLE, ""

@@ -2,10 +2,7 @@ package tcc.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 
-/**
- *
- * @author Raven
- */
+
 public class FormCalendar extends javax.swing.JPanel {
 
     public FormCalendar() {

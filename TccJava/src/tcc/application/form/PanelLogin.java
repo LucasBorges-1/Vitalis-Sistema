@@ -4,10 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
-/**
- *
- * @author Raven
- */
+
 public class PanelLogin extends JPanel {
 
     public PanelLogin() {

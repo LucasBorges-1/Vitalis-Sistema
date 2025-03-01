@@ -1,9 +1,6 @@
 package tcc.menu;
 
-/**
- *
- * @author Raven
- */
+
 public class MenuAction {
 
     protected boolean isCancel() {

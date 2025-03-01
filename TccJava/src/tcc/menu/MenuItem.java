@@ -22,10 +22,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/**
- *
- * @author Raven
- */
+
 public class MenuItem extends JPanel {
 
     public boolean isMenuShow() {

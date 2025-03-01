@@ -23,10 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import tcc.menu.Menu;
 
-/**
- *
- * @author Raven
- */
+
 public class ToolBarAccentColor extends JPanel {
 
     private final Menu menu;
@@ -138,6 +135,7 @@ public class ToolBarAccentColor extends JPanel {
             Color accColor = UIManager.getColor(colorKey);
             if (accColor == null) {
                 accColor = Color.lightGray;
+                //
             } else if (!c.isEnabled()) {
                 accColor = FlatLaf.isLafDark()
                         ? ColorFunctions.shade(accColor, 0.5f)

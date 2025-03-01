@@ -4,10 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import tcc.application.Application;
 
-/**
- *
- * @author Raven
- */
+
 public class LoginForm extends javax.swing.JPanel {
 
     public LoginForm() {

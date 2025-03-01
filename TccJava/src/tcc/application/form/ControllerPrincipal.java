@@ -26,10 +26,7 @@ import tcc.application.form.other.FormRead;
 import tcc.menu.Menu;
 import tcc.menu.MenuAction;
 
-/**
- *
- * @author Raven
- */
+
 public class ControllerPrincipal extends JLayeredPane {
 
     public  ControllerPrincipal() {
