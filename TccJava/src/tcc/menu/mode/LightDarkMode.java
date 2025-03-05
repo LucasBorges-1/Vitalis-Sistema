@@ -16,11 +16,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import tcc.application.form.other.FormDashboard;
+import tcc.application.form.other.FormMainMenu;
 
 
 public class LightDarkMode extends JPanel {
-private tcc.application.form.other.FormDashboard dashboard;
+private tcc.application.form.other.FormMainMenu dashboard;
     public void setMenuFull(boolean menuFull) {
         this.menuFull = menuFull;
         if (menuFull) {

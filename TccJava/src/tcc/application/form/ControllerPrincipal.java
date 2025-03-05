@@ -19,10 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import tcc.application.Application;
 import tcc.application.form.other.FormCalendar;
-import tcc.application.form.other.FormDashboard;
+import tcc.application.form.other.FormMainMenu;
 import tcc.application.form.other.FormImpressão;
-import tcc.application.form.other.FormInbox;
-import tcc.application.form.other.FormRead;
+import tcc.application.form.other.FormHistorico;
+import tcc.application.form.other.FormPendentes;
 import tcc.menu.Menu;
 import tcc.menu.MenuAction;
 
@@ -72,12 +72,12 @@ public class ControllerPrincipal extends JLayeredPane {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
-                Application.showForm(new FormDashboard());
+                Application.showForm(new FormMainMenu());
             } else if (index == 1) {
                 if (subIndex == 1) {
-                    Application.showForm(new FormInbox());
+                    Application.showForm(new FormHistorico());
                 } else if (subIndex == 2) {
-                    Application.showForm(new FormRead());
+                    Application.showForm(new FormPendentes());
                 } else {
                     action.cancel();
                 }
