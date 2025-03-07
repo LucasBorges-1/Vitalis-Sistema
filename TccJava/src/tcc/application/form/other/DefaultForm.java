@@ -5,12 +5,13 @@ import com.formdev.flatlaf.FlatClientProperties;
 
 
 public class DefaultForm extends javax.swing.JPanel {
-
+private tcc.application.form.ControllerPrincipal app;
     public DefaultForm(String text) {
         initComponents();
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
         lb.setText(text);
+        app.setI(0);
     }
 
     @SuppressWarnings("unchecked")

@@ -6,6 +6,8 @@ import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -13,14 +15,22 @@ import java.awt.EventQueue;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
+import java.text.Normalizer.Form;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import jdk.internal.org.jline.utils.Display;
+import tcc.application.Application;
+import tcc.application.form.ControllerPrincipal;
+import tcc.application.form.other.FormCalendar;
 import tcc.application.form.other.FormMainMenu;
 
-
 public class LightDarkMode extends JPanel {
-private tcc.application.form.other.FormMainMenu dashboard;
+
+    private tcc.application.form.other.FormCalendar calendar;
+    private tcc.application.form.ControllerPrincipal app;
+
     public void setMenuFull(boolean menuFull) {
         this.menuFull = menuFull;
         if (menuFull) {
@@ -37,19 +47,21 @@ private tcc.application.form.other.FormMainMenu dashboard;
     private boolean menuFull = true;
 
     public LightDarkMode() {
-         
+        calendar = new FormCalendar();
+        
         init();
-       
+        
+
     }
-    
-    public boolean themeActive(){
+
+    public boolean themeActive() {
         boolean isDark = FlatLaf.isLafDark();
         if (isDark) {
             return true;
-        }else{
+        } else {
             return false;
         }
-        
+
     }
 
     private void init() {
@@ -70,16 +82,16 @@ private tcc.application.form.other.FormMainMenu dashboard;
                 + "innerFocusWidth:0");
         buttonLighDark.addActionListener((ActionEvent e) -> {
             changeMode(!FlatLaf.isLafDark());
-           
+
         });
         checkStyle();
         buttonDark.addActionListener((ActionEvent e) -> {
             changeMode(true);
-          
+
         });
         buttonLight.addActionListener((ActionEvent e) -> {
             changeMode(false);
-           
+
         });
 
         add(buttonLight);
@@ -87,27 +99,47 @@ private tcc.application.form.other.FormMainMenu dashboard;
         add(buttonLighDark);
     }
 
+    private int change = 0;
+
     private void changeMode(boolean dark) {
+
         if (FlatLaf.isLafDark() != dark) {
+
             if (dark) {
+                 
                 EventQueue.invokeLater(() -> {
+                  
                     FlatAnimatedLafChange.showSnapshot();
                     FlatMacDarkLaf.setup();
-                    
                     FlatLaf.updateUI();
                     checkStyle();
                     FlatAnimatedLafChange.hideSnapshotWithAnimation();
+                   if (app.getI() == 3) {
+                        Application.showForm(new FormCalendar());
+                       
+                    }
+                   
                 });
+
             } else {
+                 
                 EventQueue.invokeLater(() -> {
+                    
                     FlatAnimatedLafChange.showSnapshot();
                     FlatMacLightLaf.setup();
                     FlatLaf.updateUI();
                     checkStyle();
                     FlatAnimatedLafChange.hideSnapshotWithAnimation();
+                    
+                   if (app.getI()==3) {
+                        Application.showForm(new FormCalendar());
+                        
+                    }
                 });
             }
+
         }
+
     }
 
     private void checkStyle() {
@@ -123,6 +155,7 @@ private tcc.application.form.other.FormMainMenu dashboard;
 
     private void addStyle(JButton button, boolean style) {
         if (style) {
+
             button.putClientProperty(FlatClientProperties.STYLE, ""
                     + "arc:999;"
                     + "background:$Menu.lightdark.button.background;"
@@ -131,6 +164,7 @@ private tcc.application.form.other.FormMainMenu dashboard;
                     + "borderWidth:0;"
                     + "innerFocusWidth:0");
         } else {
+
             button.putClientProperty(FlatClientProperties.STYLE, ""
                     + "arc:999;"
                     + "background:$Menu.lightdark.button.background;"

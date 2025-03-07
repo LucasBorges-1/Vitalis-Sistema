@@ -28,10 +28,24 @@ import tcc.menu.MenuAction;
 
 
 public class ControllerPrincipal extends JLayeredPane {
-
     public  ControllerPrincipal() {
+        
         init();
     }
+
+   
+    private static int i = 0; 
+    
+
+   public static int getI() {
+        return i;
+    }
+    
+    public static void setI(int value) {
+        i = value;
+    }
+    
+    
 
     private void init() {
         setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -67,7 +81,11 @@ public class ControllerPrincipal extends JLayeredPane {
        String icon = (getComponentOrientation().isLeftToRight()) ? "menu_left.svg" : "menu_right.svg";
         menuButton.setIcon(new FlatSVGIcon("tcc/icon/svg/" + icon, 0.8f));
     }
-
+    
+    
+   
+    
+    
     private void initMenuEvent() {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
@@ -84,7 +102,9 @@ public class ControllerPrincipal extends JLayeredPane {
             } else if (index == 2) {
                 Application.showForm(new FormImpressão());
             } else if (index == 3) {
+               ControllerPrincipal.setI(3);
                 Application.showForm(new FormCalendar());
+                
             } else if (index == 4) {
                 if (subIndex == 1) {
 
@@ -131,6 +151,14 @@ public class ControllerPrincipal extends JLayeredPane {
                 action.cancel();
             }
         });
+    }
+    
+     public int CalendarIsOpen(){
+        if (i==3) {
+            return 3;
+        }else{
+            return 0;
+        }
     }
 
     private void setMenuFull(boolean full) {

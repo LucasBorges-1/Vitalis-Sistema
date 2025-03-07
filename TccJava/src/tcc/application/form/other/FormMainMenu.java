@@ -1,4 +1,4 @@
-package tcc.application.form.other;
+ package tcc.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import raven.toast.Notifications;
 
 public class FormMainMenu extends javax.swing.JPanel {
-
+private tcc.application.form.ControllerPrincipal app;
     public FormMainMenu() {
 
         initComponents();
@@ -42,6 +42,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         configurarLayout();
         estiloTabela();
         adicionandoDadosExemplos();
+        app.setI(0);
 
     }
 

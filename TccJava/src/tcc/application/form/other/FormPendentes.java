@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class FormPendentes extends javax.swing.JPanel {
-
+private tcc.application.form.ControllerPrincipal app;
     public FormPendentes() {
         initComponents();
         lb3.putClientProperty(FlatClientProperties.STYLE, ""
@@ -16,6 +16,7 @@ public class FormPendentes extends javax.swing.JPanel {
         configurarLayout();
         estiloTabela();
         adicionandoDadosExemplos();
+        app.setI(0);
     }
     
         public void adicionandoDadosExemplos() {

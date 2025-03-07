@@ -4,11 +4,12 @@ import com.formdev.flatlaf.FlatClientProperties;
 
 
 public class FormImpressão extends javax.swing.JPanel {
-
+private tcc.application.form.ControllerPrincipal app;
     public FormImpressão() {
         initComponents();
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
+        app.setI(0);
     }
 
     @SuppressWarnings("unchecked")

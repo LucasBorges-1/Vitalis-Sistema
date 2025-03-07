@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class FormHistorico extends javax.swing.JPanel {
-
+private tcc.application.form.ControllerPrincipal app;
     public FormHistorico() {
         initComponents();
         lb3.putClientProperty(FlatClientProperties.STYLE, ""
@@ -22,11 +22,13 @@ public class FormHistorico extends javax.swing.JPanel {
         configurarLayout();
         estiloTabela();
         adicionandoDadosExemplos();
+        app.setI(0);
         
     }
     
     
     private void configurarLayout() {
+        
     setLayout(new BorderLayout(10, 10)); 
     add(lb3, BorderLayout.NORTH);
     
