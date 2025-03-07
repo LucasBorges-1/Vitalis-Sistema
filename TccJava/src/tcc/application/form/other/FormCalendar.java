@@ -7,6 +7,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,6 +17,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -30,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import tcc.application.Application;
 
 public class FormCalendar extends javax.swing.JPanel {
@@ -42,10 +45,10 @@ public class FormCalendar extends javax.swing.JPanel {
                 + "font:$h1.font");
 
         estilizarcalendario();
-       
+
         configuraçãoLayout();
-        
-        Color teste=(UIManager.getColor("Login.background"));
+
+        Color teste = (UIManager.getColor("Login.background"));
         System.out.println(teste);
 
     }
@@ -62,21 +65,20 @@ public class FormCalendar extends javax.swing.JPanel {
                 + "arc:25;"
                 + "background:$Login.background;"
                 + "margin:20,20,20,20;");
-        
+
         PainelCalendario.add(calendarPanel, BorderLayout.CENTER);
 
         // Criando o PainelEdicao
-      
         add(PainelCalendario, BorderLayout.CENTER);
-        
+
     }
-    
-    public boolean verificarAberto(){
-        if (this!=null) {
+
+    public boolean verificarAberto() {
+        if (this != null) {
             return true;
-        }else{
+        } else {
             return false;
-    }
+        }
     }
 
     public void estilizarcalendario() {
@@ -85,80 +87,96 @@ public class FormCalendar extends javax.swing.JPanel {
 
         DatePickerSettings settings = new DatePickerSettings();
 
-       
         settings.setFormatForDatesCommonEra("dd/MM/yyyy");
-        
-        
-        
+
         Color background = new Color(255, 255, 255);
         Color text = Color.GRAY;
-        
-        Color background2 = new Color(59, 75, 89);
-         Color text2 = Color.white;
-        
-       
-        
-        
-         if (FlatLaf.isLafDark()) {
-        settings.setColor(DatePickerSettings.DateArea.BackgroundOverallCalendarPanel, background2);
-        settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundNormalDates, background2);
-        settings.setColor(DatePickerSettings.DateArea.CalendarTextNormalDates, text2);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels, background2);
-        settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels, text2);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearNavigationButtons, background2);
-        settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearNavigationButtons, text2);
-        settings.setColor(DatePickerSettings.DateArea.CalendarTextWeekdays, text2);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundTodayLabel, background2);
-        settings.setColor(DatePickerSettings.DateArea.TextTodayLabel, text2);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundClearLabel, background2);
-        settings.setColor(DatePickerSettings.DateArea.TextClearLabel, text2);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover, background2);
-        settings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, text2);
-        settings.setColorBackgroundWeekdayLabels(background2, true);
-       
 
-                    
-        
+        Color background2 = new Color(59, 75, 89);
+        Color text2 = Color.white;
+
+        Font customFont = new Font("SansSerif", Font.PLAIN, 15);
+
+        settings.setFontCalendarDateLabels(customFont); // Dias do mês
+        settings.setFontCalendarWeekdayLabels(customFont); // Dias da semana
+        settings.setFontCalendarWeekNumberLabels(customFont); // Números da semana
+        settings.setFontMonthAndYearMenuLabels(customFont); // Rótulos de mês e ano
+        settings.setFontTodayLabel(customFont); // Rótulo "Hoje"
+        settings.setFontClearLabel(customFont); // Rótulo "Limpar"
+
+        if (FlatLaf.isLafDark()) {
+
+            settings.setColor(DatePickerSettings.DateArea.BackgroundOverallCalendarPanel, background2);
+            settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundNormalDates, background2);
+            settings.setColor(DatePickerSettings.DateArea.CalendarTextNormalDates, text2);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels, background2);
+            settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels, text2);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearNavigationButtons, background2);
+            settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearNavigationButtons, text2);
+            settings.setColor(DatePickerSettings.DateArea.CalendarTextWeekdays, text2);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundTodayLabel, background2);
+            settings.setColor(DatePickerSettings.DateArea.TextTodayLabel, text2);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundClearLabel, background2);
+            settings.setColor(DatePickerSettings.DateArea.TextClearLabel, text2);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover, background2);
+            settings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, text2);
+            settings.setColorBackgroundWeekdayLabels(background2, true);
+
+            CalendarBorderProperties normalDayBorder = new CalendarBorderProperties(
+                    new Point(1, 1), // Canto superior esquerdo
+                    new Point(5, 5), // Canto inferior direito
+                    text2, // Cor da borda
+                    1 // Espessura da borda em pixels
+            );
+
+            settings.getBorderPropertiesList().add(normalDayBorder);
+
+            settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundSelectedDate, background2);
+            settings.setColor(DatePickerSettings.DateArea.CalendarBorderSelectedDate, text2);
+
         } else {
-        settings.setColor(DatePickerSettings.DateArea.BackgroundOverallCalendarPanel, background);
-        settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundNormalDates, background);
-        settings.setColor(DatePickerSettings.DateArea.CalendarTextNormalDates, text);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels, background);
-        settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels, text);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearNavigationButtons, background);
-        settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearNavigationButtons, text);
-        settings.setColor(DatePickerSettings.DateArea.CalendarTextWeekdays, text);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundTodayLabel, background);
-        settings.setColor(DatePickerSettings.DateArea.TextTodayLabel, text);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundClearLabel, background);
-        settings.setColor(DatePickerSettings.DateArea.TextClearLabel, text);
-        settings.setColor(DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover, background);
-        settings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, text);
-        settings.setColorBackgroundWeekdayLabels(background, true);
-       
-        
+            settings.setColor(DatePickerSettings.DateArea.BackgroundOverallCalendarPanel, background);
+            settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundNormalDates, background);
+            settings.setColor(DatePickerSettings.DateArea.CalendarTextNormalDates, text);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels, background);
+            settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels, text);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearNavigationButtons, background);
+            settings.setColor(DatePickerSettings.DateArea.TextMonthAndYearNavigationButtons, text);
+            settings.setColor(DatePickerSettings.DateArea.CalendarTextWeekdays, text);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundTodayLabel, background);
+            settings.setColor(DatePickerSettings.DateArea.TextTodayLabel, text);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundClearLabel, background);
+            settings.setColor(DatePickerSettings.DateArea.TextClearLabel, text);
+            settings.setColor(DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover, background);
+            settings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, text);
+            settings.setColorBackgroundWeekdayLabels(background, true);
+            CalendarBorderProperties normalDayBorder = new CalendarBorderProperties(
+                    new Point(1, 1), // Canto superior esquerdo
+                    new Point(5, 1), // Canto inferior direito
+                    text, // Cor da borda
+                    1 // Espessura da borda em pixels
+            );
+            settings.getBorderPropertiesList().add(normalDayBorder);
+            settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundSelectedDate, background);
+            settings.setColor(DatePickerSettings.DateArea.CalendarBorderSelectedDate, text);
         }
-        
-        
-        
+
         PainelCalendario.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-               
+
                 Dimension novoTamanho = PainelCalendario.getSize();
 
-              
                 DatePickerSettings settings = calendarPanel.getSettings();
-                settings.setSizeDatePanelMinimumHeight(novoTamanho.height-100);
-                settings.setSizeDatePanelMinimumWidth(novoTamanho.width-30);
+                settings.setSizeDatePanelMinimumHeight(novoTamanho.height - 100);
+                settings.setSizeDatePanelMinimumWidth(novoTamanho.width - 30);
                 calendarPanel.drawCalendar();
             }
         });
 
-        
         calendarPanel.setSettings(settings);
-        calendarPanel.revalidate(); 
-        calendarPanel.repaint();    
+        calendarPanel.revalidate();
+        calendarPanel.repaint();
 
     }
 
