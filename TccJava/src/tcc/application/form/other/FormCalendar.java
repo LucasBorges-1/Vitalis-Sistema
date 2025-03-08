@@ -45,11 +45,7 @@ public class FormCalendar extends javax.swing.JPanel {
                 + "font:$h1.font");
 
         estilizarcalendario();
-
-        configuraçãoLayout();
-
-        Color teste = (UIManager.getColor("Login.background"));
-        System.out.println(teste);
+        configuraçãoLayout(); 
 
     }
 
@@ -64,7 +60,8 @@ public class FormCalendar extends javax.swing.JPanel {
         PainelCalendario.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Login.background;"
-                + "margin:20,20,20,20;");
+               // + "margin:20,20,20,20;"
+        );
 
         PainelCalendario.add(calendarPanel, BorderLayout.CENTER);
 
@@ -73,13 +70,7 @@ public class FormCalendar extends javax.swing.JPanel {
 
     }
 
-    public boolean verificarAberto() {
-        if (this != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    
 
     public void estilizarcalendario() {
 
@@ -93,7 +84,7 @@ public class FormCalendar extends javax.swing.JPanel {
         Color text = Color.GRAY;
 
         Color background2 = new Color(59, 75, 89);
-        Color text2 = Color.white;
+        Color text2 = Color.lightGray;
 
         Font customFont = new Font("SansSerif", Font.PLAIN, 15);
 
@@ -152,7 +143,7 @@ public class FormCalendar extends javax.swing.JPanel {
             settings.setColorBackgroundWeekdayLabels(background, true);
             CalendarBorderProperties normalDayBorder = new CalendarBorderProperties(
                     new Point(1, 1), // Canto superior esquerdo
-                    new Point(5, 1), // Canto inferior direito
+                    new Point(5, 5), // Canto inferior direito
                     text, // Cor da borda
                     1 // Espessura da borda em pixels
             );

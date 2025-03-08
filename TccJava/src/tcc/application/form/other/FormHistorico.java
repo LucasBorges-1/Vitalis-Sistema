@@ -50,7 +50,8 @@ private tcc.application.form.ControllerPrincipal app;
         paneltableHis.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Login.background;"
-                + "margin:20,20,20,20;");
+               // + "margin:20,20,20,20;"
+        );
 
         TableHis.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "height:30;"
@@ -69,7 +70,7 @@ private tcc.application.form.ControllerPrincipal app;
                 + "selectionForeground:$Table.foreground;");
 
         jScrollPane1.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
-                + "margin:15,15,15,15;"
+               // + "margin:15,15,15,15;"
                 + "trackArc:999;"
                 + "trackInsets:3,3,3,3;"
                 + "thumbInsets:3,3,3,3;"
@@ -82,7 +83,7 @@ private tcc.application.form.ControllerPrincipal app;
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
-                + "margin:5,20,5,20;"
+             //   + "margin:5,20,5,20;"
                 + "background:$Panel.background;");
       
 

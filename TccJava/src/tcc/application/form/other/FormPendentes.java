@@ -66,7 +66,8 @@ model.addRow(new Object[]{20, "Daniela Freitas", "Endocrinologista", "19:15", "2
         panelPen.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Login.background;"
-                + "margin:20,20,20,20;");
+                //+ "margin:20,20,20,20;"
+        );
 
         TablePen.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "height:30;"
@@ -85,7 +86,7 @@ model.addRow(new Object[]{20, "Daniela Freitas", "Endocrinologista", "19:15", "2
                 + "selectionForeground:$Table.foreground;");
 
         jScrollPane1.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
-                + "margin:15,15,15,15;"
+               // + "margin:15,15,15,15;"
                 + "trackArc:999;"
                 + "trackInsets:3,3,3,3;"
                 + "thumbInsets:3,3,3,3;"
@@ -93,7 +94,8 @@ model.addRow(new Object[]{20, "Daniela Freitas", "Endocrinologista", "19:15", "2
         
          lb5.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:bold +5;"
-                + "margin:30,30,30,30;");
+               // + "margin:30,30,30,30;"
+         );
         
         txtSearchPen.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
         txtSearchPen.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("tcc/icon/svg/search.svg", 0.8f));
@@ -102,7 +104,7 @@ model.addRow(new Object[]{20, "Daniela Freitas", "Endocrinologista", "19:15", "2
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
-                + "margin:5,20,5,20;"
+              //  + "margin:5,20,5,20;"
                 + "background:$Panel.background;");
       
 
