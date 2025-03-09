@@ -113,8 +113,6 @@ private tcc.application.form.ControllerPrincipal app;
         MainTable = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
         lbTitle = new javax.swing.JLabel();
-        BtAtrasado = new javax.swing.JButton();
-        BtConcluido = new javax.swing.JButton();
 
         lb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lb.setText("Dashboard");
@@ -165,24 +163,6 @@ private tcc.application.form.ControllerPrincipal app;
 
         lbTitle.setText("CONSULTAS");
 
-        BtAtrasado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/icon/png/Atrasado.png"))); // NOI18N
-        BtAtrasado.setBorderPainted(false);
-        BtAtrasado.setContentAreaFilled(false);
-        BtAtrasado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtAtrasadoActionPerformed(evt);
-            }
-        });
-
-        BtConcluido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/icon/png/concluido.png"))); // NOI18N
-        BtConcluido.setBorderPainted(false);
-        BtConcluido.setContentAreaFilled(false);
-        BtConcluido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtConcluidoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
         panelTableLayout.setHorizontalGroup(
@@ -193,22 +173,15 @@ private tcc.application.form.ControllerPrincipal app;
                 .addGroup(panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbTitle)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtAtrasado, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(BtConcluido, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(26, 512, Short.MAX_VALUE))
         );
         panelTableLayout.setVerticalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTableLayout.createSequentialGroup()
                 .addComponent(lbTitle)
                 .addGap(10, 10, 10)
-                .addGroup(panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtAtrasado, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtConcluido, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -314,7 +287,7 @@ private tcc.application.form.ControllerPrincipal app;
               //  + "margin:5,20,5,20;"
                 + "background:$Panel.background;");
         
-         BtAtrasado.putClientProperty(FlatClientProperties.STYLE, ""
+         /*BtAtrasado.putClientProperty(FlatClientProperties.STYLE, ""
                  + "font:+2;"
                   + "arc:15;"
                 + "background:$Panel.background;"
@@ -322,8 +295,8 @@ private tcc.application.form.ControllerPrincipal app;
                 + "focusWidth:0");
 
         panelTable.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
-        //MainTable.setGridColor(new Color(49, 62, 74));
-
+        MainTable.setGridColor(new Color(49, 62, 74));
+        */
     }
 
 
@@ -331,21 +304,11 @@ private tcc.application.form.ControllerPrincipal app;
         Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_CENTER, "Hello sample message");
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void BtAtrasadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtAtrasadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtAtrasadoActionPerformed
-
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
 
     }//GEN-LAST:event_txtSearchKeyReleased
 
-    private void BtConcluidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtConcluidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtConcluidoActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton BtAtrasado;
-    private javax.swing.JButton BtConcluido;
     public javax.swing.JTable MainTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;

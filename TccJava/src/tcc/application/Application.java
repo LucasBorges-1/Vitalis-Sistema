@@ -11,24 +11,30 @@ import java.awt.Font;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import tcc.application.form.ControllerPrincipal;
-import tcc.application.form.LoginForm;
+import tcc.application.form.LoginMedicoForm;
 
 import raven.toast.Notifications;
+import tcc.application.form.FormManager;
+import tcc.application.form.LoginClinicaForm;
 
 public class Application extends javax.swing.JFrame {
 
     private static Application app;
     private final ControllerPrincipal mainForm;
-    private final LoginForm loginForm;
-
+    private final LoginMedicoForm loginForm;
+    private  LoginClinicaForm loginclinicaForm;
+    private FormManager formManager;
     
     public Application() {
         initComponents();
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         mainForm = new ControllerPrincipal();
-        loginForm = new LoginForm();
-      
+        loginForm = new LoginMedicoForm();
+        loginclinicaForm=new LoginClinicaForm();
+        formManager=new FormManager();
+                
+                
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
         Notifications.getInstance().setJFrame(this);
@@ -49,15 +55,26 @@ public class Application extends javax.swing.JFrame {
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
     
-     public static void signIn() {
+     public static void OpenloginClinica() {
         FlatAnimatedLafChange.showSnapshot();
-        app.setContentPane(app.mainForm);
+        app.setContentPane(app.loginclinicaForm);
         app.mainForm.applyComponentOrientation(app.getComponentOrientation());
         setSelectedMenu(0, 0);
         app.mainForm.hideMenu();
-        SwingUtilities.updateComponentTreeUI(app.mainForm);
+        SwingUtilities.updateComponentTreeUI(app.loginclinicaForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
+     public static void OpenClinicaManeger() {
+        FlatAnimatedLafChange.showSnapshot();
+        app.setContentPane(app.formManager);
+        app.mainForm.applyComponentOrientation(app.getComponentOrientation());
+        setSelectedMenu(0, 0);
+        app.mainForm.hideMenu();
+        SwingUtilities.updateComponentTreeUI(app.formManager);
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
+    }
+     
+ 
 
     public static void logout() {
         FlatAnimatedLafChange.showSnapshot();

@@ -16,6 +16,7 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.text.Normalizer.Form;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -27,7 +28,7 @@ import tcc.application.form.other.FormCalendar;
 import tcc.application.form.other.FormMainMenu;
 
 public class LightDarkMode extends JPanel {
-
+    private tcc.menu.Menu menu;
     private tcc.application.form.other.FormCalendar calendar;
     private tcc.application.form.ControllerPrincipal app;
 
@@ -135,6 +136,8 @@ public class LightDarkMode extends JPanel {
                         Application.showForm(new FormCalendar());
                         
                     }
+                   
+                    menu.header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logoWhite.png")));
                 });
             }
 

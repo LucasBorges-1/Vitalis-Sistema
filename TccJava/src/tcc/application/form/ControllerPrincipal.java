@@ -45,6 +45,16 @@ public class ControllerPrincipal extends JLayeredPane {
         i = value;
     }
     
+    //Ações com as classes
+    public void cadastrarMedico(){
+        
+    }
+    
+    
+    
+    
+    //Fim
+    
     
 
     private void init() {

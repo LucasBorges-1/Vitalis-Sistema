@@ -80,7 +80,7 @@ public class Menu extends JPanel {
                 + "background:$Menu.background;"
                 + "arc:10");
         header = new JLabel(headerName);
-        header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logo.png")));
+        header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logoBlack.png")));
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$Menu.header.font;"
                 + "foreground:$Menu.foreground");
@@ -198,7 +198,7 @@ public class Menu extends JPanel {
         return menuMinWidth;
     }
 
-    private JLabel header;
+    public JLabel header;
     private JScrollPane scroll;
     private JPanel panelMenu;
     private LightDarkMode lightDarkMode;

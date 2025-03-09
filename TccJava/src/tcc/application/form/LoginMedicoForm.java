@@ -5,9 +5,9 @@ import net.miginfocom.swing.MigLayout;
 import tcc.application.Application;
 
 
-public class LoginForm extends javax.swing.JPanel {
+public class LoginMedicoForm extends javax.swing.JPanel {
 
-    public LoginForm() {
+    public LoginMedicoForm() {
         initComponents();
         init();
     }
@@ -39,7 +39,7 @@ public class LoginForm extends javax.swing.JPanel {
         lbPass = new javax.swing.JLabel();
         txtPass = new javax.swing.JPasswordField();
         cmdLogin = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        btManegerArea = new javax.swing.JButton();
 
         lbTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbTitle.setText("Login");
@@ -61,13 +61,16 @@ public class LoginForm extends javax.swing.JPanel {
         });
         panelLogin1.add(cmdLogin);
 
-        jLabel1.setText("                                            Arêa do colaborador");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+        btManegerArea.setText("                                            Arêa do colaborador");
+        btManegerArea.setBorder(null);
+        btManegerArea.setBorderPainted(false);
+        btManegerArea.setContentAreaFilled(false);
+        btManegerArea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btManegerAreaActionPerformed(evt);
             }
         });
-        panelLogin1.add(jLabel1);
+        panelLogin1.add(btManegerArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -91,13 +94,13 @@ public class LoginForm extends javax.swing.JPanel {
         Application.login();
     }//GEN-LAST:event_cmdLoginActionPerformed
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        System.out.println("teste");
-    }//GEN-LAST:event_jLabel1MouseClicked
+    private void btManegerAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManegerAreaActionPerformed
+       Application.OpenloginClinica();
+    }//GEN-LAST:event_btManegerAreaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btManegerArea;
     private javax.swing.JButton cmdLogin;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbPass;
     private javax.swing.JLabel lbTitle;
     private javax.swing.JLabel lbUser;
