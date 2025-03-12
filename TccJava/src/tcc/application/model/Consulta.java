@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
@@ -29,44 +30,23 @@ public class Consulta {
     
     //A discutir
     //private String caminho_documentos;
-    
-    
-    @OneToMany(cascade = CascadeType.ALL)
+     
+    @ManyToOne
     @JoinColumn(name = "id_usuario")
-    private Usuario usuario; 
-       
-    @OneToMany(cascade = CascadeType.ALL)
+    private Usuario usuario;
+    
+    @ManyToOne
     @JoinColumn(name = "id_medico")
-    private Medico medico; 
+    private Medico medico;
             
     public Consulta() {
     }
 
-    public Consulta(DateTime data_consulta, Usuario usuario, Medico mediico) {
+    public Consulta(DateTime data_consulta, Usuario usuario, Medico medico) {
         this.data_consulta = data_consulta;
         this.usuario = usuario;
-        this.medico = mediico;
+        this.medico = medico;
     }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Medico getMediico() {
-        return medico;
-    }
-
-    public void setMediico(Medico mediico) {
-        this.medico = mediico;
-    }
-    
-    
-
-    
 
     public int getId_consulta() {
         return id_consulta;
@@ -84,10 +64,28 @@ public class Consulta {
         this.data_consulta = data_consulta;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
     @Override
     public String toString() {
-        return "Consulta{" + "data_consulta=" + data_consulta + '}';
+        return "Consulta{" + "data_consulta=" + data_consulta + ", usuario=" + usuario + ", medico=" + medico + '}';
     }
     
     
-}
+    
+    
+   }

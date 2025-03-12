@@ -29,27 +29,18 @@ public class ControllerPessoa {
         loginMedicoForm =new LoginMedicoForm();
         loginClinicaForm =new LoginClinicaForm();
         app=new Application();
-        init();
+        
     }
     
     
-    public void init(){
-     loginMedicoForm.btManegerArea.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-           showMedicoForm();
-         }
-     });
-     
-     
     
+    
+    public void cadastrarMedico(){
+        
+       //Pessoa p=new Medico(crm, horarios, clinicas, email, nome, senha, cpf, data_nascimento);
     }
     
-     public void showMedicoForm(){
-         app.showForm(loginClinicaForm);
-     }
-    
-    
+
     
     
 }

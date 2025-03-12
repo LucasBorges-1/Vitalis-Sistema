@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
@@ -29,21 +30,22 @@ public class Horarios {
     private Time inicio;
     private Time fim;
     
-    @OneToMany(cascade = CascadeType.ALL)
+    
+    
+    @ManyToOne
     @JoinColumn(name = "id_medico")
     private Medico medico; 
 
     public Horarios() {
+        
     }
 
-    public Horarios(DateTime dia, Time inicio, Time fim, Medico medico) {
+    public Horarios(DateTime dia, Time inicio, Time fim) {
         this.dia = dia;
-        this.inicio = inicio;
-        this.fim = fim;
-        this.medico = medico;
+         this.inicio = Time.valueOf("08:00:00");
+        this.fim = Time.valueOf("17:00:00");
+        this.medico = null;
     }
-
-  
 
     public int getId_horario() {
         return id_horario;
@@ -84,14 +86,11 @@ public class Horarios {
     public void setMedico(Medico medico) {
         this.medico = medico;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "Horarios{" + "dia=" + dia + ", inicio=" + inicio + ", fim=" + fim + '}';
+        return "Horarios{" + "dia=" + dia + ", inicio=" + inicio + ", fim=" + fim + ", medico=" + medico + '}';
     }
 
-    
     
 }

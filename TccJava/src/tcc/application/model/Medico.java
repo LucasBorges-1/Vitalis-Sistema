@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,39 +27,32 @@ import javax.persistence.Table;
 public class Medico extends Pessoa{
   
     private String crm;
-    @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name="id_medico")
-    private List<Clinica_medico> clinicas = new ArrayList<>();
+     @OneToMany(mappedBy = "medico")
+    private List<Consulta> consultas;
     
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_pessoa")
-    private Pessoa pessoa; 
+    @OneToMany(mappedBy = "medico")
+    private List<Horarios> horarios;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "clinica_medico",
+        joinColumns = @JoinColumn(name = "id_medico"),
+        inverseJoinColumns = @JoinColumn(name = "id_clinica")
+    )
+    private List<Clinica> clinicas;
+    
+    
+    
     public Medico() {
     }
 
-    public Medico(String crm, Pessoa pessoa, String email, String nome, String senha, String cpf, Date data_nascimento) {
+    public Medico(String crm, List<Horarios> horarios, List<Clinica> clinicas, String email, String nome, String senha, String cpf, Date data_nascimento) {
         super(email, nome, senha, cpf, data_nascimento);
         this.crm = crm;
-        this.pessoa = pessoa;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
-    public List<Clinica_medico> getClinicas() {
-        return clinicas;
-    }
-
-    public void setClinicas(List<Clinica_medico> clinicas) {
+        this.consultas = null;
+        this.horarios = horarios;
         this.clinicas = clinicas;
     }
-
-   
 
     public String getCrm() {
         return crm;
@@ -67,11 +62,35 @@ public class Medico extends Pessoa{
         this.crm = crm;
     }
 
+    public List<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(List<Consulta> consultas) {
+        this.consultas = consultas;
+    }
+
+    public List<Horarios> getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(List<Horarios> horarios) {
+        this.horarios = horarios;
+    }
+
+    public List<Clinica> getClinicas() {
+        return clinicas;
+    }
+
+    public void setClinicas(List<Clinica> clinicas) {
+        this.clinicas = clinicas;
+    }
+
     @Override
     public String toString() {
-        return super.toString()+" Medico{" + "crm=" + crm + '}';
+        return "Medico{" + "crm=" + crm + ", consultas=" + consultas + ", horarios=" + horarios + ", clinicas=" + clinicas + '}';
     }
-    
+
     
     
 }

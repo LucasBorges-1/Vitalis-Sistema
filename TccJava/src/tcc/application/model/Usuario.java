@@ -5,6 +5,7 @@
 package tcc.application.model;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,12 +29,11 @@ public class Usuario extends Pessoa {
         super(email, nome, senha, cpf, data_nascimento);
         this.data_cadastro = data_cadastro;
         this.endereco = endereco;
-        this.pessoa = pessoa;
+       
     }
          
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_pessoa")
-    private Pessoa pessoa; 
+     @OneToMany(mappedBy = "usuario")
+    private List<Consulta> consultas; 
 
     
     
@@ -54,13 +54,6 @@ public class Usuario extends Pessoa {
         this.endereco = endereco;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
 
     @Override
     public String toString() {

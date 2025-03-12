@@ -33,8 +33,7 @@ public class FormManager extends javax.swing.JPanel {
     private void init() {
         setLayout(new MigLayout("al center center"));
 
-        edSenha.putClientProperty(FlatClientProperties.STYLE, ""
-                + "showRevealButton:true;");
+        
              
         BtCadastrar.putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
@@ -92,7 +91,6 @@ public class FormManager extends javax.swing.JPanel {
         
         
         TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
-                + "arc:25;"
                 + "background:$Login.background;"
         );
         

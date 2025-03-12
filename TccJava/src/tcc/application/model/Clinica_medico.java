@@ -66,4 +66,10 @@ public class Clinica_medico implements Serializable {
         this.clinica = clinica;
     }
 
+    @Override
+    public String toString() {
+        return "Clinica_medico{" + "medico=" + medico + ", clinica=" + clinica + '}';
+    }
+
+   
 }

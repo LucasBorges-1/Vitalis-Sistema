@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,19 +33,19 @@ public class Clinica {
     private String senha;
     
 
-    @OneToMany(mappedBy = "clinica", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name="id_clinica")
-    private List<Clinica_medico> medicosAssociados = new ArrayList<>();
+    @ManyToMany(mappedBy = "clinicas")
+    private List<Medico> medicos;
 
     public Clinica() {
     }
 
-    public Clinica(String cnpj, String nome, String numero, String endereco, String senha) {
+    public Clinica(String cnpj, String nome, String numero, String endereco, String senha, List<Medico> medicos) {
         this.cnpj = cnpj;
         this.nome = nome;
         this.numero = numero;
         this.endereco = endereco;
         this.senha = senha;
+        this.medicos = medicos;
     }
 
     public int getId_clinica() {
@@ -95,19 +96,19 @@ public class Clinica {
         this.senha = senha;
     }
 
-    public List<Clinica_medico> getMedicosAssociados() {
-        return medicosAssociados;
+    public List<Medico> getMedicos() {
+        return medicos;
     }
 
-    public void setMedicosAssociados(List<Clinica_medico> medicosAssociados) {
-        this.medicosAssociados = medicosAssociados;
+    public void setMedicos(List<Medico> medicos) {
+        this.medicos = medicos;
     }
 
-    
-    
     @Override
     public String toString() {
-        return "Clinica{" + "cnpj=" + cnpj + ", nome=" + nome + ", numero=" + numero + ", endereco=" + endereco + ", senha=" + senha + '}';
+        return "Clinica{" + "cnpj=" + cnpj + ", nome=" + nome + ", numero=" + numero + ", endereco=" + endereco + ", senha=" + senha + ", medicos=" + medicos + '}';
     }
+
+    
     
 }

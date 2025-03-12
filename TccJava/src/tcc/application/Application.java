@@ -8,6 +8,7 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Date;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import tcc.application.form.ControllerPrincipal;
@@ -16,6 +17,8 @@ import tcc.application.form.LoginMedicoForm;
 import raven.toast.Notifications;
 import tcc.application.form.FormManager;
 import tcc.application.form.LoginClinicaForm;
+import tcc.application.model.Medico;
+import tcc.application.model.Pessoa;
 
 public class Application extends javax.swing.JFrame {
 
@@ -115,8 +118,15 @@ public class Application extends javax.swing.JFrame {
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
-            //  app.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             app.setVisible(true);
+             Date dt=new Date();
+             Pessoa p= new Pessoa("123", "teste", "123", "213", dt);
+             System.out.println(p.toString());
+             
+             
+             
+        //  Pessoa p =new Medico(crm, horarios, clinicas, email, nome, senha, cpf, dt);
+            
         });
     }
 
