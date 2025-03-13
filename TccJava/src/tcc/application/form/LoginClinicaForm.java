@@ -1,12 +1,13 @@
 package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import javax.swing.JOptionPane;
 import net.miginfocom.swing.MigLayout;
 import tcc.application.Application;
 
 
 public class LoginClinicaForm extends javax.swing.JPanel {
-
+    private ControllerPessoa cp;
     public LoginClinicaForm() {
         initComponents();
         init();
@@ -80,8 +81,18 @@ public class LoginClinicaForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoginActionPerformed
-        Application.OpenClinicaManeger();
+      
+        cp=new ControllerPessoa();
+        char[] senhaChars = this.txtPass.getPassword();
+        String senhaDigitada = new String(senhaChars);
         
+        if (cp.verificarLoginClinica(this.txtUser.getText(),senhaDigitada)) {
+           
+            Application.OpenClinicaManeger();
+        }else{
+            JOptionPane.showMessageDialog(null,"Senha incorreta");
+        }
+  
     }//GEN-LAST:event_cmdLoginActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

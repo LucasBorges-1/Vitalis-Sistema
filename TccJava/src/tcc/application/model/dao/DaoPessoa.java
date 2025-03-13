@@ -56,7 +56,9 @@ public class DaoPessoa extends Dao{
         em.close();
         return pessoa;
     }
-
+    public List<Medico> listar() {
+        return em.createQuery("select c from Pessoa c").getResultList();
+    }
   
    public Medico buscarMedicoPorCrm(String crm) {
     EntityManager em = emf.createEntityManager();
@@ -74,9 +76,7 @@ public class DaoPessoa extends Dao{
     }
 }
 
-    public List<Medico> listar() {
-        return em.createQuery("select c from Pessoa c").getResultList();
-    }
+   
     
     
     public boolean validarLogin(String crm, String senhaDigitada) {

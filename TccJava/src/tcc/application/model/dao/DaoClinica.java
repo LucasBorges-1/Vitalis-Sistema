@@ -5,9 +5,13 @@
 package tcc.application.model.dao;
 
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import tcc.application.model.Clinica;
 import tcc.application.model.Horarios;
+import tcc.application.model.Medico;
+import tcc.application.model.Pessoa;
 
 /**
  *
@@ -64,5 +68,33 @@ public class DaoClinica extends Dao {
             em.getTransaction().rollback();
             return false;
         }
+    }
+    
+    
+    public Clinica buscarClinicaPorNome(String nome) {
+    EntityManager em = emf.createEntityManager();
+    try {
+        return em.createQuery("SELECT c FROM Clinica c WHERE c.nome=:nome", Clinica.class)
+                 .setParameter("nome", nome)
+                 .getSingleResult();
+    } catch (NoResultException e) {
+        return null; // Médico não encontrado
+    } catch (Exception e) {
+        e.printStackTrace(); // Log do erro inesperado
+        return null;
+    } finally {
+        em.close();
+    }
+}
+
+   
+    
+    
+    public boolean validarLogin(String nome,String senhaDigitada) {
+        Clinica c = buscarClinicaPorNome(nome);
+        if (c != null) {
+            return BCryptUtil.verificarSenha(senhaDigitada,c.getSenha());
+        }
+        return false;
     }
 }

@@ -39,12 +39,12 @@
         <Component class="javax.swing.JLabel" name="lbTitle">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Login"/>
+            <Property name="text" type="java.lang.String" value="Bem-vindo !"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbUser">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nome de usu&#xe1;rio"/>
+            <Property name="text" type="java.lang.String" value="Crm"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtUser">

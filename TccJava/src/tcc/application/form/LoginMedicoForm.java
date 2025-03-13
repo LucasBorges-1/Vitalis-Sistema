@@ -25,8 +25,8 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         cmdLogin.putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0");
-        txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
-        txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
+        txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe seu Crm");
+        txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe sua Senha");
     }
 
     @SuppressWarnings("unchecked")
@@ -43,10 +43,10 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         btManegerArea = new javax.swing.JButton();
 
         lbTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTitle.setText("Login");
+        lbTitle.setText("Bem-vindo !");
         panelLogin1.add(lbTitle);
 
-        lbUser.setText("Nome de usuário");
+        lbUser.setText("Crm");
         panelLogin1.add(lbUser);
         panelLogin1.add(txtUser);
 
@@ -98,6 +98,7 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         
         if (cp.verificarLoginMedico(this.txtUser.getText(),senhaDigitada)) {
              Application.login();
+             
         }else{
             JOptionPane.showMessageDialog(null,"Senha incorreta");
         }

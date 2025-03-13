@@ -48,6 +48,7 @@ public class FormManager extends javax.swing.JPanel {
         edNome.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
         edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
         configurarLayout();
+        
     }
 
     private void configurarLayout() {

@@ -78,5 +78,13 @@ public class ControllerPessoa {
         }
     }
     
+    public boolean verificarLoginClinica(String nome,String senha) {
+        if (daoClinica.validarLogin(nome,senha)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     
 }

@@ -8,7 +8,10 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.WindowListener;
 import java.util.Date;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import tcc.application.form.ControllerPrincipal;
@@ -17,8 +20,11 @@ import tcc.application.form.LoginMedicoForm;
 import raven.toast.Notifications;
 import tcc.application.form.FormManager;
 import tcc.application.form.LoginClinicaForm;
+import tcc.application.model.Clinica;
 import tcc.application.model.Medico;
 import tcc.application.model.Pessoa;
+import tcc.application.model.dao.BCryptUtil;
+import tcc.application.model.dao.DaoClinica;
 
 public class Application extends javax.swing.JFrame {
 
@@ -75,6 +81,21 @@ public class Application extends javax.swing.JFrame {
         app.mainForm.hideMenu();
         SwingUtilities.updateComponentTreeUI(app.formManager);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
+          app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        app.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    int option = JOptionPane.showConfirmDialog(
+                        app, 
+                        "Deseja realmente fechar a janela?", 
+                        "Fechar Janela", 
+                        JOptionPane.YES_NO_OPTION
+                    );
+                    if (option == JOptionPane.YES_OPTION) {
+                        Application.logout();
+                    }
+                }
+            });
     }
      
  
@@ -119,8 +140,7 @@ public class Application extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
             app.setVisible(true);
-            
-            
+          
         });
     }
 
