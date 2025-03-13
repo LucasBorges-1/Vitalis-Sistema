@@ -42,6 +42,11 @@ public class DaoClinica extends Dao {
         return em.createQuery("select c from Clinica c").getResultList();
     }
     
+     public Clinica selecionar(){
+        Query consulta=em.createQuery("select c from Clinica c");
+        return (Clinica) consulta.getSingleResult();
+    }
+    
     public Clinica HorariosPorMedico(String cpf){
         Query consulta=em.createQuery("select c from Clinica c where c.nome:m");
         consulta.setParameter("m", cpf);

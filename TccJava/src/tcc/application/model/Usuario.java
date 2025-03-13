@@ -4,9 +4,12 @@
  */
 package tcc.application.model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -17,27 +20,30 @@ import javax.persistence.Table;
  * @author Borges
  */
 @Entity
+ @DiscriminatorValue(value="USUARIO")
 @Table(name = "usuario")
-public class Usuario extends Pessoa {
+public class Usuario extends Pessoa implements Serializable {
+
     private Date data_cadastro;
     private String endereco;
 
     public Usuario() {
     }
-  
-    public Usuario(Date data_cadastro, String endereco, Pessoa pessoa, String email, String nome, String senha, String cpf, Date data_nascimento) {
+    
+    @OneToMany
+    @JoinColumn(name = "id_consulta")
+    private List<Consulta> consultas;
+    
+    public Usuario(Date data_cadastro, List<Consulta> consultas, String email, String nome, String senha, String cpf, LocalDate data_nascimento) {
         super(email, nome, senha, cpf, data_nascimento);
         this.data_cadastro = data_cadastro;
-        this.endereco = endereco;
-       
+        this.consultas = consultas;
     }
-         
-     @OneToMany(mappedBy = "usuario")
-    private List<Consulta> consultas; 
+    
+    
 
-    
-    
-    
+   
+
     public Date getData_cadastro() {
         return data_cadastro;
     }
@@ -54,10 +60,9 @@ public class Usuario extends Pessoa {
         this.endereco = endereco;
     }
 
-
     @Override
     public String toString() {
         return "Usuario{" + "data_cadastro=" + data_cadastro + ", endereco=" + endereco + '}';
     }
-    
+
 }

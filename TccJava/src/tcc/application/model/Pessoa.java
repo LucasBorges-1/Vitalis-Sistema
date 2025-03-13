@@ -4,14 +4,19 @@
  */
 package tcc.application.model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.annotation.processing.Generated;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -20,9 +25,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "type" ,length = 7)
 @Table(name = "pessoa")
-
-public class Pessoa {
+public class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_pessoa;
@@ -30,19 +35,22 @@ public class Pessoa {
     private String email;
     private String nome;
     private String senha; 
+    @Column(name = "cpf")
     private String cpf;
-    private Date data_nascimento;
+    private LocalDate data_nascimento;
 
     public Pessoa() {
     }
 
-    public Pessoa(String email, String nome, String senha, String cpf, Date data_nascimento) {
+    public Pessoa(String email, String nome, String senha, String cpf, LocalDate data_nascimento) {
         this.email = email;
         this.nome = nome;
         this.senha = senha;
         this.cpf = cpf;
         this.data_nascimento = data_nascimento;
     }
+
+
 
     public int getId_pessoa() {
         return id_pessoa;
@@ -84,14 +92,15 @@ public class Pessoa {
         this.cpf = cpf;
     }
 
-    public Date getData_nascimento() {
+    public LocalDate getData_nascimento() {
         return data_nascimento;
     }
 
-    public void setData_nascimento(Date data_nascimento) {
+    public void setData_nascimento(LocalDate data_nascimento) {
         this.data_nascimento = data_nascimento;
     }
 
+   
     @Override
     public String toString() {
         return "pessoa{" + "email=" + email + ", nome=" + nome + ", senha=" + senha + ", cpf=" + cpf + ", data_nascimento=" + data_nascimento + '}';

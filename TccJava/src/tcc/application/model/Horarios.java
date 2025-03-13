@@ -4,7 +4,9 @@
  */
 package tcc.application.model;
 
+import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,29 +24,23 @@ import org.eclipse.persistence.jpa.jpql.parser.DateTime;
  */
 @Entity
 @Table(name = "horarios")
-public class Horarios {
+public class Horarios implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_horario;
-    private DateTime dia;
+    private LocalDate dia;
     private Time inicio;
     private Time fim;
-    
-    
-    
-    @ManyToOne
-    @JoinColumn(name = "id_medico")
-    private Medico medico; 
 
     public Horarios() {
         
     }
 
-    public Horarios(DateTime dia, Time inicio, Time fim) {
+    public Horarios(LocalDate dia, Time inicio, Time fim) {
         this.dia = dia;
          this.inicio = Time.valueOf("08:00:00");
         this.fim = Time.valueOf("17:00:00");
-        this.medico = null;
+      
     }
 
     public int getId_horario() {
@@ -55,11 +51,11 @@ public class Horarios {
         this.id_horario = id_horario;
     }
 
-    public DateTime getDia() {
+    public LocalDate getDia() {
         return dia;
     }
 
-    public void setDia(DateTime dia) {
+    public void setDia(LocalDate dia) {
         this.dia = dia;
     }
 
@@ -79,18 +75,13 @@ public class Horarios {
         this.fim = fim;
     }
 
-    public Medico getMedico() {
-        return medico;
-    }
-
-    public void setMedico(Medico medico) {
-        this.medico = medico;
-    }
-
     @Override
     public String toString() {
-        return "Horarios{" + "dia=" + dia + ", inicio=" + inicio + ", fim=" + fim + ", medico=" + medico + '}';
+        return "Horarios{" + "dia=" + dia + ", inicio=" + inicio + ", fim=" + fim + '}';
     }
+
+
+  
 
     
 }

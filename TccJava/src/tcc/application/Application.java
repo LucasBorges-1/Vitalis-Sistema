@@ -119,13 +119,7 @@ public class Application extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
             app.setVisible(true);
-             Date dt=new Date();
-             Pessoa p= new Pessoa("123", "teste", "123", "213", dt);
-             System.out.println(p.toString());
-             
-             
-             
-        //  Pessoa p =new Medico(crm, horarios, clinicas, email, nome, senha, cpf, dt);
+            
             
         });
     }

@@ -5,6 +5,7 @@
 package tcc.application.model.dao;
 
 import java.util.List;
+import javax.persistence.Embedded;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,8 +16,10 @@ import tcc.application.model.Pessoa;
  * @author Borges
  */
 public class Dao {
+
     protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("TccJavaPU");
     protected EntityManager em = emf.createEntityManager();
 
+   
      
 }

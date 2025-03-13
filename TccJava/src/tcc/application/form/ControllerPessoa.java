@@ -6,9 +6,20 @@ package tcc.application.form;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
 import tcc.application.Application;
+import tcc.application.model.Clinica;
+import tcc.application.model.Horarios;
 import tcc.application.model.Medico;
 import tcc.application.model.Pessoa;
+import tcc.application.model.dao.BCryptUtil;
+import tcc.application.model.dao.DaoClinica;
+import tcc.application.model.dao.DaoHorario;
+import tcc.application.model.dao.DaoPessoa;
 
 /**
  *
@@ -21,6 +32,11 @@ public class ControllerPessoa {
     private LoginMedicoForm loginMedicoForm;
     private LoginClinicaForm loginClinicaForm;
     private Application app;
+    private DaoPessoa daoPessoa;
+    private DaoHorario daoHorario;
+    private DaoClinica daoClinica;
+    private Medico medicoSelecionado;
+    private tcc.application.model.dao.BCryptUtil bCrypt;
     
     public ControllerPessoa() {
         pessoa=new Pessoa();
@@ -28,6 +44,10 @@ public class ControllerPessoa {
         formManager=new FormManager();
         loginMedicoForm =new LoginMedicoForm();
         loginClinicaForm =new LoginClinicaForm();
+        daoPessoa=new DaoPessoa();
+        daoClinica=new DaoClinica();
+        daoHorario=new DaoHorario();
+        bCrypt=new BCryptUtil();
         app=new Application();
         
     }
@@ -35,12 +55,28 @@ public class ControllerPessoa {
     
     
     
-    public void cadastrarMedico(){
+    public void cadastrarMedico(String crm, String email,String nome,String senha, String cpf,LocalDate dataNa){
+       
+       Pessoa p=new Medico(crm, daoClinica.selecionar(), email, nome, bCrypt.hashSenha(senha), cpf, dataNa);
+       
+        if (daoPessoa.inserir(p)) {
+            JOptionPane.showMessageDialog(null,"Médico cadastrado com sucesso");
+        }else{
+              JOptionPane.showMessageDialog(null,"Erro ao cadastrar");
+        }
         
-       //Pessoa p=new Medico(crm, horarios, clinicas, email, nome, senha, cpf, data_nascimento);
+    
+            
+       
     }
     
-
+    public boolean verificarLoginMedico(String crm,String senha) {
+        if (daoPessoa.validarLogin(crm, senha)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
     
     
 }

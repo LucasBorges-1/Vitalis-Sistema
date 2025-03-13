@@ -4,10 +4,14 @@
  */
 package tcc.application.model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.jar.Attributes;
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +19,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -23,36 +29,38 @@ import javax.persistence.Table;
  * @author Borges
  */
 @Entity
+ @DiscriminatorValue(value="MEDICO")
 @Table(name="medico")
-public class Medico extends Pessoa{
-  
+public class Medico extends Pessoa implements Serializable{
+    
     private String crm;
-     @OneToMany(mappedBy = "medico")
+    
+    @OneToMany
+    @JoinColumn(name = "id_consultas") 
     private List<Consulta> consultas;
     
-    @OneToMany(mappedBy = "medico")
+    @OneToMany
+    @JoinColumn(name = "id_horarios") 
     private List<Horarios> horarios;
-    
-    @ManyToMany
-    @JoinTable(
-        name = "clinica_medico",
-        joinColumns = @JoinColumn(name = "id_medico"),
-        inverseJoinColumns = @JoinColumn(name = "id_clinica")
-    )
-    private List<Clinica> clinicas;
+
+    @ManyToOne
+    @JoinColumn(name = "id_clinica") 
+    private Clinica clinica;
     
     
     
     public Medico() {
     }
 
-    public Medico(String crm, List<Horarios> horarios, List<Clinica> clinicas, String email, String nome, String senha, String cpf, Date data_nascimento) {
+    public Medico(String crm, Clinica clinica, String email, String nome, String senha, String cpf, LocalDate data_nascimento) {
         super(email, nome, senha, cpf, data_nascimento);
         this.crm = crm;
         this.consultas = null;
-        this.horarios = horarios;
-        this.clinicas = clinicas;
+        this.horarios = null;
+        this.clinica = clinica;
     }
+
+   
 
     public String getCrm() {
         return crm;
@@ -78,19 +86,27 @@ public class Medico extends Pessoa{
         this.horarios = horarios;
     }
 
-    public List<Clinica> getClinicas() {
-        return clinicas;
+    public Clinica getClinica() {
+        return clinica;
     }
 
-    public void setClinicas(List<Clinica> clinicas) {
-        this.clinicas = clinicas;
+    public void setClinica(Clinica clinica) {
+        this.clinica = clinica;
+    }
+
+    public Medico(String crm, Clinica clinica) {
+        this.crm = crm;
+        this.clinica = clinica;
     }
 
     @Override
     public String toString() {
-        return "Medico{" + "crm=" + crm + ", consultas=" + consultas + ", horarios=" + horarios + ", clinicas=" + clinicas + '}';
+        return "Medico{" + "crm=" + crm + ", consultas=" + consultas + ", horarios=" + horarios + ", clinica=" + clinica + '}';
     }
+    
+   
 
+    
     
     
 }

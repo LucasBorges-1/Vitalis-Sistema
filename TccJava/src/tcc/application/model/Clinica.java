@@ -4,6 +4,7 @@
  */
 package tcc.application.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -22,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "clinica")
-public class Clinica {
+public class Clinica implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_clinica;
@@ -32,20 +33,17 @@ public class Clinica {
     private String endereco; 
     private String senha;
     
-
-    @ManyToMany(mappedBy = "clinicas")
-    private List<Medico> medicos;
-
+    
     public Clinica() {
     }
 
-    public Clinica(String cnpj, String nome, String numero, String endereco, String senha, List<Medico> medicos) {
+    public Clinica(String cnpj, String nome, String numero, String endereco, String senha) {
         this.cnpj = cnpj;
         this.nome = nome;
         this.numero = numero;
         this.endereco = endereco;
         this.senha = senha;
-        this.medicos = medicos;
+      
     }
 
     public int getId_clinica() {
@@ -96,19 +94,10 @@ public class Clinica {
         this.senha = senha;
     }
 
-    public List<Medico> getMedicos() {
-        return medicos;
-    }
-
-    public void setMedicos(List<Medico> medicos) {
-        this.medicos = medicos;
-    }
-
     @Override
     public String toString() {
-        return "Clinica{" + "cnpj=" + cnpj + ", nome=" + nome + ", numero=" + numero + ", endereco=" + endereco + ", senha=" + senha + ", medicos=" + medicos + '}';
+        return "Clinica{" + "id_clinica=" + id_clinica + ", cnpj=" + cnpj + ", nome=" + nome + ", numero=" + numero + ", endereco=" + endereco + ", senha=" + senha + '}';
     }
-
-    
+  
     
 }

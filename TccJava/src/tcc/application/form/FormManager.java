@@ -10,6 +10,13 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.BoxLayout;
@@ -25,6 +32,8 @@ import tcc.application.Application;
 
 public class FormManager extends javax.swing.JPanel {
 
+    private tcc.application.form.ControllerPessoa cp;
+
     public FormManager() {
         initComponents();
         init();
@@ -33,8 +42,6 @@ public class FormManager extends javax.swing.JPanel {
     private void init() {
         setLayout(new MigLayout("al center center"));
 
-        
-             
         BtCadastrar.putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0");
@@ -56,7 +63,7 @@ public class FormManager extends javax.swing.JPanel {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 5);
-        
+
         panelEsquerda.add(lNome);
         panelEsquerda.add(edNome);
         panelEsquerda.add(lCpf);
@@ -69,7 +76,7 @@ public class FormManager extends javax.swing.JPanel {
         panelEsquerda.add(edCrm);
         panelEsquerda.add(lSenha);
         panelEsquerda.add(edSenha);
-        panelEsquerda.add(BtCadastrar );
+        panelEsquerda.add(BtCadastrar);
 
         panelEsquerda.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
@@ -82,38 +89,28 @@ public class FormManager extends javax.swing.JPanel {
         gbc.gridx = 1;
         gbc.insets = new Insets(0, 5, 0, 0);
 
-      
-        
-        
-       
-        panelDireita.setLayout(new BorderLayout(10, 10)); 
+        panelDireita.setLayout(new BorderLayout(10, 10));
         panelDireita.setBorder((BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        
-        
+
         TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:$Login.background;"
         );
-        
-        
-        panelDireita.add(TbMedico,BorderLayout.CENTER);
-        panelDireita.add(btEditar,BorderLayout.SOUTH);
-        panelDireita.add(btExcluir,BorderLayout.SOUTH);
+
+        panelDireita.add(TbMedico, BorderLayout.CENTER);
+        panelDireita.add(btEditar, BorderLayout.SOUTH);
+        panelDireita.add(btExcluir, BorderLayout.SOUTH);
         TbMedico.add(jScrollPane1);
-        
+
         panelDireita.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Login.background;"
         );
 
-        
         MainPanel.add(panelDireita, gbc);
 
         add(MainPanel, BorderLayout.CENTER);
     }
-    
-    
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -154,6 +151,11 @@ public class FormManager extends javax.swing.JPanel {
         lSenha.setText("Senha");
 
         BtCadastrar.setText("Cadastrar");
+        BtCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtCadastrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelEsquerdaLayout = new javax.swing.GroupLayout(panelEsquerda);
         panelEsquerda.setLayout(panelEsquerdaLayout);
@@ -285,18 +287,33 @@ public class FormManager extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BtCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarActionPerformed
+        cp = new ControllerPessoa();
+        String cpf = this.edCpf.getText();
+        String email = this.edEmail.getText();
+        String crm = this.edCrm.getText();
+        String senha = this.edSenha.getText();
+        String dataS = this.edDataNa.getText();
+        String nome=this.edNome.getText();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate data = LocalDate.parse(dataS, formatter);
+        cp.cadastrarMedico(crm, email, nome, senha,cpf,data);
+        
+
+    }//GEN-LAST:event_BtCadastrarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtCadastrar;
     private javax.swing.JPanel MainPanel;
     public javax.swing.JTable TbMedico;
     public javax.swing.JButton btEditar;
     public javax.swing.JButton btExcluir;
-    private javax.swing.JTextField edCpf;
-    private javax.swing.JTextField edCrm;
-    private javax.swing.JTextField edDataNa;
-    private javax.swing.JTextField edEmail;
-    private javax.swing.JTextField edNome;
-    private javax.swing.JTextField edSenha;
+    public javax.swing.JTextField edCpf;
+    public javax.swing.JTextField edCrm;
+    public javax.swing.JTextField edDataNa;
+    public javax.swing.JTextField edEmail;
+    public javax.swing.JTextField edNome;
+    public javax.swing.JTextField edSenha;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lCpf;
     private javax.swing.JLabel lCrm;

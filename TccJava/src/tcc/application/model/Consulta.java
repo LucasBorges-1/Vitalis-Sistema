@@ -4,6 +4,8 @@
  */
 package tcc.application.model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,31 +23,21 @@ import org.eclipse.persistence.jpa.jpql.parser.DateTime;
  */
 @Entity
 @Table(name = "consulta")
-public class Consulta {
+public class Consulta implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_consulta;
-    private DateTime data_consulta;
+    private LocalDate data_consulta;
     
     //A discutir
     //private String caminho_documentos;
-     
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_medico")
-    private Medico medico;
             
     public Consulta() {
     }
 
-    public Consulta(DateTime data_consulta, Usuario usuario, Medico medico) {
+    public Consulta(LocalDate data_consulta) {
         this.data_consulta = data_consulta;
-        this.usuario = usuario;
-        this.medico = medico;
     }
 
     public int getId_consulta() {
@@ -56,36 +48,20 @@ public class Consulta {
         this.id_consulta = id_consulta;
     }
 
-    public DateTime getData_consulta() {
+    public LocalDate getData_consulta() {
         return data_consulta;
     }
 
-    public void setData_consulta(DateTime data_consulta) {
+    public void setData_consulta(LocalDate data_consulta) {
         this.data_consulta = data_consulta;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Medico getMedico() {
-        return medico;
-    }
-
-    public void setMedico(Medico medico) {
-        this.medico = medico;
-    }
-
+    
     @Override
     public String toString() {
-        return "Consulta{" + "data_consulta=" + data_consulta + ", usuario=" + usuario + ", medico=" + medico + '}';
+        return "Consulta{" + "data_consulta=" + data_consulta + '}';
     }
-    
-    
+
     
     
    }

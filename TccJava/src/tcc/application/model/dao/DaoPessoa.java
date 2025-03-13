@@ -15,7 +15,7 @@ import tcc.application.model.Pessoa;
  * @author Borges
  */
 public class DaoPessoa extends Dao{
-    
+   
      public boolean inserir(Pessoa pessoa) {
         em.getTransaction().begin();
         em.persist(pessoa);
@@ -23,8 +23,7 @@ public class DaoPessoa extends Dao{
         
         return true;
     }
-    
-   
+
 
     public boolean editar(Pessoa p) {
         em.getTransaction().begin();
@@ -75,7 +74,6 @@ public class DaoPessoa extends Dao{
     }
 }
 
-
     public List<Medico> listar() {
         return em.createQuery("select c from Pessoa c").getResultList();
     }
@@ -88,6 +86,5 @@ public class DaoPessoa extends Dao{
         }
         return false;
     }
-    
-    
+
 }
