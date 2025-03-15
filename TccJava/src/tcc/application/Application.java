@@ -8,6 +8,8 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -28,25 +30,27 @@ import tcc.application.model.dao.DaoClinica;
 
 public class Application extends javax.swing.JFrame {
 
-    private static Application app;
+    public static Application app;
     private final ControllerPrincipal mainForm;
     private final LoginMedicoForm loginForm;
-    private  LoginClinicaForm loginclinicaForm;
+    private LoginClinicaForm loginclinicaForm;
     private FormManager formManager;
-    
+    private LoginMedicoForm loginMedicoForm;
+
     public Application() {
         initComponents();
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         mainForm = new ControllerPrincipal();
         loginForm = new LoginMedicoForm();
-        loginclinicaForm=new LoginClinicaForm();
-        formManager=new FormManager();
-                
-                
+        loginclinicaForm = new LoginClinicaForm();
+        formManager = new FormManager();
+        loginMedicoForm = new LoginMedicoForm();
+
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
         Notifications.getInstance().setJFrame(this);
+
     }
 
     public static void showForm(Component component) {
@@ -63,8 +67,8 @@ public class Application extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(app.mainForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
-    
-     public static void OpenloginClinica() {
+
+    public static void OpenloginClinica() {
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.loginclinicaForm);
         app.mainForm.applyComponentOrientation(app.getComponentOrientation());
@@ -73,7 +77,8 @@ public class Application extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(app.loginclinicaForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
-     public static void OpenClinicaManeger() {
+
+    public static void OpenClinicaManeger() {
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.formManager);
         app.mainForm.applyComponentOrientation(app.getComponentOrientation());
@@ -81,24 +86,30 @@ public class Application extends javax.swing.JFrame {
         app.mainForm.hideMenu();
         SwingUtilities.updateComponentTreeUI(app.formManager);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
-          app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        app.addWindowListener(new java.awt.event.WindowAdapter() {
+        app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        if (app.formManager.isVisible()) {
+            app.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                     int option = JOptionPane.showConfirmDialog(
-                        app, 
-                        "Deseja realmente fechar a janela?", 
-                        "Fechar Janela", 
-                        JOptionPane.YES_NO_OPTION
+                            app,
+                            "Deseja realmente fechar a janela?",
+                            "Fechar Janela",
+                            JOptionPane.YES_NO_OPTION
                     );
                     if (option == JOptionPane.YES_OPTION) {
-                        Application.logout();
+                        Application.voltar();
+
                     }
+                    app.removeWindowListener(this);
+
                 }
+
             });
+        }
+
     }
-     
- 
 
     public static void logout() {
         FlatAnimatedLafChange.showSnapshot();
@@ -106,6 +117,21 @@ public class Application extends javax.swing.JFrame {
         app.loginForm.applyComponentOrientation(app.getComponentOrientation());
         SwingUtilities.updateComponentTreeUI(app.loginForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
+    }
+
+    public static void voltar() {
+        FlatAnimatedLafChange.showSnapshot();
+        app.setContentPane(app.loginForm);
+        app.loginForm.applyComponentOrientation(app.getComponentOrientation());
+        SwingUtilities.updateComponentTreeUI(app.loginForm);
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
+         app.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            }
+        });
+
     }
 
     public static void setSelectedMenu(int index, int subIndex) {
@@ -140,7 +166,7 @@ public class Application extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
             app.setVisible(true);
-          
+
         });
     }
 

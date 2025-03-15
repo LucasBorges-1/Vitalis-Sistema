@@ -1,17 +1,23 @@
 package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
 import tcc.application.Application;
 
-
 public class LoginClinicaForm extends javax.swing.JPanel {
+
+    private static final int DELAY = 600; // 0.6 segundos
+    private static int dotCount = 0; // Contador de pontos
     private ControllerPessoa cp;
+
     public LoginClinicaForm() {
         initComponents();
         init();
-        
+
     }
 
     private void init() {
@@ -19,7 +25,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
 
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
-        
+
         txtPass.putClientProperty(FlatClientProperties.STYLE, ""
                 + "showRevealButton:true;"
                 + "showCapsLock:true");
@@ -28,6 +34,26 @@ public class LoginClinicaForm extends javax.swing.JPanel {
                 + "focusWidth:0");
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
+        cmdLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cmdLogin.setText("Entrando...");
+                
+                cp = new ControllerPessoa();
+                char[] senhaChars = txtPass.getPassword();
+                String senhaDigitada = new String(senhaChars);
+
+                if (cp.verificarLoginClinica(txtUser.getText(), senhaDigitada)) {
+
+                    Application.OpenClinicaManeger();
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "Senha incorreta");
+                   
+                }
+                cmdLogin.setText("Login");
+            } 
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -41,6 +67,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
         lbPass = new javax.swing.JLabel();
         txtPass = new javax.swing.JPasswordField();
         cmdLogin = new javax.swing.JButton();
+        btManegerArea = new javax.swing.JButton();
 
         lbTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbTitle.setText("Login Clinica");
@@ -55,12 +82,18 @@ public class LoginClinicaForm extends javax.swing.JPanel {
         panelLogin1.add(txtPass);
 
         cmdLogin.setText("Login");
-        cmdLogin.addActionListener(new java.awt.event.ActionListener() {
+        panelLogin1.add(cmdLogin);
+
+        btManegerArea.setText("                                                                      voltar");
+        btManegerArea.setBorder(null);
+        btManegerArea.setBorderPainted(false);
+        btManegerArea.setContentAreaFilled(false);
+        btManegerArea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdLoginActionPerformed(evt);
+                btManegerAreaActionPerformed(evt);
             }
         });
-        panelLogin1.add(cmdLogin);
+        panelLogin1.add(btManegerArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -76,26 +109,18 @@ public class LoginClinicaForm extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(panelLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cmdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoginActionPerformed
-      
-        cp=new ControllerPessoa();
-        char[] senhaChars = this.txtPass.getPassword();
-        String senhaDigitada = new String(senhaChars);
-        
-        if (cp.verificarLoginClinica(this.txtUser.getText(),senhaDigitada)) {
-           
-            Application.OpenClinicaManeger();
-        }else{
-            JOptionPane.showMessageDialog(null,"Senha incorreta");
-        }
-  
-    }//GEN-LAST:event_cmdLoginActionPerformed
+    private void btManegerAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManegerAreaActionPerformed
+        Application.logout();
+
+
+    }//GEN-LAST:event_btManegerAreaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btManegerArea;
     private javax.swing.JButton cmdLogin;
     private javax.swing.JLabel lbPass;
     private javax.swing.JLabel lbTitle;

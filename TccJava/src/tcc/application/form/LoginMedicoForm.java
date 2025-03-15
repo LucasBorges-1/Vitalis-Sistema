@@ -1,16 +1,21 @@
 package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import net.miginfocom.swing.MigLayout;
 import tcc.application.Application;
 
-
 public class LoginMedicoForm extends javax.swing.JPanel {
+
     ControllerPessoa cp;
+
     public LoginMedicoForm() {
         initComponents();
         init();
+
     }
 
     private void init() {
@@ -18,7 +23,7 @@ public class LoginMedicoForm extends javax.swing.JPanel {
 
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
-        
+
         txtPass.putClientProperty(FlatClientProperties.STYLE, ""
                 + "showRevealButton:true;"
                 + "showCapsLock:true");
@@ -27,6 +32,27 @@ public class LoginMedicoForm extends javax.swing.JPanel {
                 + "focusWidth:0");
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe seu Crm");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe sua Senha");
+        cmdLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cmdLogin.setText("Entrando...");
+
+                cp = new ControllerPessoa();
+                char[] senhaChars = txtPass.getPassword();
+                String senhaDigitada = new String(senhaChars);
+
+                if (cp.verificarLoginMedico(txtUser.getText(), senhaDigitada)) {
+                    Application.login();
+
+                } else {
+                    
+                    JOptionPane.showMessageDialog(null, "Senha incorreta");
+                   
+                }
+                cmdLogin.setText("Login");
+
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -92,22 +118,11 @@ public class LoginMedicoForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoginActionPerformed
-        cp=new ControllerPessoa();
-        char[] senhaChars = this.txtPass.getPassword();
-        String senhaDigitada = new String(senhaChars);
-        
-        if (cp.verificarLoginMedico(this.txtUser.getText(),senhaDigitada)) {
-             Application.login();
-             
-        }else{
-            JOptionPane.showMessageDialog(null,"Senha incorreta");
-        }
-       
-        
+
     }//GEN-LAST:event_cmdLoginActionPerformed
 
     private void btManegerAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManegerAreaActionPerformed
-       Application.OpenloginClinica();
+        Application.OpenloginClinica();
     }//GEN-LAST:event_btManegerAreaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

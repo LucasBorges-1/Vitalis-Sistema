@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -31,12 +32,13 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 import tcc.application.Application;
 
 public class FormManager extends javax.swing.JPanel {
-
+    
     private tcc.application.form.ControllerPessoa cp;
 
     public FormManager() {
         initComponents();
         init();
+       
     }
 
     private void init() {
@@ -48,6 +50,7 @@ public class FormManager extends javax.swing.JPanel {
         edNome.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
         edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
         configurarLayout();
+        
         
     }
 
@@ -110,6 +113,8 @@ public class FormManager extends javax.swing.JPanel {
         MainPanel.add(panelDireita, gbc);
 
         add(MainPanel, BorderLayout.CENTER);
+        
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -218,16 +223,24 @@ public class FormManager extends javax.swing.JPanel {
 
         TbMedico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Lista de Médicos cadastrados"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(TbMedico);
+        if (TbMedico.getColumnModel().getColumnCount() > 0) {
+            TbMedico.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         javax.swing.GroupLayout panelDireitaLayout = new javax.swing.GroupLayout(panelDireita);
         panelDireita.setLayout(panelDireitaLayout);
