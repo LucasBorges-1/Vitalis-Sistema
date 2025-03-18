@@ -1,12 +1,15 @@
+
 package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
 import tcc.application.Application;
+
 
 public class LoginClinicaForm extends javax.swing.JPanel {
 
@@ -23,6 +26,9 @@ public class LoginClinicaForm extends javax.swing.JPanel {
     private void init() {
         setLayout(new MigLayout("al center center"));
 
+        btManegerArea.putClientProperty(FlatClientProperties.STYLE, ""
+                + "font:$h4.font");
+        
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 
@@ -34,6 +40,9 @@ public class LoginClinicaForm extends javax.swing.JPanel {
                 + "focusWidth:0");
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
+        
+       
+        
         cmdLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,7 +93,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
         cmdLogin.setText("Login");
         panelLogin1.add(cmdLogin);
 
-        btManegerArea.setText("                                                                      voltar");
+        btManegerArea.setText("                                                                      Voltar");
         btManegerArea.setBorder(null);
         btManegerArea.setBorderPainted(false);
         btManegerArea.setContentAreaFilled(false);
@@ -100,7 +109,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(218, Short.MAX_VALUE)
+                .addContainerGap(217, Short.MAX_VALUE)
                 .addComponent(panelLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(197, 197, 197))
         );

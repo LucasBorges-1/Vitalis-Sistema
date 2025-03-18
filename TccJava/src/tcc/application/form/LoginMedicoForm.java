@@ -15,12 +15,17 @@ public class LoginMedicoForm extends javax.swing.JPanel {
     public LoginMedicoForm() {
         initComponents();
         init();
+        
+      
+        
 
     }
 
     private void init() {
         setLayout(new MigLayout("al center center"));
-
+        
+        btManegerArea.putClientProperty(FlatClientProperties.STYLE, ""
+                + "font:$h4.font");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 
@@ -32,6 +37,7 @@ public class LoginMedicoForm extends javax.swing.JPanel {
                 + "focusWidth:0");
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe seu Crm");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe sua Senha");
+        
         cmdLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,11 +87,6 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         panelLogin1.add(txtPass);
 
         cmdLogin.setText("Login");
-        cmdLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdLoginActionPerformed(evt);
-            }
-        });
         panelLogin1.add(cmdLogin);
 
         btManegerArea.setText("                                            Arêa do colaborador");
@@ -116,10 +117,6 @@ public class LoginMedicoForm extends javax.swing.JPanel {
                 .addContainerGap(50, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cmdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoginActionPerformed
-
-    }//GEN-LAST:event_cmdLoginActionPerformed
 
     private void btManegerAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManegerAreaActionPerformed
         Application.OpenloginClinica();

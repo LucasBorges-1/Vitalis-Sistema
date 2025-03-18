@@ -86,9 +86,10 @@ public class Application extends javax.swing.JFrame {
         app.mainForm.hideMenu();
         SwingUtilities.updateComponentTreeUI(app.formManager);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
-        app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         if (app.formManager.isVisible()) {
+
             app.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -125,10 +126,15 @@ public class Application extends javax.swing.JFrame {
         app.loginForm.applyComponentOrientation(app.getComponentOrientation());
         SwingUtilities.updateComponentTreeUI(app.loginForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
-         app.addWindowListener(new java.awt.event.WindowAdapter() {
+        app.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                if (app.formManager.isVisible() == false) {
+                    app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                } else {
+                    app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+
             }
         });
 
