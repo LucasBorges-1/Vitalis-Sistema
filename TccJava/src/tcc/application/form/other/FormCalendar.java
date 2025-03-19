@@ -8,6 +8,9 @@ import com.formdev.flatlaf.FlatLaf;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
+import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 //import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,15 +25,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import tcc.application.Application;
@@ -45,8 +56,48 @@ public class FormCalendar extends javax.swing.JPanel {
                 + "font:$h1.font");
 
         estilizarcalendario();
-        configuraçãoLayout(); 
+        configuraçãoLayout();
+        addMouseListenerToCalendarDays(calendarPanel);
 
+    }
+
+    private static void addMouseListenerToCalendarDays(CalendarPanel calendarPanel) {
+        // Itera sobre os componentes do CalendarPanel para encontrar os dias do mês
+        for (Component component : calendarPanel.getComponents()) {
+            if (component instanceof JPanel) {
+                JPanel monthViewPanel = (JPanel) component;
+                for (Component dayComponent : monthViewPanel.getComponents()) {
+                    if (dayComponent instanceof JLabel) {
+                        JLabel dayLabel = (JLabel) dayComponent;
+                        dayLabel.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                if (e.getClickCount() == 2) {
+                                    // Obtém a data selecionada
+                                    LocalDate selectedDate = calendarPanel.getSelectedDate();
+                                    if (selectedDate != null) {
+                                        // Cria um JDialog
+                                        JDialog dialog = new JDialog(); // true = modal
+                                        dialog.setName("Data selecionada");
+                                        dialog.setSize(300, 150);
+
+                                        // Adiciona um label com a data selecionada
+                                        JLabel label = new JLabel("Data selecionada: " + selectedDate.toString());
+                                        label.setHorizontalAlignment(JLabel.CENTER);
+                                        dialog.add(label, BorderLayout.CENTER);
+
+                                        // Adiciona um botão "OK" para fechar o diálogo
+                                      
+
+                                        dialog.setVisible(true);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }
     }
 
     private void configuraçãoLayout() {
@@ -60,7 +111,7 @@ public class FormCalendar extends javax.swing.JPanel {
         PainelCalendario.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Login.background;"
-               // + "margin:20,20,20,20;"
+        // + "margin:20,20,20,20;"
         );
 
         PainelCalendario.add(calendarPanel, BorderLayout.CENTER);
@@ -69,8 +120,6 @@ public class FormCalendar extends javax.swing.JPanel {
         add(PainelCalendario, BorderLayout.CENTER);
 
     }
-
-    
 
     public void estilizarcalendario() {
 
@@ -150,6 +199,7 @@ public class FormCalendar extends javax.swing.JPanel {
             settings.getBorderPropertiesList().add(normalDayBorder);
             settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundSelectedDate, background);
             settings.setColor(DatePickerSettings.DateArea.CalendarBorderSelectedDate, text);
+
         }
 
         PainelCalendario.addComponentListener(new ComponentAdapter() {
@@ -157,7 +207,6 @@ public class FormCalendar extends javax.swing.JPanel {
             public void componentResized(ComponentEvent e) {
 
                 Dimension novoTamanho = PainelCalendario.getSize();
-
                 DatePickerSettings settings = calendarPanel.getSettings();
                 settings.setSizeDatePanelMinimumHeight(novoTamanho.height - 100);
                 settings.setSizeDatePanelMinimumWidth(novoTamanho.width - 30);

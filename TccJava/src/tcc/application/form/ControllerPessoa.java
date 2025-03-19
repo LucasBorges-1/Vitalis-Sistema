@@ -52,9 +52,6 @@ public class ControllerPessoa {
         
     }
     
-    
-    
-    
     public void cadastrarMedico(String crm, String email,String nome,String senha, String cpf,LocalDate dataNa){
        
        Pessoa p=new Medico(crm, daoClinica.selecionar(), email, nome, bCrypt.hashSenha(senha), cpf, dataNa);
@@ -63,11 +60,7 @@ public class ControllerPessoa {
             JOptionPane.showMessageDialog(null,"Médico cadastrado com sucesso");
         }else{
               JOptionPane.showMessageDialog(null,"Erro ao cadastrar");
-        }
-        
-    
-            
-       
+        }   
     }
     
     public boolean verificarLoginMedico(String crm,String senha) {
@@ -85,6 +78,5 @@ public class ControllerPessoa {
             return false;
         }
     }
-    
-    
+     
 }

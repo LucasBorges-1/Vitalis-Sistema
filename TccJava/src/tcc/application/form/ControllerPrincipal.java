@@ -45,17 +45,7 @@ public class ControllerPrincipal extends JLayeredPane {
         i = value;
     }
     
-    //Ações com as classes
-    public void cadastrarMedico(){
-        
-    }
-    
-    
-    
-    
-    //Fim
-    
-    
+
 
     private void init() {
         setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -91,9 +81,6 @@ public class ControllerPrincipal extends JLayeredPane {
        String icon = (getComponentOrientation().isLeftToRight()) ? "menu_left.svg" : "menu_right.svg";
         menuButton.setIcon(new FlatSVGIcon("tcc/icon/svg/" + icon, 0.8f));
     }
-    
-    
-   
     
     
     private void initMenuEvent() {
