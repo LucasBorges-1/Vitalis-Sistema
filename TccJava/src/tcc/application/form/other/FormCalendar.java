@@ -73,15 +73,15 @@ public class FormCalendar extends javax.swing.JPanel {
                             @Override
                             public void mouseClicked(MouseEvent e) {
                                 if (e.getClickCount() == 2) {
-                                    // Obtém a data selecionada
+                                    
                                     LocalDate selectedDate = calendarPanel.getSelectedDate();
                                     if (selectedDate != null) {
-                                        // Cria um JDialog
-                                        JDialog dialog = new JDialog(); // true = modal
+                                        
+                                        JDialog dialog = new JDialog(); 
                                         dialog.setName("Data selecionada");
                                         dialog.setSize(300, 150);
 
-                                        // Adiciona um label com a data selecionada
+                                        
                                         JLabel label = new JLabel("Data selecionada: " + selectedDate.toString());
                                         label.setHorizontalAlignment(JLabel.CENTER);
                                         dialog.add(label, BorderLayout.CENTER);

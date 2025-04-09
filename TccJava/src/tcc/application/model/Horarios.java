@@ -32,6 +32,16 @@ public class Horarios implements Serializable {
     private Time inicio;
     private Time fim;
 
+    //id_medico : int
+    //data-inicio : date
+    //data-final : date
+    //horario-inicio-manha : time
+    //horario-fim-manha : time
+    //horario-inicio-tarde : time
+    //horario-fim-tarde : time
+    
+    
+    
     public Horarios() {
         
     }

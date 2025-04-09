@@ -1,4 +1,4 @@
- package tcc.application.form.other;
+package tcc.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -14,6 +14,8 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,13 +31,16 @@ import javax.swing.table.DefaultTableModel;
 import raven.toast.Notifications;
 
 public class FormMainMenu extends javax.swing.JPanel {
-private tcc.application.form.ControllerPrincipal app;
+
+    private tcc.application.form.ControllerPrincipal app;
+
     public FormMainMenu() {
 
         initComponents();
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
-      
+
+        //configurarLayout();
         configurarLayout();
         estiloTabela();
         adicionandoDadosExemplos();
@@ -47,11 +52,11 @@ private tcc.application.form.ControllerPrincipal app;
 
         setLayout(new BorderLayout(10, 10));
         JPanel painelContadores = new JPanel(new GridLayout(1, 2, 10, 0));
-        painelContadores.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
+        painelContadores.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 
         JPanel painelLinhas = new JPanel();
         painelLinhas.setName("painelLinhas");
-        
+
         JLabel labelAgendadas = new JLabel("Agendadas para hoje: " + MainTable.getRowCount());
         labelAgendadas.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h2.font");
@@ -86,20 +91,71 @@ private tcc.application.form.ControllerPrincipal app;
         );
 
         painelContadores.add(painelColunas);
-        
-        
-        
-        
+
         add(lb, BorderLayout.NORTH);
-        add(painelContadores, BorderLayout.CENTER);
+        add(painelContadores, BorderLayout.NORTH);
 
+        panelTable.setLayout(new BoxLayout(panelTable, BoxLayout.Y_AXIS));
+        panelTable.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        txtSearch.setMaximumSize(new Dimension(Integer.MAX_VALUE, txtSearch.getPreferredSize().height)); // faz ocupar largura total
+        panelTable.add(Box.createVerticalStrut(10)); // espaço acima do search
         panelTable.add(txtSearch);
-        panelTable.add(lbTitle);
+        panelTable.add(Box.createVerticalStrut(10)); // espaço entre search e tabela
 
-        panelTable.add(jScrollPane1, BorderLayout.CENTER);
         jScrollPane1.setBorder(BorderFactory.createEmptyBorder(1, 15, 15, 15));
-        add(panelTable, BorderLayout.SOUTH);
+        panelTable.add(jScrollPane1);
 
+        add(panelTable, BorderLayout.CENTER);
+
+    }
+
+    private void conf() {
+        setLayout(new BorderLayout(10, 10));
+
+        JPanel painelContadores = new JPanel(new GridLayout(1, 2, 10, 0));
+        painelContadores.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Painel de linhas (agendadas)
+        JPanel painelLinhas = new JPanel(new GridBagLayout());
+        painelLinhas.setName("painelLinhas");
+
+        JLabel labelAgendadas = new JLabel("Agendadas para hoje: " + MainTable.getRowCount());
+        labelAgendadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
+        labelAgendadas.setHorizontalAlignment(SwingConstants.CENTER);
+        painelLinhas.add(labelAgendadas);
+
+        painelLinhas.putClientProperty(FlatClientProperties.STYLE,
+                "arc:30;border:5,5,5,5;background:$Login.background");
+
+        // Painel de colunas (realizadas)
+        JPanel painelColunas = new JPanel(new GridBagLayout());
+        painelColunas.setName("painelColunas");
+
+        JLabel labelRealizadas = new JLabel("Já realizadas: " + MainTable.getRowCount());
+        labelRealizadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
+        labelRealizadas.setHorizontalAlignment(SwingConstants.CENTER);
+        painelColunas.add(labelRealizadas);
+
+        painelColunas.putClientProperty(FlatClientProperties.STYLE,
+                "arc:30;border:5,5,5,5;background:$Login.background");
+
+        painelContadores.add(painelLinhas);
+        painelContadores.add(painelColunas);
+
+        // Painel principal da tabela (que vai crescer)
+        JPanel painelTabela = new JPanel(new BorderLayout());
+        painelTabela.add(MainTable);
+        painelTabela.add(txtSearch, BorderLayout.NORTH);
+
+        painelTabela.add(jScrollPane1, BorderLayout.CENTER);
+        jScrollPane1.setBorder(BorderFactory.createEmptyBorder(10, 15, 15, 15));
+
+        // Adiciona os componentes ao layout principal
+        add(painelContadores, BorderLayout.NORTH);  // Contadores no topo
+        add(painelTabela, BorderLayout.CENTER);     // Tabela ocupa o resto
+
+        // Configuração para evitar que os contadores cresçam
+        painelContadores.setMaximumSize(new Dimension(Integer.MAX_VALUE, painelContadores.getPreferredSize().height));
     }
 
     @SuppressWarnings("unchecked")
@@ -112,7 +168,6 @@ private tcc.application.form.ControllerPrincipal app;
         jScrollPane1 = new javax.swing.JScrollPane();
         MainTable = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
-        lbTitle = new javax.swing.JLabel();
 
         lb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lb.setText("Dashboard");
@@ -161,8 +216,6 @@ private tcc.application.form.ControllerPrincipal app;
             }
         });
 
-        lbTitle.setText("CONSULTAS");
-
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
         panelTableLayout.setHorizontalGroup(
@@ -170,16 +223,13 @@ private tcc.application.form.ControllerPrincipal app;
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
             .addGroup(panelTableLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbTitle)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 512, Short.MAX_VALUE))
         );
         panelTableLayout.setVerticalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTableLayout.createSequentialGroup()
-                .addComponent(lbTitle)
-                .addGap(10, 10, 10)
+                .addGap(26, 26, 26)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -215,30 +265,30 @@ private tcc.application.form.ControllerPrincipal app;
         );
     }// </editor-fold>//GEN-END:initComponents
 
-  public void adicionandoDadosExemplos() {
-    DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
+    public void adicionandoDadosExemplos() {
+        DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
 
-    model.addRow(new Object[]{1, "João Silva", "Cardiologista", "08:00"});
-    model.addRow(new Object[]{2, "Maria Santos", "Pediatra", "09:30"});
-    model.addRow(new Object[]{3, "Carlos Oliveira", "Ortopedista", "10:15"});
-    model.addRow(new Object[]{4, "Ana Costa", "Dermatologista", "11:00"});
-    model.addRow(new Object[]{5, "Pedro Alves", "Otorrinolaringologista", "13:30"});
-    model.addRow(new Object[]{6, "Fernanda Lima", "Ginecologista", "14:45"});
-    model.addRow(new Object[]{7, "Ricardo Souza", "Neurologista", "15:20"});
-    model.addRow(new Object[]{8, "Patrícia Rocha", "Psiquiatra", "16:10"});
-    model.addRow(new Object[]{9, "Lucas Mendes", "Endocrinologista", "17:00"});
-    model.addRow(new Object[]{10, "Juliana Pereira", "Oftalmologista", "08:30"});
-    model.addRow(new Object[]{11, "Roberto Fernandes", "Urologista", "09:00"});
-    model.addRow(new Object[]{12, "Camila Gonçalves", "Cardiologista", "10:00"});
-    model.addRow(new Object[]{13, "Gustavo Martins", "Pediatra", "11:30"});
-    model.addRow(new Object[]{14, "Isabela Ribeiro", "Ortopedista", "12:15"});
-    model.addRow(new Object[]{15, "Marcos Antunes", "Dermatologista", "14:00"});
-    model.addRow(new Object[]{16, "Tatiane Castro", "Otorrinolaringologista", "15:30"});
-    model.addRow(new Object[]{17, "Felipe Nunes", "Ginecologista", "16:45"});
-    model.addRow(new Object[]{18, "Vanessa Lopes", "Neurologista", "17:30"});
-    model.addRow(new Object[]{19, "Bruno Carvalho", "Psiquiatra", "18:00"});
-    model.addRow(new Object[]{20, "Daniela Freitas", "Endocrinologista", "19:15"});
-}
+        model.addRow(new Object[]{1, "João Silva", "Cardiologista", "08:00"});
+        model.addRow(new Object[]{2, "Maria Santos", "Pediatra", "09:30"});
+        model.addRow(new Object[]{3, "Carlos Oliveira", "Ortopedista", "10:15"});
+        model.addRow(new Object[]{4, "Ana Costa", "Dermatologista", "11:00"});
+        model.addRow(new Object[]{5, "Pedro Alves", "Otorrinolaringologista", "13:30"});
+        model.addRow(new Object[]{6, "Fernanda Lima", "Ginecologista", "14:45"});
+        model.addRow(new Object[]{7, "Ricardo Souza", "Neurologista", "15:20"});
+        model.addRow(new Object[]{8, "Patrícia Rocha", "Psiquiatra", "16:10"});
+        model.addRow(new Object[]{9, "Lucas Mendes", "Endocrinologista", "17:00"});
+        model.addRow(new Object[]{10, "Juliana Pereira", "Oftalmologista", "08:30"});
+        model.addRow(new Object[]{11, "Roberto Fernandes", "Urologista", "09:00"});
+        model.addRow(new Object[]{12, "Camila Gonçalves", "Cardiologista", "10:00"});
+        model.addRow(new Object[]{13, "Gustavo Martins", "Pediatra", "11:30"});
+        model.addRow(new Object[]{14, "Isabela Ribeiro", "Ortopedista", "12:15"});
+        model.addRow(new Object[]{15, "Marcos Antunes", "Dermatologista", "14:00"});
+        model.addRow(new Object[]{16, "Tatiane Castro", "Otorrinolaringologista", "15:30"});
+        model.addRow(new Object[]{17, "Felipe Nunes", "Ginecologista", "16:45"});
+        model.addRow(new Object[]{18, "Vanessa Lopes", "Neurologista", "17:30"});
+        model.addRow(new Object[]{19, "Bruno Carvalho", "Psiquiatra", "18:00"});
+        model.addRow(new Object[]{20, "Daniela Freitas", "Endocrinologista", "19:15"});
+    }
 
     public void estiloTabela() {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -246,7 +296,7 @@ private tcc.application.form.ControllerPrincipal app;
         panelTable.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Login.background;"
-               // + "margin:20,20,20,20;"
+        // + "margin:20,20,20,20;"
         );
 
         MainTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
@@ -272,11 +322,6 @@ private tcc.application.form.ControllerPrincipal app;
                 + "thumbInsets:3,3,3,3;"
                 + "background:$Login.background;");
 
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:bold +5;"
-               // + "margin:30,30,30,30;"
-        );
-
         txtSearch.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
         txtSearch.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("tcc/icon/svg/search.svg", 0.8f));
         txtSearch.putClientProperty(FlatClientProperties.STYLE, ""
@@ -284,10 +329,10 @@ private tcc.application.form.ControllerPrincipal app;
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
-              //  + "margin:5,20,5,20;"
+                //  + "margin:5,20,5,20;"
                 + "background:$Panel.background;");
-        
-         /*BtAtrasado.putClientProperty(FlatClientProperties.STYLE, ""
+
+        /*BtAtrasado.putClientProperty(FlatClientProperties.STYLE, ""
                  + "font:+2;"
                   + "arc:15;"
                 + "background:$Panel.background;"
@@ -296,7 +341,7 @@ private tcc.application.form.ControllerPrincipal app;
 
         panelTable.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
         MainTable.setGridColor(new Color(49, 62, 74));
-        */
+         */
     }
 
 
@@ -313,7 +358,6 @@ private tcc.application.form.ControllerPrincipal app;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lb;
-    private javax.swing.JLabel lbTitle;
     public javax.swing.JPanel panelTable;
     public javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
