@@ -1,2 +1,0 @@
--Permite edição de atributos do médico
--Permite desconectar ou adicionar uma foto(A discutir)
