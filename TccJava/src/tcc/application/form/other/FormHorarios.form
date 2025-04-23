@@ -101,7 +101,6 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="CdataFim" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="CdataInicio" min="-2" max="-2" attributes="0"/>
-                                  <Component id="ltitulo" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -129,9 +128,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                      <Component id="ltitulo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                       <Component id="lDatanicio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="CdataInicio" min="-2" max="-2" attributes="0"/>
@@ -201,14 +198,6 @@
               </AuxValues>
             </Component>
             <Component class="com.github.lgooddatepicker.components.DatePicker" name="CdataFim">
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JLabel" name="ltitulo">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Configura&#xe7;&#xf5;es de Intervalo"/>
-              </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>

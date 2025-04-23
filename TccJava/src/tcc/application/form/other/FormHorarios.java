@@ -4,6 +4,7 @@ import tcc.application.form.*;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -20,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import static javax.swing.BorderFactory.createEmptyBorder;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,13 +35,13 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 import tcc.application.Application;
 
 public class FormHorarios extends javax.swing.JPanel {
-    
+
     private tcc.application.form.ControllerPessoa cp;
 
     public FormHorarios() {
         initComponents();
         init();
-       
+
     }
 
     private void init() {
@@ -48,14 +50,11 @@ public class FormHorarios extends javax.swing.JPanel {
         BtCadastrar.putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0");
-        //edNome.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
-        //edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
         configurarLayout();
-        
-        
+
     }
 
-    private void configurarLayout() {
+    private void configurarLayout2() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
@@ -69,7 +68,7 @@ public class FormHorarios extends javax.swing.JPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 5);
 
-        panelEsquerda.add(ltitulo);
+       // panelEsquerda.add(ltitulo);
         panelEsquerda.add(lDatanicio);
         panelEsquerda.add(CdataInicio);
         panelEsquerda.add(ldataFim);
@@ -87,7 +86,9 @@ public class FormHorarios extends javax.swing.JPanel {
                 + "background:$Login.background;"
         );
 
+        // panelEsquerda.setBorder(BorderFactory.createEmptyBorder(100, 160, 60, 60));
         panelEsquerda.setBorder(BorderFactory.createEmptyBorder(100, 160, 60, 60));
+        panelEsquerda.add(Box.createVerticalGlue());
         MainPanel.add(panelEsquerda, gbc);
 
         gbc.gridx = 1;
@@ -113,8 +114,126 @@ public class FormHorarios extends javax.swing.JPanel {
         MainPanel.add(panelDireita, gbc);
 
         add(MainPanel, BorderLayout.CENTER);
+
+    }
+
+    private void configurarLayout() {
+        setLayout(new BorderLayout(10, 10));
+        setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+       
+        MainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        
+        panelEsquerda.setLayout(new BoxLayout(panelEsquerda, BoxLayout.Y_AXIS));
+        
+        lDatanicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+        CdataInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
+       
+        ldataFim.setAlignmentX(Component.CENTER_ALIGNMENT);
+        CdataFim.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lmanha.setAlignmentX(Component.CENTER_ALIGNMENT);
+        HinicioManha.setAlignmentX(Component.CENTER_ALIGNMENT);
+        HFimManha.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ltarde.setAlignmentX(Component.CENTER_ALIGNMENT);
+        HinicioTarde.setAlignmentX(Component.CENTER_ALIGNMENT);
+        HFimoTarde.setAlignmentX(Component.CENTER_ALIGNMENT);
+       
+        BtCadastrar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        CdataInicio.setMaximumSize(new Dimension(200, 30));
+        CdataFim.setMaximumSize(new Dimension(200, 30));
+        HinicioManha.setMaximumSize(new Dimension(200, 30));
+        HFimManha.setMaximumSize(new Dimension(200, 30));
+        HinicioTarde.setMaximumSize(new Dimension(200, 30));
+        HFimoTarde.setMaximumSize(new Dimension(200, 30));
+       
+        panelEsquerda.add(Box.createVerticalGlue());
+        
+
+        panelEsquerda.add(lDatanicio);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(CdataInicio);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(ldataFim);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(CdataFim);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(lmanha);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(HinicioManha);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(HFimManha);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(ltarde);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(HinicioTarde);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelEsquerda.add(HFimoTarde);
+        panelEsquerda.add(Box.createRigidArea(new Dimension(0, 10)));
         
         
+        panelEsquerda.add(BtCadastrar);
+
+        panelEsquerda.add(Box.createVerticalGlue());
+
+        
+        panelEsquerda.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelEsquerda.setAlignmentY(Component.CENTER_ALIGNMENT);
+        panelEsquerda.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        panelEsquerda.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:25;"
+                + "background:$Login.background;"
+        );
+
+        MainPanel.add(panelEsquerda, gbc);
+
+        
+        gbc.gridx = 1;
+        gbc.insets = new Insets(0, 5, 0, 0);
+
+        panelDireita.setLayout(new BorderLayout(10, 10));
+        panelDireita.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panelDireita.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:25;"
+                + "background:$Login.background;"
+        );
+
+        TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
+                + "background:$Login.background;"
+        );
+
+        
+        panelDireita.add(jScrollPane1, BorderLayout.CENTER);
+        JPanel botoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        
+        botoes.add(btEditar);
+        botoes.add(btExcluir);
+        panelDireita.add(botoes, BorderLayout.SOUTH);
+
+        
+        MainPanel.add(panelDireita, gbc);
+
+       
+        add(MainPanel, BorderLayout.CENTER);
     }
 
     @SuppressWarnings("unchecked")
@@ -130,7 +249,6 @@ public class FormHorarios extends javax.swing.JPanel {
         lDatanicio = new javax.swing.JLabel();
         ldataFim = new javax.swing.JLabel();
         CdataFim = new com.github.lgooddatepicker.components.DatePicker();
-        ltitulo = new javax.swing.JLabel();
         lmanha = new javax.swing.JLabel();
         HinicioTarde = new com.github.lgooddatepicker.components.TimePicker();
         ltarde = new javax.swing.JLabel();
@@ -153,8 +271,6 @@ public class FormHorarios extends javax.swing.JPanel {
         lDatanicio.setText("Data de Inicio");
 
         ldataFim.setText("Data final");
-
-        ltitulo.setText("Configurações de Intervalo");
 
         lmanha.setText("Manha");
 
@@ -191,8 +307,7 @@ public class FormHorarios extends javax.swing.JPanel {
                         .addGap(100, 100, 100)
                         .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(CdataFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CdataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ltitulo)))
+                            .addComponent(CdataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelEsquerdaLayout.createSequentialGroup()
                         .addGap(140, 140, 140)
                         .addComponent(ldataFim)))
@@ -210,9 +325,7 @@ public class FormHorarios extends javax.swing.JPanel {
         panelEsquerdaLayout.setVerticalGroup(
             panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEsquerdaLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(ltitulo)
-                .addGap(18, 18, 18)
+                .addGap(55, 55, 55)
                 .addComponent(lDatanicio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(CdataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -333,7 +446,7 @@ public class FormHorarios extends javax.swing.JPanel {
         LocalDate data = LocalDate.parse(dataS, formatter);
         cp.cadastrarMedico(crm, email, nome, senha,cpf,data);
       
-*/
+         */
     }//GEN-LAST:event_BtCadastrarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -353,7 +466,6 @@ public class FormHorarios extends javax.swing.JPanel {
     public javax.swing.JLabel ldataFim;
     public javax.swing.JLabel lmanha;
     public javax.swing.JLabel ltarde;
-    public javax.swing.JLabel ltitulo;
     private javax.swing.JPanel panelDireita;
     private javax.swing.JPanel panelEsquerda;
     // End of variables declaration//GEN-END:variables
