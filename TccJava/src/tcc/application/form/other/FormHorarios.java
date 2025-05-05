@@ -68,7 +68,7 @@ public class FormHorarios extends javax.swing.JPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 5);
 
-       // panelEsquerda.add(ltitulo);
+       
         panelEsquerda.add(lDatanicio);
         panelEsquerda.add(CdataInicio);
         panelEsquerda.add(ldataFim);

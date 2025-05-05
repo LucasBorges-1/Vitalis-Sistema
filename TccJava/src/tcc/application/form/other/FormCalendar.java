@@ -62,7 +62,7 @@ public class FormCalendar extends javax.swing.JPanel {
     }
 
     private static void addMouseListenerToCalendarDays(CalendarPanel calendarPanel) {
-        // Itera sobre os componentes do CalendarPanel para encontrar os dias do mês
+       
         for (Component component : calendarPanel.getComponents()) {
             if (component instanceof JPanel) {
                 JPanel monthViewPanel = (JPanel) component;
@@ -86,7 +86,7 @@ public class FormCalendar extends javax.swing.JPanel {
                                         label.setHorizontalAlignment(JLabel.CENTER);
                                         dialog.add(label, BorderLayout.CENTER);
 
-                                        // Adiciona um botão "OK" para fechar o diálogo
+                                      
                                       
 
                                         dialog.setVisible(true);
@@ -105,7 +105,7 @@ public class FormCalendar extends javax.swing.JPanel {
         setLayout(new BorderLayout(20, 20));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(lb, BorderLayout.NORTH);
-        // Criando o PainelCalendario
+        
         PainelCalendario.setLayout(new BorderLayout());
         PainelCalendario.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         PainelCalendario.putClientProperty(FlatClientProperties.STYLE, ""
@@ -137,12 +137,12 @@ public class FormCalendar extends javax.swing.JPanel {
 
         Font customFont = new Font("SansSerif", Font.PLAIN, 15);
 
-        settings.setFontCalendarDateLabels(customFont); // Dias do mês
-        settings.setFontCalendarWeekdayLabels(customFont); // Dias da semana
-        settings.setFontCalendarWeekNumberLabels(customFont); // Números da semana
-        settings.setFontMonthAndYearMenuLabels(customFont); // Rótulos de mês e ano
-        settings.setFontTodayLabel(customFont); // Rótulo "Hoje"
-        settings.setFontClearLabel(customFont); // Rótulo "Limpar"
+        settings.setFontCalendarDateLabels(customFont); 
+        settings.setFontCalendarWeekdayLabels(customFont); 
+        settings.setFontCalendarWeekNumberLabels(customFont); 
+        settings.setFontMonthAndYearMenuLabels(customFont);
+        settings.setFontTodayLabel(customFont); 
+        settings.setFontClearLabel(customFont);
 
         if (FlatLaf.isLafDark()) {
 
@@ -163,10 +163,10 @@ public class FormCalendar extends javax.swing.JPanel {
             settings.setColorBackgroundWeekdayLabels(background2, true);
 
             CalendarBorderProperties normalDayBorder = new CalendarBorderProperties(
-                    new Point(1, 1), // Canto superior esquerdo
-                    new Point(5, 5), // Canto inferior direito
-                    text2, // Cor da borda
-                    1 // Espessura da borda em pixels
+                    new Point(1, 1),
+                    new Point(5, 5), 
+                    text2,
+                    1 
             );
 
             settings.getBorderPropertiesList().add(normalDayBorder);
@@ -191,10 +191,10 @@ public class FormCalendar extends javax.swing.JPanel {
             settings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, text);
             settings.setColorBackgroundWeekdayLabels(background, true);
             CalendarBorderProperties normalDayBorder = new CalendarBorderProperties(
-                    new Point(1, 1), // Canto superior esquerdo
-                    new Point(5, 5), // Canto inferior direito
-                    text, // Cor da borda
-                    1 // Espessura da borda em pixels
+                    new Point(1, 1),
+                    new Point(5, 5),
+                    text, 
+                    1 
             );
             settings.getBorderPropertiesList().add(normalDayBorder);
             settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundSelectedDate, background);

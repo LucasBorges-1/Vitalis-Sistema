@@ -142,7 +142,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         painelContadores.add(painelLinhas);
         painelContadores.add(painelColunas);
 
-        // Painel principal da tabela (que vai crescer)
+        
         JPanel painelTabela = new JPanel(new BorderLayout());
         painelTabela.add(MainTable);
         painelTabela.add(txtSearch, BorderLayout.NORTH);
@@ -150,11 +150,11 @@ public class FormMainMenu extends javax.swing.JPanel {
         painelTabela.add(jScrollPane1, BorderLayout.CENTER);
         jScrollPane1.setBorder(BorderFactory.createEmptyBorder(10, 15, 15, 15));
 
-        // Adiciona os componentes ao layout principal
-        add(painelContadores, BorderLayout.NORTH);  // Contadores no topo
-        add(painelTabela, BorderLayout.CENTER);     // Tabela ocupa o resto
+       
+        add(painelContadores, BorderLayout.NORTH); 
+        add(painelTabela, BorderLayout.CENTER);    
 
-        // Configuração para evitar que os contadores cresçam
+       
         painelContadores.setMaximumSize(new Dimension(Integer.MAX_VALUE, painelContadores.getPreferredSize().height));
     }
 
