@@ -7,6 +7,7 @@ package tcc.application.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,8 @@ public class Consulta implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_consulta;
     private LocalDate data_consulta;
+    @Column(name = "type")
+    private String tipo;
     
     //A discutir
     //private String caminho_documentos;
@@ -36,13 +39,24 @@ public class Consulta implements Serializable{
     public Consulta() {
     }
 
-    public Consulta(LocalDate data_consulta) {
+    public Consulta(LocalDate data_consulta,String tipo) {
         this.data_consulta = data_consulta;
+        this.tipo=tipo;
     }
 
     public int getId_consulta() {
         return id_consulta;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
+    
 
     public void setId_consulta(int id_consulta) {
         this.id_consulta = id_consulta;
@@ -56,11 +70,13 @@ public class Consulta implements Serializable{
         this.data_consulta = data_consulta;
     }
 
-    
     @Override
     public String toString() {
-        return "Consulta{" + "data_consulta=" + data_consulta + '}';
+        return "Consulta{" + "data_consulta=" + data_consulta + ", tipo=" + tipo + '}';
     }
+
+    
+    
 
     
     

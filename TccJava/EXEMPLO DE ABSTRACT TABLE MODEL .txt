@@ -1,0 +1,107 @@
+import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+public class ModelConsulta extends AbstractTableModel {
+
+    private List<Consulta> consultas;
+    private List<Usuario> usuarios;
+    private List<Pessoa> pessoas;
+
+    public ModelConsulta(List<Consulta> consultas, List<Usuario> usuarios, List<Pessoa> pessoas) {
+        this.consultas = consultas;
+        this.usuarios = usuarios;
+        this.pessoas = pessoas;
+    }
+
+    @Override
+    public int getRowCount() {
+        return consultas.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return 4; // Número de colunas: Nome do Usuário, Data da Consulta, Caminho dos Documentos, CRM do Médico
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        Consulta consulta = consultas.get(rowIndex);
+        Usuario usuario = findUsuarioById(consulta.getId_usuario());
+        Pessoa pessoa = findPessoaById(usuario.getId_usuario());
+
+        switch (columnIndex) {
+            case 0:
+                return pessoa.getNome(); // Nome do Usuário
+            case 1:
+                SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                return formatador.format(consulta.getData_consulta()); // Data da Consulta
+            case 2:
+                return consulta.getCaminho_documentos(); // Caminho dos Documentos
+            case 3:
+                return findMedicoById(consulta.getId_medico()).getCrm(); // CRM do Médico
+        }
+        return "";
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        switch (column) {
+            case 0:
+                return "Nome do Usuário";
+            case 1:
+                return "Data da Consulta";
+            case 2:
+                return "Caminho dos Documentos";
+            case 3:
+                return "CRM do Médico";
+        }
+        return "";
+    }
+
+    private Usuario findUsuarioById(String idUsuario) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId_usuario().equals(idUsuario)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
+
+    private Pessoa findPessoaById(String idPessoa) {
+        for (Pessoa pessoa : pessoas) {
+            if (pessoa.getId_pessoa().equals(idPessoa)) {
+                return pessoa;
+            }
+        }
+        return null;
+    }
+
+    private Medico findMedicoById(String idMedico) {
+        for (Pessoa pessoa : pessoas) {
+            if (pessoa instanceof Medico && ((Medico) pessoa).getId_medico().equals(idMedico)) {
+                return (Medico) pessoa;
+            }
+        }
+        return null;
+    }
+
+    public void limpar() {
+        consultas.clear();
+        fireTableDataChanged();
+    }
+
+    public void adicionarConsulta(Consulta consulta) {
+        consultas.add(consulta);
+        fireTableRowsInserted(consultas.size() - 1, consultas.size() - 1);
+    }
+
+    public void excluirConsulta(int indice) {
+        consultas.remove(indice);
+        fireTableRowsDeleted(indice, indice);
+    }
+
+    public Consulta pegarConsulta(int indice) {
+        return consultas.get(indice);
+    }
+}
