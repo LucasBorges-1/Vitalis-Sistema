@@ -52,9 +52,9 @@ public class ControllerPessoa {
         
     }
     
-    public void cadastrarMedico(String crm, String email,String nome,String senha, String cpf,LocalDate dataNa){
+    public void cadastrarMedico(String crm, String email,String nome,String senha, String cpf,LocalDate dataNa,String tipo){
        
-       Pessoa p=new Medico(crm, daoClinica.selecionar(), email, nome, bCrypt.hashSenha(senha), cpf, dataNa);
+       Pessoa p=new Medico(crm, daoClinica.selecionar(), email, nome, bCrypt.hashSenha(senha), cpf, dataNa,tipo);
        
         if (daoPessoa.inserir(p)) {
             JOptionPane.showMessageDialog(null,"Médico cadastrado com sucesso");

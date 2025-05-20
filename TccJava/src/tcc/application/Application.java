@@ -28,6 +28,7 @@ import tcc.application.model.Pessoa;
 import tcc.application.model.dao.BCryptUtil;
 import tcc.application.model.dao.DaoClinica;
 
+
 public class Application extends javax.swing.JFrame {
 
     public static Application app;
@@ -36,6 +37,8 @@ public class Application extends javax.swing.JFrame {
     private LoginClinicaForm loginclinicaForm;
     private FormManager formManager;
     private LoginMedicoForm loginMedicoForm;
+    private tcc.application.model.dao.BCryptUtil bCrypt;
+    private DaoClinica daoClinica;
 
     public Application() {
         initComponents();
@@ -46,6 +49,8 @@ public class Application extends javax.swing.JFrame {
         loginclinicaForm = new LoginClinicaForm();
         formManager = new FormManager();
         loginMedicoForm = new LoginMedicoForm();
+        daoClinica=new DaoClinica();
+        
 
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
@@ -172,6 +177,14 @@ public class Application extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
             app.setVisible(true);
+           /*
+            BCryptUtil bc=new BCryptUtil();
+            DaoClinica daoC=new DaoClinica();
+            String senha = "clinica";
+            
+            Clinica c = new Clinica("11", "clinica", "asd", "asd",bc.hashSenha(senha));
+            daoC.inserir(c);
+            */
 
         });
     }

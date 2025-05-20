@@ -78,7 +78,7 @@ public class DaoClinica extends Dao {
                  .setParameter("nome", nome)
                  .getSingleResult();
     } catch (NoResultException e) {
-        return null; // Médico não encontrado
+        return null; 
     } catch (Exception e) {
         e.printStackTrace(); // Log do erro inesperado
         return null;

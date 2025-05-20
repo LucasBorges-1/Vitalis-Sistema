@@ -3,18 +3,16 @@
   <persistence-unit name="TccJavaPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>tcc.application.model.Clinica</class>
-    <class>tcc.application.model.Clinica_medico</class>
     <class>tcc.application.model.Consulta</class>
     <class>tcc.application.model.Horarios</class>
     <class>tcc.application.model.Medico</class>
     <class>tcc.application.model.Pessoa</class>
     <class>tcc.application.model.Usuario</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tccjava?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
-      <property name="javax.persistence.jdbc.user" value="root"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="root"/>
-      <property name="eclipselink.inheritance.allow-string-discriminator" value="false"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:6543/postgres"/>
+      <property name="javax.persistence.jdbc.user" value="postgres.iiwaedrlvrgmoasfebpf"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="@TccClinica25"/>
     </properties>
   </persistence-unit>
 </persistence>

@@ -72,6 +72,8 @@ public class FormManager extends javax.swing.JPanel {
         panelEsquerda.add(edNome);
         panelEsquerda.add(lCpf);
         panelEsquerda.add(edCpf);
+        panelEsquerda.add(lAreadeAtuacao);
+        panelEsquerda.add(edAreaAtuacao);
         panelEsquerda.add(lEmail);
         panelEsquerda.add(edEmail);
         panelEsquerda.add(lDataNa);
@@ -136,6 +138,8 @@ public class FormManager extends javax.swing.JPanel {
         lSenha = new javax.swing.JLabel();
         edSenha = new javax.swing.JTextField();
         BtCadastrar = new javax.swing.JButton();
+        edAreaAtuacao = new javax.swing.JTextField();
+        lAreadeAtuacao = new javax.swing.JLabel();
         panelDireita = new javax.swing.JPanel();
         btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
@@ -163,6 +167,8 @@ public class FormManager extends javax.swing.JPanel {
             }
         });
 
+        lAreadeAtuacao.setText("Area de Atuação");
+
         javax.swing.GroupLayout panelEsquerdaLayout = new javax.swing.GroupLayout(panelEsquerda);
         panelEsquerda.setLayout(panelEsquerdaLayout);
         panelEsquerdaLayout.setHorizontalGroup(
@@ -170,6 +176,7 @@ public class FormManager extends javax.swing.JPanel {
             .addGroup(panelEsquerdaLayout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BtCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lNome)
                     .addComponent(edNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lCpf)
@@ -182,7 +189,8 @@ public class FormManager extends javax.swing.JPanel {
                     .addComponent(edCrm, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lSenha)
                     .addComponent(edSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lAreadeAtuacao)
+                    .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         panelEsquerdaLayout.setVerticalGroup(
@@ -192,11 +200,11 @@ public class FormManager extends javax.swing.JPanel {
                 .addComponent(lNome)
                 .addGap(6, 6, 6)
                 .addComponent(edNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lCpf)
                 .addGap(6, 6, 6)
                 .addComponent(edCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lEmail)
                 .addGap(6, 6, 6)
                 .addComponent(edEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -208,13 +216,17 @@ public class FormManager extends javax.swing.JPanel {
                 .addComponent(lCrm)
                 .addGap(6, 6, 6)
                 .addComponent(edCrm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lSenha)
                 .addGap(6, 6, 6)
                 .addComponent(edSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(lAreadeAtuacao)
+                .addGap(6, 6, 6)
+                .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtCadastrar)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         btEditar.setText("Editar");
@@ -309,9 +321,10 @@ public class FormManager extends javax.swing.JPanel {
         String senha = this.edSenha.getText();
         String dataS = this.edDataNa.getText();
         String nome=this.edNome.getText();
+        String tipo=this.edAreaAtuacao.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(dataS, formatter);
-        cp.cadastrarMedico(crm, email, nome, senha,cpf,data);
+        cp.cadastrarMedico(crm, email, nome, senha,cpf,data,tipo);
         
 
     }//GEN-LAST:event_BtCadastrarActionPerformed
@@ -322,6 +335,7 @@ public class FormManager extends javax.swing.JPanel {
     public javax.swing.JTable TbMedico;
     public javax.swing.JButton btEditar;
     public javax.swing.JButton btExcluir;
+    public javax.swing.JTextField edAreaAtuacao;
     public javax.swing.JTextField edCpf;
     public javax.swing.JTextField edCrm;
     public javax.swing.JTextField edDataNa;
@@ -329,6 +343,7 @@ public class FormManager extends javax.swing.JPanel {
     public javax.swing.JTextField edNome;
     public javax.swing.JTextField edSenha;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lAreadeAtuacao;
     private javax.swing.JLabel lCpf;
     private javax.swing.JLabel lCrm;
     private javax.swing.JLabel lDataNa;

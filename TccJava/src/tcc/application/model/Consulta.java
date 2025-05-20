@@ -6,6 +6,7 @@ package tcc.application.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.bouncycastle.asn1.cms.Time;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
@@ -32,6 +34,7 @@ public class Consulta implements Serializable{
     private LocalDate data_consulta;
     @Column(name = "type")
     private String tipo;
+    private LocalDateTime horario;
     
     //A discutir
     //private String caminho_documentos;
@@ -39,15 +42,25 @@ public class Consulta implements Serializable{
     public Consulta() {
     }
 
-    public Consulta(LocalDate data_consulta,String tipo) {
+    public Consulta(LocalDate data_consulta,String tipo,LocalDateTime horario) {
         this.data_consulta = data_consulta;
         this.tipo=tipo;
+        this.horario=horario;
     }
 
     public int getId_consulta() {
         return id_consulta;
     }
 
+    public LocalDateTime getHorario() {
+        return horario;
+    }
+
+    public void setHorario(LocalDateTime horario) {
+        this.horario = horario;
+    }
+
+    
     public String getTipo() {
         return tipo;
     }
