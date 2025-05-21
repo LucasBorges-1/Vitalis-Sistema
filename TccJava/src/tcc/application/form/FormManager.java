@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import static javax.swing.BorderFactory.createEmptyBorder;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,18 +28,21 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
-import tcc.application.Application;
+import tcc.application.model.Medico;
+import tcc.application.model.dao.DaoClinica;
 
 public class FormManager extends javax.swing.JPanel {
-    
-    private tcc.application.form.ControllerPessoa cp;
 
+    private tcc.application.form.ControllerPessoa cp;
+    private DefaultTableModel tableModel = new DefaultTableModel();
+    
     public FormManager() {
         initComponents();
         init();
-       
+
     }
 
     private void init() {
@@ -47,76 +51,119 @@ public class FormManager extends javax.swing.JPanel {
         BtCadastrar.putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0");
-        edNome.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
-        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
-        configurarLayout();
-        
-        
+        edNome.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nome do Médico");
+        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Senha para acesso");
+        edCpf.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira o Cpf");
+        edDataNa.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Informe seu Nascimento");
+        edAreaAtuacao.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Informe sua Formação");
+        edCrm.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira o Crm");
+        edEmail.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Informe o seu Email");
+        configurarLayout2();
+
     }
 
-    private void configurarLayout() {
+   
+
+    private void configurarLayout2() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
         MainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        gbc.gridx = 0; // 
-        gbc.gridy = 0; // 
-        gbc.weightx = 0.5;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.2;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 0, 0, 5);
 
-        panelEsquerda.add(lNome);
-        panelEsquerda.add(edNome);
-        panelEsquerda.add(lCpf);
-        panelEsquerda.add(edCpf);
-        panelEsquerda.add(lAreadeAtuacao);
-        panelEsquerda.add(edAreaAtuacao);
-        panelEsquerda.add(lEmail);
-        panelEsquerda.add(edEmail);
-        panelEsquerda.add(lDataNa);
-        panelEsquerda.add(edDataNa);
-        panelEsquerda.add(lCrm);
-        panelEsquerda.add(edCrm);
-        panelEsquerda.add(lSenha);
-        panelEsquerda.add(edSenha);
-        panelEsquerda.add(BtCadastrar);
+        panelEsquerda.setLayout(new GridBagLayout());
+        GridBagConstraints gbcEsquerda = new GridBagConstraints();
+        gbcEsquerda.gridx = 0;
+        gbcEsquerda.gridy = 0;
+        gbcEsquerda.weightx = 1.0;
+        
+        gbcEsquerda.anchor = GridBagConstraints.NORTH;
+        gbcEsquerda.insets = new Insets(5, 10, 5, 10);
 
-        panelEsquerda.putClientProperty(FlatClientProperties.STYLE, ""
-                + "arc:25;"
+       
+        Dimension campoSize = new Dimension(250, 25);
+        edNome.setPreferredSize(campoSize);
+        edCpf.setPreferredSize(campoSize);
+        edEmail.setPreferredSize(campoSize);
+        edDataNa.setPreferredSize(campoSize);
+        edCrm.setPreferredSize(campoSize);
+        edSenha.setPreferredSize(campoSize);
+        edAreaAtuacao.setPreferredSize(campoSize);
+        BtCadastrar.setPreferredSize(new Dimension(120, 30));
+
+        
+        panelEsquerda.add(lNome, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(edNome, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(lCpf, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(edCpf, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(lEmail, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(edEmail, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(lDataNa, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(edDataNa, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(lCrm, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(edCrm, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(lSenha, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(edSenha, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(lAreadeAtuacao, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(edAreaAtuacao, gbcEsquerda);
+        gbcEsquerda.gridy++;
+        panelEsquerda.add(BtCadastrar, gbcEsquerda);
+        gbcEsquerda.gridy++;
+
+       
+        panelEsquerda.putClientProperty(FlatClientProperties.STYLE,
+                "arc:25;"
                 + "background:$Login.background;"
         );
 
-        panelEsquerda.setBorder(BorderFactory.createEmptyBorder(100, 220, 60, 60));
+        panelEsquerda.setMaximumSize(new Dimension(400, Integer.MAX_VALUE));
+        panelEsquerda.setPreferredSize(new Dimension(350, panelEsquerda.getPreferredSize().height));
+        panelEsquerda.setMinimumSize(new Dimension(300, 0));
+
         MainPanel.add(panelEsquerda, gbc);
 
+       
         gbc.gridx = 1;
         gbc.insets = new Insets(0, 5, 0, 0);
 
         panelDireita.setLayout(new BorderLayout(10, 10));
-        panelDireita.setBorder((BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        panelDireita.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Login.background;"
+        TbMedico.putClientProperty(FlatClientProperties.STYLE,
+                "background:$Login.background;"
         );
 
-        panelDireita.add(TbMedico, BorderLayout.CENTER);
-        panelDireita.add(btEditar, BorderLayout.SOUTH);
+        panelDireita.add(jScrollPane1, BorderLayout.CENTER);
+       
         panelDireita.add(btExcluir, BorderLayout.SOUTH);
-        TbMedico.add(jScrollPane1);
 
-        panelDireita.putClientProperty(FlatClientProperties.STYLE, ""
-                + "arc:25;"
+        panelDireita.putClientProperty(FlatClientProperties.STYLE,
+                "arc:25;"
                 + "background:$Login.background;"
         );
 
         MainPanel.add(panelDireita, gbc);
-
         add(MainPanel, BorderLayout.CENTER);
-        
-        
     }
 
     @SuppressWarnings("unchecked")
@@ -141,7 +188,6 @@ public class FormManager extends javax.swing.JPanel {
         edAreaAtuacao = new javax.swing.JTextField();
         lAreadeAtuacao = new javax.swing.JLabel();
         panelDireita = new javax.swing.JPanel();
-        btEditar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TbMedico = new javax.swing.JTable();
@@ -174,23 +220,27 @@ public class FormManager extends javax.swing.JPanel {
         panelEsquerdaLayout.setHorizontalGroup(
             panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEsquerdaLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
                 .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lNome)
-                    .addComponent(edNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lCpf)
-                    .addComponent(edCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lEmail)
-                    .addComponent(edEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lDataNa)
-                    .addComponent(edDataNa, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lCrm)
-                    .addComponent(edCrm, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lSenha)
-                    .addComponent(edSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lAreadeAtuacao)
-                    .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEsquerdaLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lNome)
+                            .addComponent(edNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lCpf)
+                            .addComponent(edCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lEmail)
+                            .addComponent(edEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lDataNa)
+                            .addComponent(edDataNa, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lCrm)
+                            .addComponent(edCrm, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lSenha)
+                            .addComponent(edSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lAreadeAtuacao)
+                            .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelEsquerdaLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(BtCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         panelEsquerdaLayout.setVerticalGroup(
@@ -212,7 +262,7 @@ public class FormManager extends javax.swing.JPanel {
                 .addComponent(lDataNa)
                 .addGap(6, 6, 6)
                 .addComponent(edDataNa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lCrm)
                 .addGap(6, 6, 6)
                 .addComponent(edCrm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,10 +276,8 @@ public class FormManager extends javax.swing.JPanel {
                 .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtCadastrar)
-                .addContainerGap())
+                .addGap(12, 12, 12))
         );
-
-        btEditar.setText("Editar");
 
         btExcluir.setText("Excluir");
 
@@ -262,10 +310,7 @@ public class FormManager extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(panelDireitaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelDireitaLayout.createSequentialGroup()
-                        .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         panelDireitaLayout.setVerticalGroup(
@@ -274,9 +319,7 @@ public class FormManager extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
-                .addGroup(panelDireitaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btEditar)
-                    .addComponent(btExcluir))
+                .addComponent(btExcluir)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -320,12 +363,36 @@ public class FormManager extends javax.swing.JPanel {
         String crm = this.edCrm.getText();
         String senha = this.edSenha.getText();
         String dataS = this.edDataNa.getText();
-        String nome=this.edNome.getText();
-        String tipo=this.edAreaAtuacao.getText();
+        String nome = this.edNome.getText();
+        String tipo = this.edAreaAtuacao.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(dataS, formatter);
-        cp.cadastrarMedico(crm, email, nome, senha,cpf,data,tipo);
+        cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
         
+        
+        
+        
+         // Cria o objeto médico
+       
+         tableModel.addColumn("Médico Cadastrado");
+        TbMedico.setModel(tableModel);
+       
+        // Adiciona à tabela
+        String medicoStr = String.format(
+        "Nome: %s | CPF: %s | Email: %s | Nasc.: %s | CRM: %s | Área: %s",
+        nome, cpf, email, data, crm, tipo
+    );
+        tableModel.addRow(new Object[]{medicoStr});
+
+        // (Opcional) Limpar os campos
+        edNome.setText("");
+        edCpf.setText("");
+        edEmail.setText("");
+        edDataNa.setText("");
+        edCrm.setText("");
+        edSenha.setText("");
+        edAreaAtuacao.setText("");
+
 
     }//GEN-LAST:event_BtCadastrarActionPerformed
 
@@ -333,7 +400,6 @@ public class FormManager extends javax.swing.JPanel {
     private javax.swing.JButton BtCadastrar;
     private javax.swing.JPanel MainPanel;
     public javax.swing.JTable TbMedico;
-    public javax.swing.JButton btEditar;
     public javax.swing.JButton btExcluir;
     public javax.swing.JTextField edAreaAtuacao;
     public javax.swing.JTextField edCpf;

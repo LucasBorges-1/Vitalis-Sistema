@@ -36,7 +36,7 @@ public class FormMainMenu extends javax.swing.JPanel {
     private int contRow;
     private int contFinish=0;
     private JLabel labelAgendadas = new JLabel("Agendadas para hoje: " + contRow);
-    private JLabel labelRealizadas = new JLabel("Consultas concluidas: "+contFinish);
+    private JLabel labelRealizadas = new JLabel("Consultas concluidas: "+ contFinish);
     
     public FormMainMenu() {
         initComponents();
@@ -332,8 +332,9 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "focusWidth:0");
 
         panelTable.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
-        MainTable.setGridColor(new Color(49, 62, 74));
+        
          */
+        MainTable.setGridColor(MainTable.getBackground());
     }
 
 

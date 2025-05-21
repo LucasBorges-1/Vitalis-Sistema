@@ -1,5 +1,6 @@
 package tcc.application.form.other;
 
+import java.awt.Color;
 import java.awt.Component;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
@@ -18,8 +19,9 @@ public class TableActionCellEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int row, int column) {
         PanelAction action = new PanelAction();
-        action.initEvent(event, row);
-        action.setBackground(jtable.getSelectionBackground());
+        action.initEvent(event, row,this);
+        //action.setBackground(jtable.getSelectionBackground());    
+        
         return action;
     }
 }

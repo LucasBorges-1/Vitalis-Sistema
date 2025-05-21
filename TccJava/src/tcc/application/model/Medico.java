@@ -116,7 +116,7 @@ public class Medico extends Pessoa implements Serializable{
 
     @Override
     public String toString() {
-        return "Medico{" + "crm=" + crm + ", consultas=" + consultas + ", horarios=" + horarios + ", clinica=" + clinica + '}';
+        return "Doutor: " +" Crm: "+ crm+" Area: "+tipo_medico;
     }
     
    

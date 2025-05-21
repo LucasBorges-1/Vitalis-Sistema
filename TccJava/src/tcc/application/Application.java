@@ -71,6 +71,28 @@ public class Application extends javax.swing.JFrame {
         app.mainForm.hideMenu();
         SwingUtilities.updateComponentTreeUI(app.mainForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
+        
+        
+
+            app.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    int option = JOptionPane.showConfirmDialog(
+                            app,
+                            "Deseja realmente fechar a janela?",
+                            "Fechar Janela",
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    if (option == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+
+                    }
+                    app.removeWindowListener(this);
+
+                }
+
+            });
+        
     }
 
     public static void OpenloginClinica() {
@@ -93,6 +115,7 @@ public class Application extends javax.swing.JFrame {
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
 
         app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
         if (app.formManager.isVisible()) {
 
             app.addWindowListener(new java.awt.event.WindowAdapter() {

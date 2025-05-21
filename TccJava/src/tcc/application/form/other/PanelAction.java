@@ -1,32 +1,46 @@
 package tcc.application.form.other;
 
+import com.sun.tools.javac.Main;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.table.TableCellEditor;
 
 public class PanelAction extends javax.swing.JPanel {
+
+    private FormMainMenu fmm;
 
     /**
      * Creates new form PanelAction
      */
     public PanelAction() {
+        fmm = new FormMainMenu();
         initComponents();
-       
+        cmdC.setForeground(fmm.MainTable.getBackground());
+        cmdX.setForeground(fmm.MainTable.getBackground());
+
     }
 
-    public void initEvent(TableActionEvent event, int row) {
+    public void initEvent(TableActionEvent event, int row, TableCellEditor editor) {
         cmdC.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 event.onFinish(row);
-               
+                if (editor != null) {
+                    editor.stopCellEditing(); // <- encerra a edição
+                }
+
             }
         });
         cmdX.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 event.onDelete(row);
+                if (editor != null) {
+                    editor.stopCellEditing(); // <- encerra a edição
+                }
             }
-        });      
+        });
     }
 
     /**
@@ -41,6 +55,7 @@ public class PanelAction extends javax.swing.JPanel {
         cmdX = new ActionButton();
         cmdC =  new ActionButton();
 
+        cmdX.setForeground(new java.awt.Color(102, 0, 102));
         cmdX.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/application/form/other/delete.png"))); // NOI18N
         cmdX.setContentAreaFilled(false);
 
@@ -71,7 +86,7 @@ public class PanelAction extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cmdC;
-    private javax.swing.JButton cmdX;
+    public javax.swing.JButton cmdC;
+    public javax.swing.JButton cmdX;
     // End of variables declaration//GEN-END:variables
 }
