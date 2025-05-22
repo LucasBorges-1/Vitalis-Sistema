@@ -35,7 +35,8 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 | Java           | Linguagem principal          |
 | Swing          | Interface gráfica            |
 | JDBC           | Conexão com o banco de dados |
-| MySQL/PostgreSQL | Banco de dados relacional    |
+| PostgreSQL | Banco de dados relacional    |
+| Supabase      | Armazenamento de BD em nuvem  |
 | Git            | Controle de versão           |
 
 ---
@@ -51,7 +52,7 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 ### Pré-requisitos:
 - Java JDK 8 ou superior
 - IDE como NetBeans, Eclipse ou IntelliJ
-- Banco de dados MySQL ou PostgreSQL
+- Banco de dados PostgreSQL
 - Git
 
 ```bash
