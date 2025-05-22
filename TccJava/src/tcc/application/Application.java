@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import tcc.application.form.ControllerPrincipal;
 import tcc.application.form.LoginMedicoForm;
 
@@ -28,7 +29,6 @@ import tcc.application.model.Pessoa;
 import tcc.application.model.dao.BCryptUtil;
 import tcc.application.model.dao.DaoClinica;
 
-
 public class Application extends javax.swing.JFrame {
 
     public static Application app;
@@ -40,6 +40,8 @@ public class Application extends javax.swing.JFrame {
     private tcc.application.model.dao.BCryptUtil bCrypt;
     private DaoClinica daoClinica;
 
+    private static int isOpen;
+
     public Application() {
         initComponents();
         setSize(new Dimension(1366, 768));
@@ -49,8 +51,7 @@ public class Application extends javax.swing.JFrame {
         loginclinicaForm = new LoginClinicaForm();
         formManager = new FormManager();
         loginMedicoForm = new LoginMedicoForm();
-        daoClinica=new DaoClinica();
-        
+        daoClinica = new DaoClinica();
 
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
@@ -71,28 +72,7 @@ public class Application extends javax.swing.JFrame {
         app.mainForm.hideMenu();
         SwingUtilities.updateComponentTreeUI(app.mainForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
-        
-        
 
-            app.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                    int option = JOptionPane.showConfirmDialog(
-                            app,
-                            "Deseja realmente fechar a janela?",
-                            "Fechar Janela",
-                            JOptionPane.YES_NO_OPTION
-                    );
-                    if (option == JOptionPane.YES_OPTION) {
-                        System.exit(0);
-
-                    }
-                    app.removeWindowListener(this);
-
-                }
-
-            });
-        
     }
 
     public static void OpenloginClinica() {
@@ -106,6 +86,7 @@ public class Application extends javax.swing.JFrame {
     }
 
     public static void OpenClinicaManeger() {
+        isOpen = 1;
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.formManager);
         app.mainForm.applyComponentOrientation(app.getComponentOrientation());
@@ -115,29 +96,27 @@ public class Application extends javax.swing.JFrame {
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
 
         app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        
-        if (app.formManager.isVisible()) {
-
-            app.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+        app.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (app.formManager.isVisible()) {
                     int option = JOptionPane.showConfirmDialog(
                             app,
-                            "Deseja realmente fechar a janela?",
-                            "Fechar Janela",
+                            "Deseja realmente fechar o formulário?",
+                            "Fechar Formulário",
                             JOptionPane.YES_NO_OPTION
                     );
                     if (option == JOptionPane.YES_OPTION) {
                         Application.voltar();
-
+                        isOpen = 0;
+                    } else {
+                        app.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                     }
-                    app.removeWindowListener(this);
 
                 }
+            }
 
-            });
-        }
-
+        });
     }
 
     public static void logout() {
@@ -149,22 +128,17 @@ public class Application extends javax.swing.JFrame {
     }
 
     public static void voltar() {
-        FlatAnimatedLafChange.showSnapshot();
-        app.setContentPane(app.loginForm);
-        app.loginForm.applyComponentOrientation(app.getComponentOrientation());
-        SwingUtilities.updateComponentTreeUI(app.loginForm);
-        FlatAnimatedLafChange.hideSnapshotWithAnimation();
-        app.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                if (app.formManager.isVisible() == false) {
-                    app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                } else {
-                    app.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                }
+        if (isOpen == 0) {
+            System.exit(0);
+        } else {
 
-            }
-        });
+            FlatAnimatedLafChange.showSnapshot();
+            app.setContentPane(app.loginForm);
+            app.loginForm.applyComponentOrientation(app.getComponentOrientation());
+            SwingUtilities.updateComponentTreeUI(app.loginForm);
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+
+        }
 
     }
 
@@ -200,14 +174,14 @@ public class Application extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
             app.setVisible(true);
-           /*
+            /*
             BCryptUtil bc=new BCryptUtil();
             DaoClinica daoC=new DaoClinica();
             String senha = "clinica";
             
             Clinica c = new Clinica("11", "clinica", "asd", "asd",bc.hashSenha(senha));
             daoC.inserir(c);
-            */
+             */
 
         });
     }

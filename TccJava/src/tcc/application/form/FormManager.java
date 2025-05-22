@@ -368,13 +368,7 @@ public class FormManager extends javax.swing.JPanel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(dataS, formatter);
         cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
-        
-        
-        
-        
-         // Cria o objeto médico
-       
-         tableModel.addColumn("Médico Cadastrado");
+ 
         TbMedico.setModel(tableModel);
        
         // Adiciona à tabela
