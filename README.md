@@ -41,9 +41,8 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 ---
 
 ## 📸 Capturas de Tela
-![Uploading image.png…]()
-
-> *(Adicione aqui imagens do sistema rodando — telas de cadastro, agendamento, etc.)*
+![Tela Principal](assets/tela-principal.png)
+![Tela De Login](assets/tela-login-.png)
 
 ---
 
@@ -54,8 +53,6 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 - IDE como NetBeans, Eclipse ou IntelliJ
 - Banco de dados MySQL ou PostgreSQL
 - Git
-
-### Passo a passo:
 
 ```bash
 # Clone o repositório
