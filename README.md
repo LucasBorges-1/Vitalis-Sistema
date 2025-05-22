@@ -42,7 +42,7 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 
 ## 📸 Capturas de Tela
 ![Tela Principal](assets/tela-principal.png)
-![Tela De Login](assets/tela-login-.png)
+![Tela De Login](assets/tela-login.png)
 
 ---
 
