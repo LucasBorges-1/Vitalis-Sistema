@@ -9,7 +9,7 @@
     <class>tcc.application.model.Pessoa</class>
     <class>tcc.application.model.Usuario</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:6543/postgres"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:6543/postgres?prepareThreshold=0"/>
       <property name="javax.persistence.jdbc.user" value="postgres.iiwaedrlvrgmoasfebpf"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value="@TccClinica25"/>

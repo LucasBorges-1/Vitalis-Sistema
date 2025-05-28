@@ -13,6 +13,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -30,38 +33,50 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import raven.toast.Notifications;
+import tcc.application.model.Consulta;
+import tcc.application.model.Consulta_;
+import tcc.application.model.dao.DaoConsulta;
 
 public class FormMainMenu extends javax.swing.JPanel {
+
     private tcc.application.form.ControllerPrincipal app;
+    private ModelConsultas model;
+    private DaoConsulta daoConsulta;
     private int contRow;
-    private int contFinish=0;
+    private int contFinish = 0;
+
     private JLabel labelAgendadas = new JLabel("Agendadas para hoje: " + contRow);
-    private JLabel labelRealizadas = new JLabel("Consultas concluidas: "+ contFinish);
-    
+    private JLabel labelRealizadas = new JLabel("Consultas concluidas: " + contFinish);
+
     public FormMainMenu() {
         initComponents();
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 
-        
+        daoConsulta = new DaoConsulta();
+        model = new ModelConsultas();
+
+        //Configs
         configurarLayout();
         estiloTabela();
-        adicionandoDadosExemplos();
+        gerenciandoTabela();
         app.setI(0);
+        //
+
         TableActionEvent event = new TableActionEvent() {
 
             @Override
             public void onFinish(int row) {
-                System.out.println("Consulta linha " + row+" terminada");
-                 if (MainTable.isEditing()) {
+                System.out.println("Consulta linha " + row + " terminada");
+                if (MainTable.isEditing()) {
                     MainTable.getCellEditor().stopCellEditing();
                 }
                 DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
                 model.removeRow(row);
-                contFinish+=1;
+                contFinish += 1;
                 labelRealizadas.setText("Consultas concluidas: " + contFinish);
-                if(contFinish==20){
-                     txtSearch.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Não há mais consultas na data de hoje.");
+                if (contFinish == 20) {
+                    txtSearch.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Não há mais consultas na data de hoje.");
                 }
             }
 
@@ -72,14 +87,13 @@ public class FormMainMenu extends javax.swing.JPanel {
                 }
                 DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
                 model.removeRow(row);
-                contFinish+=1;
-                 labelRealizadas.setText("Consultas concluidas: " + contFinish);
+                contFinish += 1;
+                labelRealizadas.setText("Consultas concluidas: " + contFinish);
             }
         };
 
         MainTable.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
         MainTable.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
-        
 
     }
 
@@ -93,8 +107,9 @@ public class FormMainMenu extends javax.swing.JPanel {
         JPanel painelLinhas = new JPanel();
         painelLinhas.setName("painelLinhas");
 
-        
         labelAgendadas.putClientProperty(FlatClientProperties.STYLE, ""
+                + "font:$h2.font");
+        MainTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h2.font");
         labelAgendadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelAgendadas.setVerticalAlignment(SwingConstants.CENTER);
@@ -112,7 +127,6 @@ public class FormMainMenu extends javax.swing.JPanel {
         JPanel painelColunas = new JPanel();
         painelColunas.setName("painelColunas");
 
-        
         labelRealizadas.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h2.font");
         labelRealizadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -142,9 +156,28 @@ public class FormMainMenu extends javax.swing.JPanel {
         panelTable.add(jScrollPane1);
 
         add(panelTable, BorderLayout.CENTER);
-        
+
     }
 
+    public void carregarConsultas() {
+        model.limpar();
+        for (Consulta c : daoConsulta.listarConsultaDataAtual()) {
+            model.addConsultas(c);
+        }
+    }
+
+    public void carregarConsultasOt() {
+        List<Consulta> consultas = daoConsulta.listarConsultaDataAtual();
+        model.setConsultas(consultas);
+    }
+
+    public int contConsultashoje() {
+        int i = 0;
+        for (Consulta c : daoConsulta.listarConsultaDataAtual()) {
+            i += 1;
+        }
+        return i;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -255,31 +288,31 @@ public class FormMainMenu extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void adicionandoDadosExemplos() {
-        DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
-        model.addRow(new Object[]{"João Silva", "Cardiologista", "08:00"});
-        model.addRow(new Object[]{"Maria Santos", "Pediatra", "09:30"});
-        model.addRow(new Object[]{"Carlos Oliveira", "Ortopedista", "10:15"});
-        model.addRow(new Object[]{"Ana Costa", "Dermatologista", "11:00"});
-        model.addRow(new Object[]{"Pedro Alves", "Otorrinolaringologista", "13:30"});
-        model.addRow(new Object[]{"Fernanda Lima", "Ginecologista", "14:45"});
-        model.addRow(new Object[]{"Ricardo Souza", "Neurologista", "15:20"});
-        model.addRow(new Object[]{"Patrícia Rocha", "Psiquiatra", "16:10"});
-        model.addRow(new Object[]{"Lucas Mendes", "Endocrinologista", "17:00"});
-        model.addRow(new Object[]{"Juliana Pereira", "Oftalmologista", "08:30"});
-        model.addRow(new Object[]{"Roberto Fernandes", "Urologista", "09:00"});
-        model.addRow(new Object[]{"Camila Gonçalves", "Cardiologista", "10:00"});
-        model.addRow(new Object[]{"Gustavo Martins", "Pediatra", "11:30"});
-        model.addRow(new Object[]{"Isabela Ribeiro", "Ortopedista", "12:15"});
-        model.addRow(new Object[]{"Marcos Antunes", "Dermatologista", "14:00"});
-        model.addRow(new Object[]{"Tatiane Castro", "Otorrinolaringologista", "15:30"});
-        model.addRow(new Object[]{"Felipe Nunes", "Ginecologista", "16:45"});
-        model.addRow(new Object[]{"Vanessa Lopes", "Neurologista", "17:30"});
-        model.addRow(new Object[]{"Bruno Carvalho", "Psiquiatra", "18:00"});
-        model.addRow(new Object[]{"Daniela Freitas", "Endocrinologista", "19:15"});
-        contRow=MainTable.getRowCount();
-        labelAgendadas.setText("Agendadas para hoje: " + contRow);
-        
+    public void gerenciandoTabela() {
+        MainTable.setModel(model);
+
+        carregarConsultasOt();
+        Font fonteTabela = new Font("Segoe UI", Font.PLAIN, 14);
+
+        MainTable.setFont(fonteTabela);
+        MainTable.getTableHeader().setFont(fonteTabela);
+        MainTable.setRowHeight(28);
+
+        //Muda a largura da coluna ações para 70px
+        TableColumn colunaAcoes = MainTable.getColumn("Ações");
+        colunaAcoes.setMinWidth(70);
+        colunaAcoes.setMaxWidth(70);
+        colunaAcoes.setPreferredWidth(70);
+
+        DefaultTableCellRenderer centroRenderer = new DefaultTableCellRenderer();
+        centroRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        MainTable.getColumn("Nome").setCellRenderer(centroRenderer);
+        MainTable.getColumn("Tipo").setCellRenderer(centroRenderer);
+        MainTable.getColumn("Horário").setCellRenderer(centroRenderer);
+
+        //Carrega as consultas do banco de dados
+        labelAgendadas.setText("Agendadas para hoje: " + contConsultashoje());
+
     }
 
     public void estiloTabela() {

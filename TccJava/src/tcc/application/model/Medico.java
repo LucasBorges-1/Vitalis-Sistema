@@ -31,7 +31,7 @@ import org.bouncycastle.asn1.x500.style.RFC4519Style;
  * @author Borges
  */
 @Entity
- @DiscriminatorValue(value="MEDICO")
+@DiscriminatorValue(value="MEDICO")
 @Table(name="medico")
 public class Medico extends Pessoa implements Serializable{
     

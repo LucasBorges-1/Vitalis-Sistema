@@ -1,12 +1,15 @@
+
 package tcc.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import static java.awt.print.Printable.NO_SUCH_PAGE;
@@ -28,13 +31,16 @@ import javax.print.attribute.standard.*;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.awt.print.PrinterException;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+
 
 public class FormImpressão extends javax.swing.JPanel implements Printable {
-
     private tcc.application.form.ControllerPrincipal app;
     private JPanel panelImpressao;
-    private JTextArea areaTexto;
+    private static JTextArea areaTexto;
+    private JButton btnImprimir = new JButton("Imprimir Direto");
      private static final String RECEITA_TEMPLATE = """
         RECEITA MÉDICA
 
@@ -90,18 +96,15 @@ public class FormImpressão extends javax.swing.JPanel implements Printable {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel panelBotoes = new JPanel();
-        JButton btnVisualizar = new JButton("Visualizar Impressão");
-        btnVisualizar.addActionListener(e -> visualizarImpressao());
         
-        JButton btnImprimir = new JButton("Imprimir Direto");
+        
+        
         btnImprimir.addActionListener(e -> imprimirDireto());
         
-        JButton btnExportarPDF = new JButton("Exportar para PDF");
-        btnExportarPDF.addActionListener(e -> exportarParaPDF());
         
-        panelBotoes.add(btnVisualizar);
+       
         panelBotoes.add(btnImprimir);
-        panelBotoes.add(btnExportarPDF);
+        
         
         
         
@@ -115,108 +118,122 @@ public class FormImpressão extends javax.swing.JPanel implements Printable {
         add(painelPrincipal, BorderLayout.CENTER);
     }
 
-    @Override
-    public int print(Graphics g, PageFormat pf, int pageIndex) {
-        if (pageIndex > 0) {
-            return NO_SUCH_PAGE;
-        }
+   
 
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(pf.getImageableX(), pf.getImageableY());
+  
 
-       
-        String[] lines = areaTexto.getText().split("\n");
-        Font font = new Font("Serif", Font.PLAIN, 10);
-        g2d.setFont(font);
-        FontMetrics fm = g2d.getFontMetrics();
-        
-        int y = 50;
-        for (String line : lines) {
-            g2d.drawString(line, 50, y);
-            y += fm.getHeight();
-        }
-
-        return PAGE_EXISTS;
-    }
-
-    private void visualizarImpressao() {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        job.setPrintable(this);
-        
-       
-        PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-        attributes.add(MediaSizeName.ISO_A4);
-        
-        if (job.printDialog(attributes)) {
-            try {
-              
-                Book book = new Book();
-                book.append(this, job.defaultPage());
-                job.setPageable(book);
-                
-               
-                job.pageDialog(attributes);
-            } catch (Exception s) {
-                JOptionPane.showMessageDialog(this, "Erro ao visualizar impressão " , 
-                    "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
 
     private void imprimirDireto() {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        job.setPrintable(this);
-        
-        PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-        attributes.add(MediaSizeName.ISO_A4);
-        
-        if (job.printDialog(attributes)) {
-            try {
-                job.print(attributes);
-            } catch (PrinterException ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao imprimir: " + ex.getMessage(), 
-                    "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        imprimirAreaTextoComoPDF(areaTexto); 
     }
 
-    private void exportarParaPDF() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Salvar como PDF");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Files", "pdf"));
-        
-        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (!file.getName().toLowerCase().endsWith(".pdf")) {
-                file = new File(file.getParentFile(), file.getName() + ".pdf");
-            }
+   
+    
+    
+       public static void imprimirAreaTextoComoPDF(JTextArea areaTexto) {
+        if (areaTexto.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há texto para imprimir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
             
-            try (PDDocument document = new PDDocument()) {
-                PDPage page = new PDPage();
-                document.addPage(page);
+            // Configuração do fluxo de conteúdo
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                // Definir a fonte ANTES de começar o texto
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
                 
-                try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                   
-                    contentStream.beginText();
-                    contentStream.newLineAtOffset(50, 700);
-                    
-                    String[] lines = areaTexto.getText().split("\n");
-                    for (String line : lines) {
-                        contentStream.showText(line);
-                        contentStream.newLineAtOffset(0, -15);
-                    }
-                    
-                    contentStream.endText();
+                // Iniciar o bloco de texto
+                contentStream.beginText();
+                
+                // Posição inicial (x, y)
+                contentStream.newLineAtOffset(50, 700);
+                
+                // Espaçamento entre linhas
+                float leading = 14.5f;
+                
+                // Dividir o texto em linhas
+                String[] lines = areaTexto.getText().split("\n");
+                
+                // Escrever cada linha
+                for (String line : lines) {
+                    contentStream.showText(line);
+                    contentStream.newLineAtOffset(0, -leading);
                 }
                 
-                document.save(file);
-                JOptionPane.showMessageDialog(this, "PDF salvo com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao gerar PDF: " + ex.getMessage(), 
-                    "Erro", JOptionPane.ERROR_MESSAGE);
-            }
+                // Finalizar o bloco de texto (IMPORTANTE!)
+                contentStream.endText();
+            } // O try-with-resources fecha automaticamente o contentStream
+            
+            // Salvar PDF temporário
+            File tempFile = File.createTempFile("impressao", ".pdf");
+            document.save(tempFile);
+            
+            // Imprimir o PDF
+            printPDF(tempFile);
+            
+            // Opcional: excluir o arquivo temporário após a impressão
+            tempFile.deleteOnExit();
+            
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, 
+                "Erro ao criar PDF: " + e.getMessage(), 
+                "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
+    
+    private static void printPDF(File pdfFile) {
+    try {
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            
+            // Primeiro tenta imprimir diretamente
+            if (desktop.isSupported(Desktop.Action.PRINT)) {
+                desktop.print(pdfFile);
+            } 
+            // Se não conseguir, tenta abrir para impressão manual
+            else if (desktop.isSupported(Desktop.Action.OPEN)) {
+                desktop.open(pdfFile);
+                // O usuário precisará imprimir manualmente
+                JOptionPane.showMessageDialog(null, 
+                    "Por favor, imprima o documento que será aberto", 
+                    "Imprimir Manualmente", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                throw new IOException("Nenhuma operação de impressão ou abertura suportada");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                "Não foi possível acessar o recurso de impressão do sistema.", 
+                "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, 
+            "Erro ao imprimir: " + e.getMessage() + 
+            "\nCertifique-se de ter um leitor de PDF instalado.", 
+            "Erro", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
+    
+     @Override
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+        if (pageIndex > 0) {
+            return Printable.NO_SUCH_PAGE;
+        }
+        
+        // Ajusta as coordenadas para considerar as margens
+        Graphics2D g2d = (Graphics2D) graphics;
+        g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+        
+        // Desenha o conteúdo do painel
+        this.printAll(graphics);
+        
+        return Printable.PAGE_EXISTS;
+    }
+    
 
 
 
@@ -238,4 +255,6 @@ public class FormImpressão extends javax.swing.JPanel implements Printable {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
 }
+

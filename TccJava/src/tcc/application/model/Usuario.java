@@ -13,6 +13,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -20,8 +21,9 @@ import javax.persistence.Table;
  * @author Borges
  */
 @Entity
- @DiscriminatorValue(value="USUARIO")
+@DiscriminatorValue(value="USUARIO")
 @Table(name = "usuario")
+@PrimaryKeyJoinColumn(name = "id_pessoa") 
 public class Usuario extends Pessoa implements Serializable {
 
     private Date data_cadastro;
@@ -30,14 +32,15 @@ public class Usuario extends Pessoa implements Serializable {
     public Usuario() {
     }
     
+    /*
     @OneToMany
     @JoinColumn(name = "id_consulta")
-    private List<Consulta> consultas;
+    private List<Consulta> consultas;*/
     
-    public Usuario(Date data_cadastro, List<Consulta> consultas, String email, String nome, String senha, String cpf, LocalDate data_nascimento) {
+    public Usuario(Date data_cadastro, String email, String nome, String senha, String cpf, LocalDate data_nascimento) {
         super(email, nome, senha, cpf, data_nascimento);
         this.data_cadastro = data_cadastro;
-        this.consultas = consultas;
+        
     }
     
     
