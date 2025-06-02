@@ -7,17 +7,17 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 
 public class TableActionCellRender extends DefaultTableCellRenderer {
-    
+
+    private final PanelAction action = new PanelAction();
+
     @Override
-    public Component getTableCellRendererComponent(JTable jtable, Object o, boolean isSeleted, boolean bln1, int row, int column) {
-        Component com = super.getTableCellRendererComponent(jtable, o, isSeleted, bln1, row, column);
-        PanelAction action = new PanelAction();
-        if (isSeleted == false && row % 2 == 0) {             
-             action.setBackground(jtable.getBackground());
-             
-        } else {
+    public Component getTableCellRendererComponent(JTable jtable, Object o, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (!isSelected && row % 2 == 0) {
             action.setBackground(jtable.getBackground());
+        } else {
+            action.setBackground(jtable.getSelectionBackground());
         }
         return action;
     }
 }
+

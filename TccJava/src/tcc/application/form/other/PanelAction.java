@@ -9,6 +9,9 @@ import javax.swing.table.TableCellEditor;
 public class PanelAction extends javax.swing.JPanel {
 
     private FormMainMenu fmm;
+    private TableActionEvent event;
+    private TableCellEditor editor;
+    private int currentRow = -1;
 
     /**
      * Creates new form PanelAction
@@ -20,6 +23,34 @@ public class PanelAction extends javax.swing.JPanel {
         cmdX.setForeground(fmm.MainTable.getBackground());
 
     }
+    
+    public void updateRow(int row) {
+        this.currentRow = row;
+
+        // Remove todos os ActionListeners anteriores
+        for (ActionListener al : cmdC.getActionListeners()) {
+            cmdC.removeActionListener(al);
+        }
+        for (ActionListener al : cmdX.getActionListeners()) {
+            cmdX.removeActionListener(al);
+        }
+
+        // Adiciona novamente os listeners com a linha correta
+        cmdC.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (event != null) {
+                    event.onFinish(currentRow);
+                }
+                if (editor != null) {
+                    editor.stopCellEditing();
+                }
+            }
+        });
+    }
+    
+    
+    
 
     public void initEvent(TableActionEvent event, int row, TableCellEditor editor) {
         cmdC.addActionListener(new ActionListener() {
@@ -86,7 +117,7 @@ public class PanelAction extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton cmdC;
-    public javax.swing.JButton cmdX;
+    private javax.swing.JButton cmdC;
+    private javax.swing.JButton cmdX;
     // End of variables declaration//GEN-END:variables
 }

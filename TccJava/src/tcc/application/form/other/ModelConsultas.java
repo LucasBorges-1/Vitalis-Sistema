@@ -25,7 +25,7 @@ public class ModelConsultas extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -44,9 +44,9 @@ public class ModelConsultas extends AbstractTableModel {
                 return consultas.get(rowIndex).getHorario().format(formatter);
 
             }
-            case 3 -> {
+           // case 3 -> {
                 //Ações
-            }
+           // }
 
         }
         return "";
@@ -65,9 +65,9 @@ public class ModelConsultas extends AbstractTableModel {
             case 2 -> {
                 return "Horário";
             }
-            case 3 -> {
-                return "Ações";
-            }
+           // case 3 -> {
+              //  return "Ações";
+           // }
 
         }
         return "";

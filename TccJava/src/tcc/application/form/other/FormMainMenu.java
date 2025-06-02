@@ -6,7 +6,6 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -92,13 +91,12 @@ public class FormMainMenu extends javax.swing.JPanel {
             }
         };
 
-        MainTable.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
-        MainTable.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
-
+        //Barbaridade
+        // MainTable.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
+        //MainTable.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
     }
 
     private void configurarLayout() {
-
         setLayout(new BorderLayout(10, 10));
 
         JPanel painelContadores = new JPanel(new GridLayout(1, 2, 10, 0));
@@ -141,20 +139,36 @@ public class FormMainMenu extends javax.swing.JPanel {
         );
 
         painelContadores.add(painelColunas);
-
         add(lb, BorderLayout.NORTH);
         add(painelContadores, BorderLayout.NORTH);
 
-        panelTable.setLayout(new BoxLayout(panelTable, BoxLayout.Y_AXIS));
+        // Define layout vertical para panelTable
+        panelTable.setLayout(new BorderLayout()); // troca para BorderLayout
         panelTable.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        txtSearch.setMaximumSize(new Dimension(Integer.MAX_VALUE, txtSearch.getPreferredSize().height)); // faz ocupar largura total
-        panelTable.add(Box.createVerticalStrut(10)); // espaço acima do search
-        panelTable.add(txtSearch);
-        panelTable.add(Box.createVerticalStrut(10)); // espaço entre search e tabela
 
-        jScrollPane1.setBorder(BorderFactory.createEmptyBorder(1, 15, 15, 15));
-        panelTable.add(jScrollPane1);
+        // Campo de busca no topo
+        JPanel painelBusca = new JPanel(new BorderLayout());
+        txtSearch.setMaximumSize(new Dimension(Integer.MAX_VALUE - 150, txtSearch.getPreferredSize().height));
+        painelBusca.add(txtSearch, BorderLayout.CENTER);
+        panelTable.add(painelBusca, BorderLayout.NORTH);
 
+        // Área central com a tabela rolável
+        jScrollPane1.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+        panelTable.add(jScrollPane1, BorderLayout.CENTER);
+
+        // Rodapé com os botões no canto inferior direito
+        JPanel painelRodape = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        painelRodape.setOpaque(false);
+        cmdX.setForeground(MainTable.getBackground());
+     
+        cmdX.setBackground(MainTable.getBackground());
+        cmdC.setForeground(MainTable.getBackground());
+        cmdC.setBackground(MainTable.getBackground());
+        painelRodape.add(cmdX);
+        painelRodape.add(cmdC);
+        panelTable.add(painelRodape, BorderLayout.SOUTH);
+
+        // Adiciona o panelTable no centro do layout principal
         add(panelTable, BorderLayout.CENTER);
 
     }
@@ -189,6 +203,8 @@ public class FormMainMenu extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         MainTable = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
+        cmdX = new ActionButton();
+        cmdC =  new ActionButton();
 
         lb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lb.setText("Dashboard");
@@ -239,23 +255,46 @@ public class FormMainMenu extends javax.swing.JPanel {
             }
         });
 
+        cmdX.setForeground(new java.awt.Color(102, 0, 102));
+        cmdX.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/application/form/other/delete.png"))); // NOI18N
+        cmdX.setContentAreaFilled(false);
+
+        cmdC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/application/form/other/certo (2).png"))); // NOI18N
+        cmdC.setContentAreaFilled(false);
+
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
         panelTableLayout.setHorizontalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
             .addGroup(panelTableLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 512, Short.MAX_VALUE))
+                .addGroup(panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(panelTableLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtSearch)
+                        .addGap(87, 87, 87))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 941, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 14, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTableLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmdX)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdC)
+                .addGap(35, 35, 35))
         );
         panelTableLayout.setVerticalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTableLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelTableLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTableLayout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)
+                        .addComponent(cmdC))
+                    .addGroup(panelTableLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cmdX))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -263,7 +302,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(609, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(43, 43, 43))
             .addGroup(layout.createSequentialGroup()
@@ -282,7 +321,7 @@ public class FormMainMenu extends javax.swing.JPanel {
                 .addComponent(lb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(panelTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -299,11 +338,10 @@ public class FormMainMenu extends javax.swing.JPanel {
         MainTable.setRowHeight(28);
 
         //Muda a largura da coluna ações para 70px
-        TableColumn colunaAcoes = MainTable.getColumn("Ações");
-        colunaAcoes.setMinWidth(70);
-        colunaAcoes.setMaxWidth(70);
-        colunaAcoes.setPreferredWidth(70);
-
+        // TableColumn colunaAcoes = MainTable.getColumn("Ações");
+        //colunaAcoes.setMinWidth(70);
+        //colunaAcoes.setMaxWidth(70);
+        //colunaAcoes.setPreferredWidth(70);
         DefaultTableCellRenderer centroRenderer = new DefaultTableCellRenderer();
         centroRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         MainTable.getColumn("Nome").setCellRenderer(centroRenderer);
@@ -381,6 +419,8 @@ public class FormMainMenu extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable MainTable;
+    public javax.swing.JButton cmdC;
+    public javax.swing.JButton cmdX;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lb;

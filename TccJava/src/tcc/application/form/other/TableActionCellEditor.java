@@ -9,19 +9,18 @@ import javax.swing.JTable;
 
 public class TableActionCellEditor extends DefaultCellEditor {
 
-    private TableActionEvent event;
+    private final PanelAction action = new PanelAction();
 
     public TableActionCellEditor(TableActionEvent event) {
         super(new JCheckBox());
-        this.event = event;
+        action.initEvent(event, -1, this); // Use -1 como valor inicial
     }
 
     @Override
-    public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int row, int column) {
-        PanelAction action = new PanelAction();
-        action.initEvent(event, row,this);
-        //action.setBackground(jtable.getSelectionBackground());    
-        
+    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        // Atualiza o evento com a linha correta
+        action.updateRow(row); // método que você pode criar no PanelAction
         return action;
     }
 }
+
