@@ -49,12 +49,18 @@ public class DaoConsulta extends Dao {
     
     
    
-    public List<Consulta> listar() {
-        return em.createQuery("select c from Consulta c").getResultList();
+    public List<Consulta> listar(int id_pessoa) {
+        Query consulta = em.createQuery("select c from Consulta c where c.medico.id_pessoa=:id_pessoa");
+        consulta.setParameter("id_pessoa",id_pessoa);
+        return consulta.getResultList();
         
     }
     
-  
+        public List<Consulta> buscarPorNome(String nome) {
+        Query consulta = em.createQuery("select c from Consulta c where c.usuario.nome=:nome");
+        consulta.setParameter("nome",nome);
+        return consulta.getResultList();
+    }
     
      public Consulta selecionar(int id_consulta){
         Query consulta=em.createQuery("select c from Consulta c where c.id_consulta:m");

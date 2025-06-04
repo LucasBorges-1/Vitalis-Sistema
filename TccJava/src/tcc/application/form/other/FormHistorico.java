@@ -1,30 +1,58 @@
 package tcc.application.form.other;
 
+import tcc.application.form.other.model.ModelHistorico;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import tcc.application.model.Consulta;
+import tcc.application.model.Medico;
+import tcc.application.model.dao.DaoConsulta;
 
 public class FormHistorico extends javax.swing.JPanel {
 
     private tcc.application.form.ControllerPrincipal app;
+    private ModelHistorico model;
+    private DaoConsulta daoConsulta;
+    private Medico medicoSelecionado;
 
-    public FormHistorico() {
+    public FormHistorico(Medico medicoSelecionado) {
+        this.medicoSelecionado = medicoSelecionado;
         initComponents();
         lb3.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
+        model = new ModelHistorico();
+        daoConsulta = new DaoConsulta();
         configurarLayout();
+        gerenciandoTabela();
         estiloTabela();
-        adicionandoDadosExemplos();
+        buscar();
         app.setI(0);
 
+    }
+
+    public Medico getMedicoSelecionado() {
+        return medicoSelecionado;
+    }
+
+    public void setMedicoSelecionado(Medico medicoSelecionado) {
+        this.medicoSelecionado = medicoSelecionado;
     }
 
     private void configurarLayout() {
@@ -93,28 +121,79 @@ public class FormHistorico extends javax.swing.JPanel {
 
     }
 
-    public void adicionandoDadosExemplos() {
-        DefaultTableModel model = (DefaultTableModel) TableHis.getModel();
-        model.addRow(new Object[]{1, "João Silva", "Cardiologista", "08:00", "2023-10-01"});
-        model.addRow(new Object[]{2, "Maria Santos", "Pediatra", "09:30", "2023-10-01"});
-        model.addRow(new Object[]{3, "Carlos Oliveira", "Ortopedista", "10:15", "2023-10-01"});
-        model.addRow(new Object[]{4, "Ana Costa", "Dermatologista", "11:00", "2023-10-01"});
-        model.addRow(new Object[]{5, "Pedro Alves", "Otorrinolaringologista", "13:30", "2023-10-02"});
-        model.addRow(new Object[]{6, "Fernanda Lima", "Ginecologista", "14:45", "2023-10-02"});
-        model.addRow(new Object[]{7, "Ricardo Souza", "Neurologista", "15:20", "2023-10-02"});
-        model.addRow(new Object[]{8, "Patrícia Rocha", "Psiquiatra", "16:10", "2023-10-02"});
-        model.addRow(new Object[]{9, "Lucas Mendes", "Endocrinologista", "17:00", "2023-10-03"});
-        model.addRow(new Object[]{10, "Juliana Pereira", "Oftalmologista", "08:30", "2023-10-03"});
-        model.addRow(new Object[]{11, "Roberto Fernandes", "Urologista", "09:00", "2023-10-03"});
-        model.addRow(new Object[]{12, "Camila Gonçalves", "Cardiologista", "10:00", "2023-10-03"});
-        model.addRow(new Object[]{13, "Gustavo Martins", "Pediatra", "11:30", "2023-10-04"});
-        model.addRow(new Object[]{14, "Isabela Ribeiro", "Ortopedista", "12:15", "2023-10-04"});
-        model.addRow(new Object[]{15, "Marcos Antunes", "Dermatologista", "14:00", "2023-10-04"});
-        model.addRow(new Object[]{16, "Tatiane Castro", "Otorrinolaringologista", "15:30", "2023-10-04"});
-        model.addRow(new Object[]{17, "Felipe Nunes", "Ginecologista", "16:45", "2023-10-05"});
-        model.addRow(new Object[]{18, "Vanessa Lopes", "Neurologista", "17:30", "2023-10-05"});
-        model.addRow(new Object[]{19, "Bruno Carvalho", "Psiquiatra", "18:00", "2023-10-05"});
-        model.addRow(new Object[]{20, "Daniela Freitas", "Endocrinologista", "19:15", "2023-10-05"});
+    public void carregarConsultas() {
+        model.limpar();
+        for (Consulta c : daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa())) {
+
+            if (c.getEstado().equals("CONCLUIDA") || c.getEstado().equals("CANCELADA")) {
+                model.addConsultas(c);
+            }
+
+        }
+    }
+
+    public void buscar() {
+        txtHisSearch.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                buscarConsulta();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                buscarConsulta();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                buscarConsulta();
+            }
+        });
+    }
+
+    public void pesquisarConsulta(String nome) {
+        model.limparTabela();
+        model.limpar();
+
+        String termo = nome.toLowerCase();
+        List<Consulta> consultas = daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa()); // pega todas as consultas
+
+        for (Consulta c : consultas) {
+            String nomePaciente = c.getUsuario().getNome().toLowerCase();
+
+            if ((c.getEstado().equals("CONCLUIDA") || c.getEstado().equals("CANCELADA"))
+                    && nomePaciente.contains(termo)) {
+                model.addConsultas(c);
+            }
+        }
+    }
+
+    public void buscarConsulta() {
+        pesquisarConsulta(txtHisSearch.getText());
+    }
+
+    public void gerenciandoTabela() {
+        TableHis.setModel(model);
+        TableHis.getTableHeader().setReorderingAllowed(false);
+        
+        for (int i = 0; i < TableHis.getColumnCount(); i++) {
+            TableHis.getColumnModel().getColumn(i).setResizable(false);
+        }
+        
+        TableHis.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        carregarConsultas();
+        Font fonteTabela = new Font("Segoe UI", Font.PLAIN, 14);
+        TableHis.setFont(fonteTabela);
+        TableHis.getTableHeader().setFont(fonteTabela);
+        TableHis.setRowHeight(28);
+        DefaultTableCellRenderer centroRenderer = new DefaultTableCellRenderer();
+        centroRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+        TableHis.getColumn("Ordem").setCellRenderer(centroRenderer);
+        TableHis.getColumn("Nome").setCellRenderer(centroRenderer);
+        TableHis.getColumn("Tipo").setCellRenderer(centroRenderer);
+        TableHis.getColumn("Horário").setCellRenderer(centroRenderer);
+        TableHis.getColumn("Data").setCellRenderer(centroRenderer);
+        TableHis.getColumn("Estado").setCellRenderer(centroRenderer);
+
     }
 
     @SuppressWarnings("unchecked")

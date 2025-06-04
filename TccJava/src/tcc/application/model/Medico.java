@@ -109,14 +109,11 @@ public class Medico extends Pessoa implements Serializable{
         this.clinica = clinica;
     }
 
-    public Medico(String crm, Clinica clinica) {
-        this.crm = crm;
-        this.clinica = clinica;
-    }
+   
 
     @Override
     public String toString() {
-        return "Doutor: " +" Crm: "+ crm+" Area: "+tipo_medico;
+        return "Dr(a):" +"Crm: "+ crm+"Area: "+tipo_medico;
     }
     
    

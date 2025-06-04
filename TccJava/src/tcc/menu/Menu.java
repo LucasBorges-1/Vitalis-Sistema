@@ -27,7 +27,7 @@ public class Menu extends JPanel {
         {"~PRINCIPAL~"},
         {"Menu Principal"},
         {"~DADOS~"},
-        {"Consultas", "Histórico", "Pendentes"},
+        {"Consultas", "Histórico"},
         {"Impressão"},
         {"Carga horária","Horários","Calendário"},
         {"~Outros~"},

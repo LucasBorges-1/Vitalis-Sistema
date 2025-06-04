@@ -1,5 +1,6 @@
 package tcc.application.form.other;
 
+import tcc.application.form.other.model.ModelConsultas;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
@@ -31,10 +32,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -50,18 +54,19 @@ import tcc.application.model.dao.DaoPessoa;
 public class FormMainMenu extends javax.swing.JPanel {
 
     private tcc.application.form.ControllerPrincipal app;
-
+    private Medico medicoSelecionado;
     private ModelConsultas model;
     private DaoConsulta daoConsulta;
     private DaoPessoa daoPessoa;
-    private int contRow;
+
+    private JLabel labelAgendadas;
+    private JLabel labelRealizadas;
+
+    private int contRow = 0;
     private int contFinish = 0;
 
-    private JLabel labelAgendadas = new JLabel("Agendadas para hoje: " + contRow);
-    private JLabel labelRealizadas = new JLabel("Consultas concluidas: " + contFinish);
-
-
-    public FormMainMenu() {
+    public FormMainMenu(Medico medicoSelecionado) {
+        this.medicoSelecionado = medicoSelecionado;
         initComponents();
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
@@ -70,41 +75,31 @@ public class FormMainMenu extends javax.swing.JPanel {
         model = new ModelConsultas();
 
         //Configs
+        gerenciandoTabela();
+        contadores();
         configurarLayout();
         estiloTabela();
-        gerenciandoTabela();
+
+        buscar();
         app.setI(0);
         //
 
-        TableActionEvent event = new TableActionEvent() {
+    }
 
-            @Override
-            public void onFinish(int row) {
-                System.out.println("Consulta linha " + row + " terminada");
-                if (MainTable.isEditing()) {
-                    MainTable.getCellEditor().stopCellEditing();
-                }
-                DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
-                model.removeRow(row);
-                contFinish += 1;
-                labelRealizadas.setText("Consultas concluidas: " + contFinish);
-                if (contFinish == 20) {
-                    txtSearch.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Não há mais consultas na data de hoje.");
-                }
-            }
+           
 
-            @Override
-            public void onDelete(int row) {
-                if (MainTable.isEditing()) {
-                    MainTable.getCellEditor().stopCellEditing();
-                }
-                DefaultTableModel model = (DefaultTableModel) MainTable.getModel();
-                model.removeRow(row);
-                contFinish += 1;
-                labelRealizadas.setText("Consultas concluidas: " + contFinish);
-            }
-        };
+    public void contadores() {
+        labelAgendadas = new JLabel("Agendadas para hoje: " + model.getRowCount());
+        labelRealizadas = new JLabel("Já realizadas: " + contFinish);
 
+    }
+
+    public Medico getMedicoSelecionado() {
+        return medicoSelecionado;
+    }
+
+    public void setMedicoSelecionado(Medico medicoSelecionado) {
+        this.medicoSelecionado = medicoSelecionado;
     }
 
     private void configurarLayout() {
@@ -175,19 +170,13 @@ public class FormMainMenu extends javax.swing.JPanel {
     public void carregarConsultas() {
         LocalDate hoje = LocalDate.now();
         model.limpar();
-        for (Consulta c : daoConsulta.listar()) {
-            if (c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/) {
+        for (Consulta c : daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa())) {
+
+            if (c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/
+                    && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()) {
                 model.addConsultas(c);
             }
         }
-    }
-
-    public int contConsultashoje() {
-        int i = 0;
-        for (Consulta c : daoConsulta.listar()) {
-            i += 1;
-        }
-        return i;
     }
 
     @SuppressWarnings("unchecked")
@@ -356,7 +345,10 @@ public class FormMainMenu extends javax.swing.JPanel {
             String paciente = c.getUsuario().getNome();
             if (daoConsulta.editar(c)) {
                 model.removerDaTabela(indice);
-                Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER, "Consulta do paciente " + paciente + ",Concluida com sucesso.");
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
+                        "Consulta do paciente " + paciente + ",Concluida com sucesso.");
+                contFinish+=1;
+                labelRealizadas.setText("Já realizadas: " + contFinish);
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Não foi possivel concluir a consulta do paciente " + paciente);
             }
@@ -367,9 +359,38 @@ public class FormMainMenu extends javax.swing.JPanel {
         }
     }
 
+    public void cancelarConsulta(int indice) {
+        ModelConsultas model = (ModelConsultas) MainTable.getModel();
+
+        if (indice >= 0) {
+            Consulta c = model.pegarConsulta(indice);
+            c.setEstado("CANCELADA");
+            String paciente = c.getUsuario().getNome();
+            if (daoConsulta.editar(c)) {
+                model.removerDaTabela(indice);
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
+                        "Consulta do paciente " + paciente + ",suspensa com sucesso.");
+                contFinish+=1;
+                labelRealizadas.setText("Já realizadas: " + contFinish);
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Não foi possivel suspender a consulta do paciente. " + paciente);
+            }
+
+        } else {
+            Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_CENTER, "Por favor,selecione uma célula para suspender.");
+
+        }
+    }
+
     public void gerenciandoTabela() {
         MainTable.setModel(model);
+        MainTable.getTableHeader().setReorderingAllowed(false);
 
+        for (int i = 0; i < MainTable.getColumnCount(); i++) {
+            MainTable.getColumnModel().getColumn(i).setResizable(false);
+        }
+
+        MainTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         carregarConsultas();
         Font fonteTabela = new Font("Segoe UI", Font.PLAIN, 14);
         MainTable.setFont(fonteTabela);
@@ -380,7 +401,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         MainTable.getColumn("Nome").setCellRenderer(centroRenderer);
         MainTable.getColumn("Tipo").setCellRenderer(centroRenderer);
         MainTable.getColumn("Horário").setCellRenderer(centroRenderer);
-        labelAgendadas.setText("Agendadas para hoje: " + contConsultashoje());
+        // labelAgendadas.setText("Agendadas para hoje: " + model());
         estilizarBotaoFundoTabela(cmdC);
         estilizarBotaoFundoTabela(cmdX);
 
@@ -400,7 +421,7 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "arc:999;"
         );
         Color bgColor = MainTable.getBackground();
-        Color hoverColor = bgColor.darker(); // ou new Color(r, g, b) manualmente
+        Color hoverColor = bgColor.darker();
 
     }
 
@@ -429,7 +450,6 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "selectionForeground:$Table.foreground;");
 
         jScrollPane1.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
-                //+ "margin:15,15,15,15;"
                 + "trackArc:999;"
                 + "trackInsets:3,3,3,3;"
                 + "thumbInsets:3,3,3,3;"
@@ -442,23 +462,52 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
-                //  + "margin:5,20,5,20;"
                 + "background:$Panel.background;");
 
-        /*BtAtrasado.putClientProperty(FlatClientProperties.STYLE, ""
-                 + "font:+2;"
-                  + "arc:15;"
-                + "background:$Panel.background;"
-                + "borderWidth:0;"
-                + "focusWidth:0");
-
-        panelTable.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
-        
-         */
         MainTable.setGridColor(MainTable.getBackground());
         estilizarBotaoFundoTabela(cmdC);
         estilizarBotaoFundoTabela(cmdX);
 
+    }
+
+    public void buscar() {
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                buscarConsulta();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                buscarConsulta();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                buscarConsulta();
+            }
+        });
+    }
+
+    public void pesquisarConsulta(String nome) {
+        model.limparTabela();
+        model.limpar();
+
+        String termo = nome.toLowerCase();
+        List<Consulta> consultas = daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa());
+
+        for (Consulta c : consultas) {
+            String nomePaciente = c.getUsuario().getNome().toLowerCase();
+
+            if (this.getMedicoSelecionado().getId_pessoa() == c.getMedico().getId_pessoa()) {
+                if ((c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/)
+                        && nomePaciente.contains(termo)) {
+                    model.addConsultas(c);
+                }
+            }
+
+        }
+    }
+
+    public void buscarConsulta() {
+        pesquisarConsulta(txtSearch.getText());
     }
 
 
@@ -471,48 +520,46 @@ public class FormMainMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void cmdXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdXActionPerformed
-        if (MainTable.getSelectedRow() >= 0) {
-            int row = MainTable.getSelectedRow();
-
-        }
+        int indice = MainTable.getSelectedRow();
+        cancelarConsulta(indice);
     }//GEN-LAST:event_cmdXActionPerformed
 
     private void cmdCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCActionPerformed
         int indice = MainTable.getSelectedRow();
-        
         concluirConsulta(indice);
+
     }//GEN-LAST:event_cmdCActionPerformed
 
     private void cmdXMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdXMouseEntered
-        cmdX.setOpaque(false); 
+        cmdX.setOpaque(false);
         Color bgColor = MainTable.getBackground();
-        Color hoverColor =bgColor.darker();
+        Color hoverColor = bgColor.darker();
         cmdX.setForeground(hoverColor);
-        
+
     }//GEN-LAST:event_cmdXMouseEntered
 
     private void cmdCMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdCMouseExited
-        cmdC.setOpaque(true); 
+        cmdC.setOpaque(true);
         Color bgColor = MainTable.getBackground();
         Color hoverColor = bgColor.darker();
         cmdC.setForeground(bgColor);
-         
+
     }//GEN-LAST:event_cmdCMouseExited
 
     private void cmdCMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdCMouseEntered
-        cmdC.setOpaque(false); 
+        cmdC.setOpaque(false);
         Color bgColor = MainTable.getBackground();
-        Color hoverColor =bgColor.darker() ;
+        Color hoverColor = bgColor.darker();
         cmdC.setForeground(hoverColor);
-        
+
     }//GEN-LAST:event_cmdCMouseEntered
 
     private void cmdXMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdXMouseExited
-        cmdX.setOpaque(true); 
+        cmdX.setOpaque(true);
         Color bgColor = MainTable.getBackground();
         Color hoverColor = bgColor.darker();
         cmdX.setForeground(bgColor);
-         
+
     }//GEN-LAST:event_cmdXMouseExited
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

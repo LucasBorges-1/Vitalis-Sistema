@@ -55,9 +55,10 @@ public class DaoPessoa extends Dao{
         Pessoa pessoa = em.find(Pessoa.class, id);
         em.close();
         return pessoa;
+        
     }
-    public List<Medico> listar() {
-        return em.createQuery("select c from Pessoa c").getResultList();
+    public List<Medico> listarMedico() {
+        return em.createQuery("select c from Medico c").getResultList();
     }
   
    public Medico buscarMedicoPorCrm(String crm) {

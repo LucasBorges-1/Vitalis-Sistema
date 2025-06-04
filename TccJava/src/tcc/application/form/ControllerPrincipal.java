@@ -69,9 +69,9 @@ public class ControllerPrincipal extends JLayeredPane {
 
         String nomeDoMedico = this.getMedico().getNome();
         menu = new Menu();
-        
-        menu.header.setText("Dr(a) "+nomeDoMedico);
-    
+
+        menu.header.setText("Dr(a) " + nomeDoMedico);
+
         panelBody = new JPanel(new BorderLayout());
 
         initMenuArrowIcon();
@@ -81,7 +81,7 @@ public class ControllerPrincipal extends JLayeredPane {
                 + "focusWidth:0;"
                 + "borderWidth:0");
         menuButton.addActionListener((ActionEvent e) -> {
-            menu.header.setText("Dr(a) "+nomeDoMedico);
+            menu.header.setText("Dr(a) " + nomeDoMedico);
             setMenuFull(!menu.isMenuFull());
         });
         initMenuEvent();
@@ -109,12 +109,10 @@ public class ControllerPrincipal extends JLayeredPane {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
-                Application.showForm(new FormMainMenu());
+                Application.showForm(new FormMainMenu(this.getMedico()));
             } else if (index == 1) {
                 if (subIndex == 1) {
-                    Application.showForm(new FormHistorico());
-                } else if (subIndex == 2) {
-                    Application.showForm(new FormPendentes());
+                    Application.showForm(new FormHistorico(this.getMedico()));
                 } else {
                     action.cancel();
                 }

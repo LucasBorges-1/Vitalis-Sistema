@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.mindrot.jbcrypt.BCrypt;
+import raven.toast.Notifications;
 import tcc.application.Application;
 import tcc.application.form.other.FormMainMenu;
 import tcc.application.model.Clinica;
@@ -27,6 +28,7 @@ import tcc.application.model.dao.DaoPessoa;
  * @author Borges
  */
 public class ControllerPessoa {
+
     private Pessoa pessoa;
     private Medico medico;
     private FormManager formManager;
@@ -38,47 +40,49 @@ public class ControllerPessoa {
     private DaoClinica daoClinica;
     private Medico medicoSelecionado;
     private tcc.application.model.dao.BCryptUtil bCrypt;
-    private FormMainMenu fmm ;
-    
+    private FormMainMenu fmm;
+
     public ControllerPessoa() {
-        pessoa=new Pessoa();
-        medico=new Medico();
-        formManager=new FormManager();
-        loginMedicoForm =new LoginMedicoForm();
-        loginClinicaForm =new LoginClinicaForm();
-        daoPessoa=new DaoPessoa();
-        daoClinica=new DaoClinica();
-        daoHorario=new DaoHorario();
-        bCrypt=new BCryptUtil();
-        app=new Application();
-       
-        
+        pessoa = new Pessoa();
+        medico = new Medico();
+        formManager = new FormManager();
+        loginMedicoForm = new LoginMedicoForm();
+        loginClinicaForm = new LoginClinicaForm();
+        daoPessoa = new DaoPessoa();
+        daoClinica = new DaoClinica();
+        daoHorario = new DaoHorario();
+        bCrypt = new BCryptUtil();
+        app = new Application();
+
     }
-    
-    public void cadastrarMedico(String crm, String email,String nome,String senha, String cpf,LocalDate dataNa,String tipo){
-       Pessoa p=new Medico(crm, daoClinica.selecionar(), email, nome, bCrypt.hashSenha(senha), cpf, dataNa,tipo);
-       
+
+    public void cadastrarMedico(String crm, String email, String nome, String senha, String cpf, LocalDate dataNa, String tipo) {
+        Pessoa p = new Medico(crm, daoClinica.selecionar(), email, nome, bCrypt.hashSenha(senha), cpf, dataNa, tipo);
+
         if (daoPessoa.inserir(p)) {
-            JOptionPane.showMessageDialog(null,"Médico cadastrado com sucesso");
-        }else{
-              JOptionPane.showMessageDialog(null,"Erro ao cadastrar");
-        }   
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
+                    "Medico inserido com sucesso. ");
+
+        } else {
+             Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
+                    "Erro ao inserir Medico");
+        }
     }
-    
-    public boolean verificarLoginMedico(String crm,String senha) {
-        if (daoPessoa.validarLogin(crm, senha)) {         
+
+    public boolean verificarLoginMedico(String crm, String senha) {
+        if (daoPessoa.validarLogin(crm, senha)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    public boolean verificarLoginClinica(String nome,String senha) {
-        if (daoClinica.validarLogin(nome,senha)) {
+
+    public boolean verificarLoginClinica(String nome, String senha) {
+        if (daoClinica.validarLogin(nome, senha)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-     
+
 }

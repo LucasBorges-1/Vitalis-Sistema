@@ -1,10 +1,12 @@
 package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -25,22 +27,35 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import net.miginfocom.swing.MigLayout;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
+import raven.toast.Notifications;
+import tcc.application.form.other.model.ModelMedico;
+import tcc.application.model.Consulta;
 import tcc.application.model.Medico;
 import tcc.application.model.dao.DaoClinica;
+import tcc.application.model.dao.DaoPessoa;
 
 public class FormManager extends javax.swing.JPanel {
 
     private tcc.application.form.ControllerPessoa cp;
-    private DefaultTableModel tableModel = new DefaultTableModel();
-    
+    private ModelMedico model;
+    private DaoPessoa daoPessoa;
+
     public FormManager() {
         initComponents();
+        daoPessoa = new DaoPessoa();
+        model = new ModelMedico();
+        gerenciandoTabela();
+        carregarMedicos();
+        estiloTabela();
         init();
 
     }
@@ -58,13 +73,45 @@ public class FormManager extends javax.swing.JPanel {
         edAreaAtuacao.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Informe sua Formação");
         edCrm.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira o Crm");
         edEmail.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Informe o seu Email");
-        configurarLayout2();
+        configurarLayout();
 
     }
 
-   
+    public void estiloTabela() {
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-    private void configurarLayout2() {
+        TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:25;"
+                + "background:$Login.background;"
+        );
+
+        TbMedico.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
+                + "height:30;"
+                + "hoverBackground:null;"
+                + "pressedBackground:null;"
+                + "background:$Login.background;"
+                );
+
+        TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
+                + "background:$Login.background;"
+                + "rowHeight:30;"
+                + "showHorizontalLines:true;"
+                + "intercellSpacing:0,1;"
+                + "cellFocusColor:$TableHeader.hoverBackground;"
+                + "selectionBackground:$TableHeader.hoverBackground;"
+                + "selectionForeground:$Table.foreground;");
+
+        jScrollPane1.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
+                + "trackArc:999;"
+                + "trackInsets:3,3,3,3;"
+                + "thumbInsets:3,3,3,3;"
+                + "background:$Login.background;");
+
+        TbMedico.setGridColor(TbMedico.getBackground());
+
+    }
+
+    private void configurarLayout() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
@@ -83,11 +130,10 @@ public class FormManager extends javax.swing.JPanel {
         gbcEsquerda.gridx = 0;
         gbcEsquerda.gridy = 0;
         gbcEsquerda.weightx = 1.0;
-        
+
         gbcEsquerda.anchor = GridBagConstraints.NORTH;
         gbcEsquerda.insets = new Insets(5, 10, 5, 10);
 
-       
         Dimension campoSize = new Dimension(250, 25);
         edNome.setPreferredSize(campoSize);
         edCpf.setPreferredSize(campoSize);
@@ -98,7 +144,6 @@ public class FormManager extends javax.swing.JPanel {
         edAreaAtuacao.setPreferredSize(campoSize);
         BtCadastrar.setPreferredSize(new Dimension(120, 30));
 
-        
         panelEsquerda.add(lNome, gbcEsquerda);
         gbcEsquerda.gridy++;
         panelEsquerda.add(edNome, gbcEsquerda);
@@ -130,7 +175,6 @@ public class FormManager extends javax.swing.JPanel {
         panelEsquerda.add(BtCadastrar, gbcEsquerda);
         gbcEsquerda.gridy++;
 
-       
         panelEsquerda.putClientProperty(FlatClientProperties.STYLE,
                 "arc:25;"
                 + "background:$Login.background;"
@@ -142,7 +186,6 @@ public class FormManager extends javax.swing.JPanel {
 
         MainPanel.add(panelEsquerda, gbc);
 
-       
         gbc.gridx = 1;
         gbc.insets = new Insets(0, 5, 0, 0);
 
@@ -154,7 +197,7 @@ public class FormManager extends javax.swing.JPanel {
         );
 
         panelDireita.add(jScrollPane1, BorderLayout.CENTER);
-       
+
         panelDireita.add(btExcluir, BorderLayout.SOUTH);
 
         panelDireita.putClientProperty(FlatClientProperties.STYLE,
@@ -164,6 +207,38 @@ public class FormManager extends javax.swing.JPanel {
 
         MainPanel.add(panelDireita, gbc);
         add(MainPanel, BorderLayout.CENTER);
+    }
+
+    public void carregarMedicos() {
+        model.limpar();
+        for (Medico m : daoPessoa.listarMedico()) {
+            model.addConsultas(m);
+        }
+    }
+
+    public void gerenciandoTabela() {
+        TbMedico.setModel(model);
+        TbMedico.getTableHeader().setReorderingAllowed(false);
+
+        for (int i = 0; i < TbMedico.getColumnCount(); i++) {
+            TbMedico.getColumnModel().getColumn(i).setResizable(false);
+        }
+
+        TbMedico.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        carregarMedicos();
+        Font fonteTabela = new Font("Segoe UI", Font.PLAIN, 16);
+        Font fonteTitulo = new Font("Segoe UI", Font.BOLD, 20);
+        TbMedico.setFont(fonteTabela);
+
+        JTableHeader cabecalho = TbMedico.getTableHeader();
+        cabecalho.setFont(fonteTitulo);
+        TbMedico.getTableHeader().setFont(fonteTabela);
+        TbMedico.setRowHeight(28);
+        DefaultTableCellRenderer centroRenderer = new DefaultTableCellRenderer();
+        centroRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        TbMedico.getColumn("Nome").setCellRenderer(centroRenderer);
+        TbMedico.getColumn("Crm").setCellRenderer(centroRenderer);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -279,7 +354,7 @@ public class FormManager extends javax.swing.JPanel {
                 .addGap(12, 12, 12))
         );
 
-        btExcluir.setText("Excluir");
+        btExcluir.setText("Editar");
 
         TbMedico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -368,15 +443,6 @@ public class FormManager extends javax.swing.JPanel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(dataS, formatter);
         cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
- 
-        TbMedico.setModel(tableModel);
-       
-        // Adiciona à tabela
-        String medicoStr = String.format(
-        "Nome: %s | CPF: %s | Email: %s | Nasc.: %s | CRM: %s | Área: %s",
-        nome, cpf, email, data, crm, tipo
-    );
-        tableModel.addRow(new Object[]{medicoStr});
 
         // (Opcional) Limpar os campos
         edNome.setText("");
@@ -386,6 +452,7 @@ public class FormManager extends javax.swing.JPanel {
         edCrm.setText("");
         edSenha.setText("");
         edAreaAtuacao.setText("");
+        carregarMedicos();
 
 
     }//GEN-LAST:event_BtCadastrarActionPerformed

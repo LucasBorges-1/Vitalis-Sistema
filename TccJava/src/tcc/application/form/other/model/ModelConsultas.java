@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tcc.application.form.other;
+package tcc.application.form.other.model;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -86,16 +86,14 @@ public class ModelConsultas extends AbstractTableModel {
         consultas.remove(indice);
         fireTableRowsDeleted(indice, indice);
     }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 3;
+    
+    public void limparTabela(){
+        if (consultas.size()>=1) {
+             fireTableRowsDeleted(0,consultas.size()-1);
+        }
+       
     }
 
-    public void setConsultas(List<Consulta> consultas) {
-        this.consultas = consultas;
-        fireTableDataChanged();
-    }
     
     public Consulta pegarConsulta(int indice){
         return consultas.get(indice);
