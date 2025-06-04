@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.net.URI;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -25,35 +26,54 @@ import tcc.application.form.other.FormHistorico;
 import tcc.application.form.other.FormHorarios;
 
 import tcc.application.form.other.FormPendentes;
+import tcc.application.model.Medico;
+import tcc.application.model.dao.DaoPessoa;
 import tcc.menu.Menu;
 import tcc.menu.MenuAction;
 
-
 public class ControllerPrincipal extends JLayeredPane {
-    public  ControllerPrincipal() {
-        
+
+    private Medico medico;
+    private DaoPessoa daoPessoa;
+
+    public ControllerPrincipal(Medico medico) {
+
+        daoPessoa = new DaoPessoa();
+        this.medico = medico;
+
         init();
     }
 
-   
-    private static int i = 0; 
-    
+    public Medico getMedico() {
+        return medico;
+    }
 
-   public static int getI() {
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    private static int i = 0;
+
+    public static int getI() {
         return i;
     }
-    
+
     public static void setI(int value) {
         i = value;
     }
-    
-
 
     private void init() {
+        System.out.println(this.getMedico().toString());
         setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new MainFormLayout());
+
+        String nomeDoMedico = this.getMedico().getNome();
         menu = new Menu();
+        
+        menu.header.setText("Dr(a) "+nomeDoMedico);
+    
         panelBody = new JPanel(new BorderLayout());
+
         initMenuArrowIcon();
         menuButton.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:$Menu.button.background;"
@@ -61,6 +81,7 @@ public class ControllerPrincipal extends JLayeredPane {
                 + "focusWidth:0;"
                 + "borderWidth:0");
         menuButton.addActionListener((ActionEvent e) -> {
+            menu.header.setText("Dr(a) "+nomeDoMedico);
             setMenuFull(!menu.isMenuFull());
         });
         initMenuEvent();
@@ -80,11 +101,10 @@ public class ControllerPrincipal extends JLayeredPane {
         if (menuButton == null) {
             menuButton = new JButton();
         }
-       String icon = (getComponentOrientation().isLeftToRight()) ? "menu_left.svg" : "menu_right.svg";
+        String icon = (getComponentOrientation().isLeftToRight()) ? "menu_left.svg" : "menu_right.svg";
         menuButton.setIcon(new FlatSVGIcon("tcc/icon/svg/" + icon, 0.8f));
     }
-    
-    
+
     private void initMenuEvent() {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
@@ -101,17 +121,16 @@ public class ControllerPrincipal extends JLayeredPane {
             } else if (index == 2) {
                 Application.showForm(new FormImpressão());
             } else if (index == 3) {
-               
+
                 if (subIndex == 1) {
                     Application.showForm(new FormHorarios());
                 } else if (subIndex == 2) {
                     ControllerPrincipal.setI(3);
-                Application.showForm(new FormCalendar());
+                    Application.showForm(new FormCalendar());
                 } else {
                     action.cancel();
                 }
-                
-                
+
             } else if (index == 4) {
                 if (subIndex == 1) {
 
@@ -137,7 +156,7 @@ public class ControllerPrincipal extends JLayeredPane {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    
+
                 } else if (subIndex == 3) {
                     try {
                         URI drive = new URI("https://drive.google.com/");
@@ -159,11 +178,11 @@ public class ControllerPrincipal extends JLayeredPane {
             }
         });
     }
-    
-     public int CalendarIsOpen(){
-        if (i==3) {
+
+    public int CalendarIsOpen() {
+        if (i == 3) {
             return 3;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -175,7 +194,7 @@ public class ControllerPrincipal extends JLayeredPane {
         } else {
             icon = (full) ? "menu_right.svg" : "menu_left.svg";
         }
- menuButton.setIcon(new FlatSVGIcon("tcc/icon/svg/" + icon, 0.8f));
+        menuButton.setIcon(new FlatSVGIcon("tcc/icon/svg/" + icon, 0.8f));
         menu.setMenuFull(full);
         revalidate();
     }

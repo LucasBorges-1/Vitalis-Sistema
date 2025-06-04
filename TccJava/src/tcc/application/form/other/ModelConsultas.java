@@ -82,7 +82,7 @@ public class ModelConsultas extends AbstractTableModel {
         fireTableRowsInserted(consultas.size() - 1, consultas.size() - 1);
     }
 
-    public void excluirCliente(int indice) {
+    public void removerDaTabela(int indice) {
         consultas.remove(indice);
         fireTableRowsDeleted(indice, indice);
     }
@@ -96,4 +96,10 @@ public class ModelConsultas extends AbstractTableModel {
         this.consultas = consultas;
         fireTableDataChanged();
     }
+    
+    public Consulta pegarConsulta(int indice){
+        return consultas.get(indice);
+        
+    }
+    
 }

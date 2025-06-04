@@ -37,6 +37,7 @@ import tcc.application.Application;
 public class FormHorarios extends javax.swing.JPanel {
 
     private tcc.application.form.ControllerPessoa cp;
+    private tcc.application.form.ControllerPrincipal app;
 
     public FormHorarios() {
         initComponents();
@@ -51,6 +52,7 @@ public class FormHorarios extends javax.swing.JPanel {
                 + "borderWidth:0;"
                 + "focusWidth:0");
         configurarLayout();
+        app.setI(0);
 
     }
 

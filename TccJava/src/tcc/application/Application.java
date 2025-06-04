@@ -28,30 +28,36 @@ import tcc.application.model.Medico;
 import tcc.application.model.Pessoa;
 import tcc.application.model.dao.BCryptUtil;
 import tcc.application.model.dao.DaoClinica;
+import tcc.application.model.dao.DaoPessoa;
 
 public class Application extends javax.swing.JFrame {
 
     public static Application app;
-    private final ControllerPrincipal mainForm;
+    private static ControllerPrincipal mainForm;
     private final LoginMedicoForm loginForm;
     private LoginClinicaForm loginclinicaForm;
     private FormManager formManager;
-    private LoginMedicoForm loginMedicoForm;
+    private static LoginMedicoForm loginMedicoForm;
     private tcc.application.model.dao.BCryptUtil bCrypt;
     private DaoClinica daoClinica;
+    private static DaoPessoa daoPessoa;
 
     private static int isOpen;
+    private static Medico medico;
 
     public Application() {
         initComponents();
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
-        mainForm = new ControllerPrincipal();
+        daoPessoa = new DaoPessoa();
+
         loginForm = new LoginMedicoForm();
         loginclinicaForm = new LoginClinicaForm();
         formManager = new FormManager();
         loginMedicoForm = new LoginMedicoForm();
+        
         daoClinica = new DaoClinica();
+
 
         setContentPane(loginForm);
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
@@ -59,12 +65,23 @@ public class Application extends javax.swing.JFrame {
 
     }
 
+    public LoginMedicoForm getLoginMedicoForm() {
+        return loginMedicoForm;
+    }
+
+    public void setLoginMedicoForm(LoginMedicoForm loginMedicoForm) {
+        this.loginMedicoForm = loginMedicoForm;
+    }
+
     public static void showForm(Component component) {
         component.applyComponentOrientation(app.getComponentOrientation());
         app.mainForm.showForm(component);
     }
 
-    public static void login() {
+    public static void login(String crm) {
+       
+        medico = daoPessoa.buscarMedicoPorCrm(crm);
+        mainForm = new ControllerPrincipal(medico);
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.mainForm);
         app.mainForm.applyComponentOrientation(app.getComponentOrientation());
@@ -78,9 +95,9 @@ public class Application extends javax.swing.JFrame {
     public static void OpenloginClinica() {
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.loginclinicaForm);
-        app.mainForm.applyComponentOrientation(app.getComponentOrientation());
-        setSelectedMenu(0, 0);
-        app.mainForm.hideMenu();
+        app.loginclinicaForm.applyComponentOrientation(app.getComponentOrientation());
+        //setSelectedMenu(0, 0);
+
         SwingUtilities.updateComponentTreeUI(app.loginclinicaForm);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
@@ -89,9 +106,8 @@ public class Application extends javax.swing.JFrame {
         isOpen = 1;
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.formManager);
-        app.mainForm.applyComponentOrientation(app.getComponentOrientation());
-        setSelectedMenu(0, 0);
-        app.mainForm.hideMenu();
+        app.formManager.applyComponentOrientation(app.getComponentOrientation());
+        //setSelectedMenu(0, 0);;
         SwingUtilities.updateComponentTreeUI(app.formManager);
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
 

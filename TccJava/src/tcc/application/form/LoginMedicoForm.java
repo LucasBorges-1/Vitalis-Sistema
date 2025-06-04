@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 import tcc.application.Application;
 
 public class LoginMedicoForm extends javax.swing.JPanel {
@@ -16,12 +17,10 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         initComponents();
         init();
         
-      
-        
-
     }
 
     private void init() {
+        System.out.println();
         setLayout(new MigLayout("al center center"));
         
         btManegerArea.putClientProperty(FlatClientProperties.STYLE, ""
@@ -38,6 +37,8 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe seu Crm");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe sua Senha");
         
+        
+        //Botão de login
         cmdLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,11 +49,12 @@ public class LoginMedicoForm extends javax.swing.JPanel {
                 String senhaDigitada = new String(senhaChars);
 
                 if (cp.verificarLoginMedico(txtUser.getText(), senhaDigitada)) {
-                    Application.login();
+                    
+                    Application.login(txtUser.getText());
 
                 } else {
-                    
-                    JOptionPane.showMessageDialog(null, "Senha incorreta");
+                    Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "CRM ou senha incorretos." );
+                   
                    
                 }
                 cmdLogin.setText("Login");
@@ -60,6 +62,17 @@ public class LoginMedicoForm extends javax.swing.JPanel {
             }
         });
     }
+    
+    public String pegarCrm(){
+        if (txtUser.getText()!=null) {
+            return txtUser.getText();
+        }else{
+            return "nuloa"; 
+        }
+        
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -130,6 +143,6 @@ public class LoginMedicoForm extends javax.swing.JPanel {
     private javax.swing.JLabel lbUser;
     private tcc.application.form.PanelLogin panelLogin1;
     private javax.swing.JPasswordField txtPass;
-    private javax.swing.JTextField txtUser;
+    public javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

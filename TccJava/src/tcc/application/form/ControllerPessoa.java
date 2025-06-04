@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.mindrot.jbcrypt.BCrypt;
 import tcc.application.Application;
+import tcc.application.form.other.FormMainMenu;
 import tcc.application.model.Clinica;
 import tcc.application.model.Horarios;
 import tcc.application.model.Medico;
@@ -37,6 +38,7 @@ public class ControllerPessoa {
     private DaoClinica daoClinica;
     private Medico medicoSelecionado;
     private tcc.application.model.dao.BCryptUtil bCrypt;
+    private FormMainMenu fmm ;
     
     public ControllerPessoa() {
         pessoa=new Pessoa();
@@ -49,11 +51,11 @@ public class ControllerPessoa {
         daoHorario=new DaoHorario();
         bCrypt=new BCryptUtil();
         app=new Application();
+       
         
     }
     
     public void cadastrarMedico(String crm, String email,String nome,String senha, String cpf,LocalDate dataNa,String tipo){
-       
        Pessoa p=new Medico(crm, daoClinica.selecionar(), email, nome, bCrypt.hashSenha(senha), cpf, dataNa,tipo);
        
         if (daoPessoa.inserir(p)) {
@@ -64,7 +66,7 @@ public class ControllerPessoa {
     }
     
     public boolean verificarLoginMedico(String crm,String senha) {
-        if (daoPessoa.validarLogin(crm, senha)) {
+        if (daoPessoa.validarLogin(crm, senha)) {         
             return true;
         }else{
             return false;

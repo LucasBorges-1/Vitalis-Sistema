@@ -50,6 +50,7 @@ public class Horarios implements Serializable {
         this.dia = dia;
          this.inicio = Time.valueOf("08:00:00");
         this.fim = Time.valueOf("17:00:00");
+        
       
     }
 

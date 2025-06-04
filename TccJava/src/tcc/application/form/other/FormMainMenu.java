@@ -5,19 +5,26 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.ui.FlatUIUtils;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,20 +39,27 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import raven.toast.Notifications;
+import tcc.application.form.ControllerPrincipal;
+import tcc.application.form.LoginMedicoForm;
 import tcc.application.model.Consulta;
 import tcc.application.model.Consulta_;
+import tcc.application.model.Medico;
 import tcc.application.model.dao.DaoConsulta;
+import tcc.application.model.dao.DaoPessoa;
 
 public class FormMainMenu extends javax.swing.JPanel {
 
     private tcc.application.form.ControllerPrincipal app;
+
     private ModelConsultas model;
     private DaoConsulta daoConsulta;
+    private DaoPessoa daoPessoa;
     private int contRow;
     private int contFinish = 0;
 
     private JLabel labelAgendadas = new JLabel("Agendadas para hoje: " + contRow);
     private JLabel labelRealizadas = new JLabel("Consultas concluidas: " + contFinish);
+
 
     public FormMainMenu() {
         initComponents();
@@ -91,12 +105,10 @@ public class FormMainMenu extends javax.swing.JPanel {
             }
         };
 
-        //Barbaridade
-        // MainTable.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender());
-        //MainTable.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor(event));
     }
 
     private void configurarLayout() {
+
         setLayout(new BorderLayout(10, 10));
 
         JPanel painelContadores = new JPanel(new GridLayout(1, 2, 10, 0));
@@ -141,53 +153,38 @@ public class FormMainMenu extends javax.swing.JPanel {
         painelContadores.add(painelColunas);
         add(lb, BorderLayout.NORTH);
         add(painelContadores, BorderLayout.NORTH);
+        estilizarBotaoFundoTabela(cmdC);
+        estilizarBotaoFundoTabela(cmdX);
 
-        // Define layout vertical para panelTable
-        panelTable.setLayout(new BorderLayout()); // troca para BorderLayout
+        panelTable.setLayout(new BorderLayout());
         panelTable.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Campo de busca no topo
-        JPanel painelBusca = new JPanel(new BorderLayout());
         txtSearch.setMaximumSize(new Dimension(Integer.MAX_VALUE - 150, txtSearch.getPreferredSize().height));
-        painelBusca.add(txtSearch, BorderLayout.CENTER);
-        panelTable.add(painelBusca, BorderLayout.NORTH);
-
-        // Área central com a tabela rolável
+        panelTable.add(txtSearch, BorderLayout.NORTH);
         jScrollPane1.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         panelTable.add(jScrollPane1, BorderLayout.CENTER);
-
-        // Rodapé com os botões no canto inferior direito
         JPanel painelRodape = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         painelRodape.setOpaque(false);
-        cmdX.setForeground(MainTable.getBackground());
-     
-        cmdX.setBackground(MainTable.getBackground());
-        cmdC.setForeground(MainTable.getBackground());
-        cmdC.setBackground(MainTable.getBackground());
+        painelRodape.putClientProperty(FlatClientProperties.STYLE, "background:$Login.background;");
         painelRodape.add(cmdX);
         painelRodape.add(cmdC);
         panelTable.add(painelRodape, BorderLayout.SOUTH);
-
-        // Adiciona o panelTable no centro do layout principal
         add(panelTable, BorderLayout.CENTER);
 
     }
 
     public void carregarConsultas() {
+        LocalDate hoje = LocalDate.now();
         model.limpar();
-        for (Consulta c : daoConsulta.listarConsultaDataAtual()) {
-            model.addConsultas(c);
+        for (Consulta c : daoConsulta.listar()) {
+            if (c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/) {
+                model.addConsultas(c);
+            }
         }
-    }
-
-    public void carregarConsultasOt() {
-        List<Consulta> consultas = daoConsulta.listarConsultaDataAtual();
-        model.setConsultas(consultas);
     }
 
     public int contConsultashoje() {
         int i = 0;
-        for (Consulta c : daoConsulta.listarConsultaDataAtual()) {
+        for (Consulta c : daoConsulta.listar()) {
             i += 1;
         }
         return i;
@@ -255,12 +252,35 @@ public class FormMainMenu extends javax.swing.JPanel {
             }
         });
 
-        cmdX.setForeground(new java.awt.Color(102, 0, 102));
-        cmdX.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/application/form/other/delete.png"))); // NOI18N
-        cmdX.setContentAreaFilled(false);
+        cmdX.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/icon/png/expirado.png"))); // NOI18N
+        cmdX.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cmdXMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cmdXMouseExited(evt);
+            }
+        });
+        cmdX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdXActionPerformed(evt);
+            }
+        });
 
-        cmdC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/application/form/other/certo (2).png"))); // NOI18N
-        cmdC.setContentAreaFilled(false);
+        cmdC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tcc/icon/png/verificar.png"))); // NOI18N
+        cmdC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cmdCMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cmdCMouseExited(evt);
+            }
+        });
+        cmdC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdCActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
@@ -321,35 +341,66 @@ public class FormMainMenu extends javax.swing.JPanel {
                 .addComponent(lb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void concluirConsulta(int indice) {
+        ModelConsultas model = (ModelConsultas) MainTable.getModel();
+
+        if (indice >= 0) {
+            Consulta c = model.pegarConsulta(indice);
+            c.setEstado("CONCLUIDA");
+            String paciente = c.getUsuario().getNome();
+            if (daoConsulta.editar(c)) {
+                model.removerDaTabela(indice);
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER, "Consulta do paciente " + paciente + ",Concluida com sucesso.");
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Não foi possivel concluir a consulta do paciente " + paciente);
+            }
+
+        } else {
+            Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_CENTER, "Por favor,selecione uma ceélula para concluir");
+
+        }
+    }
+
     public void gerenciandoTabela() {
         MainTable.setModel(model);
 
-        carregarConsultasOt();
+        carregarConsultas();
         Font fonteTabela = new Font("Segoe UI", Font.PLAIN, 14);
-
         MainTable.setFont(fonteTabela);
         MainTable.getTableHeader().setFont(fonteTabela);
         MainTable.setRowHeight(28);
-
-        //Muda a largura da coluna ações para 70px
-        // TableColumn colunaAcoes = MainTable.getColumn("Ações");
-        //colunaAcoes.setMinWidth(70);
-        //colunaAcoes.setMaxWidth(70);
-        //colunaAcoes.setPreferredWidth(70);
         DefaultTableCellRenderer centroRenderer = new DefaultTableCellRenderer();
         centroRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         MainTable.getColumn("Nome").setCellRenderer(centroRenderer);
         MainTable.getColumn("Tipo").setCellRenderer(centroRenderer);
         MainTable.getColumn("Horário").setCellRenderer(centroRenderer);
-
-        //Carrega as consultas do banco de dados
         labelAgendadas.setText("Agendadas para hoje: " + contConsultashoje());
+        estilizarBotaoFundoTabela(cmdC);
+        estilizarBotaoFundoTabela(cmdX);
+
+    }
+
+    private void estilizarBotaoFundoTabela(JButton botao) {
+        botao.getParent().setBackground(null);
+        cmdC.getParent().setForeground(panelTable.getBackground());
+        botao.setOpaque(true);
+        botao.setContentAreaFilled(false);
+        botao.setBorderPainted(false);
+        botao.setFocusPainted(false);
+
+        botao.putClientProperty(FlatClientProperties.STYLE, ""
+                + "background:$Login.background;"
+                + "foreground:$Menu.title.foreground"
+                + "arc:999;"
+        );
+        Color bgColor = MainTable.getBackground();
+        Color hoverColor = bgColor.darker(); // ou new Color(r, g, b) manualmente
 
     }
 
@@ -359,7 +410,6 @@ public class FormMainMenu extends javax.swing.JPanel {
         panelTable.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Login.background;"
-        // + "margin:20,20,20,20;"
         );
 
         MainTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
@@ -406,6 +456,9 @@ public class FormMainMenu extends javax.swing.JPanel {
         
          */
         MainTable.setGridColor(MainTable.getBackground());
+        estilizarBotaoFundoTabela(cmdC);
+        estilizarBotaoFundoTabela(cmdX);
+
     }
 
 
@@ -416,6 +469,51 @@ public class FormMainMenu extends javax.swing.JPanel {
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
 
     }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void cmdXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdXActionPerformed
+        if (MainTable.getSelectedRow() >= 0) {
+            int row = MainTable.getSelectedRow();
+
+        }
+    }//GEN-LAST:event_cmdXActionPerformed
+
+    private void cmdCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCActionPerformed
+        int indice = MainTable.getSelectedRow();
+        
+        concluirConsulta(indice);
+    }//GEN-LAST:event_cmdCActionPerformed
+
+    private void cmdXMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdXMouseEntered
+        cmdX.setOpaque(false); 
+        Color bgColor = MainTable.getBackground();
+        Color hoverColor =bgColor.darker();
+        cmdX.setForeground(hoverColor);
+        
+    }//GEN-LAST:event_cmdXMouseEntered
+
+    private void cmdCMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdCMouseExited
+        cmdC.setOpaque(true); 
+        Color bgColor = MainTable.getBackground();
+        Color hoverColor = bgColor.darker();
+        cmdC.setForeground(bgColor);
+         
+    }//GEN-LAST:event_cmdCMouseExited
+
+    private void cmdCMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdCMouseEntered
+        cmdC.setOpaque(false); 
+        Color bgColor = MainTable.getBackground();
+        Color hoverColor =bgColor.darker() ;
+        cmdC.setForeground(hoverColor);
+        
+    }//GEN-LAST:event_cmdCMouseEntered
+
+    private void cmdXMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmdXMouseExited
+        cmdX.setOpaque(true); 
+        Color bgColor = MainTable.getBackground();
+        Color hoverColor = bgColor.darker();
+        cmdX.setForeground(bgColor);
+         
+    }//GEN-LAST:event_cmdXMouseExited
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable MainTable;

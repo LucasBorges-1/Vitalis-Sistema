@@ -26,7 +26,7 @@ import org.eclipse.persistence.jpa.jpql.parser.DateTime;
  */
 @Entity
 @Table(name = "consulta")
-public class Consulta implements Serializable{
+public class Consulta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,27 +35,37 @@ public class Consulta implements Serializable{
     @Column(name = "type")
     private String tipo;
     private LocalDateTime horario;
-    
-    //A discutir
-    //private String caminho_documentos;
+    private String estado;
     
     @ManyToOne
-    @JoinColumn(name = "id_pessoa")
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
-            
-    public Consulta() {
-    }
-
-    public Consulta(LocalDate data_consulta, String tipo, LocalDateTime horario, Usuario usuario) {
+    
+    @ManyToOne
+    @JoinColumn(name = "id_medico")
+    private Medico medico;
+    
+    public Consulta(LocalDate data_consulta, Medico medico, String tipo, LocalDateTime horario, Usuario usuario) {
         this.data_consulta = data_consulta;
         this.tipo = tipo;
         this.horario = horario;
         this.usuario = usuario;
+        this.medico = medico;
+    }
+
+    public Consulta() {
     }
 
     public int getId_consulta() {
         return id_consulta;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public void setId_consulta(int id_consulta) {
@@ -94,9 +104,19 @@ public class Consulta implements Serializable{
         this.usuario = usuario;
     }
 
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    
+    
     @Override
     public String toString() {
         return "Consulta{" + "data_consulta=" + data_consulta + ", tipo=" + tipo + ", horario=" + horario + ", usuario=" + usuario + '}';
     }
 
-   }
+}

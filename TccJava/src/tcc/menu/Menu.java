@@ -39,10 +39,32 @@ public class Menu extends JPanel {
         return menuFull;
     }
 
-    public void setMenuFull(boolean menuFull) {
+  
+    private final List<MenuEvent> events = new ArrayList<>();
+    private boolean menuFull = true;
+    private String headerName = "";
+          
+
+    protected final boolean hideMenuTitleOnMinimum = true;
+    protected final int menuTitleLeftInset = 5;
+    protected final int menuTitleVgap = 5;
+    protected final int menuMaxWidth = 250;
+    protected final int menuMinWidth = 60;
+    protected final int headerFullHgap = 5;
+
+    
+    public Menu( ) {
+        
+        init();
+    }
+
+
+    
+      public void setMenuFull(boolean menuFull) {
         this.menuFull = menuFull;
         if (menuFull) {
-            header.setText(headerName);
+            
+           
             header.setHorizontalAlignment(getComponentOrientation().isLeftToRight() ? JLabel.LEFT : JLabel.RIGHT);
         } else {
             header.setText("");
@@ -57,21 +79,8 @@ public class Menu extends JPanel {
         toolBarAccentColor.setMenuFull(menuFull);
     }
 
-    private final List<MenuEvent> events = new ArrayList<>();
-    private boolean menuFull = true;
-    private final String headerName = "  Agende Aqui";
-
-    protected final boolean hideMenuTitleOnMinimum = true;
-    protected final int menuTitleLeftInset = 5;
-    protected final int menuTitleVgap = 5;
-    protected final int menuMaxWidth = 250;
-    protected final int menuMinWidth = 60;
-    protected final int headerFullHgap = 5;
-
-    public Menu() {
-       
-        init();
-    }
+    
+    
 
     private void init() {
         setLayout(new MenuLayout());
@@ -81,6 +90,7 @@ public class Menu extends JPanel {
                 + "arc:10");
         header = new JLabel(headerName);
         header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logoBlack.png")));
+        header.setIconTextGap(20); 
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$Menu.header.font;"
                 + "foreground:$Menu.foreground");

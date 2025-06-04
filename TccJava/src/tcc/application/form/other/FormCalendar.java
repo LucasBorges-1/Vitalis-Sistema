@@ -48,6 +48,7 @@ import tcc.application.Application;
 
 public class FormCalendar extends javax.swing.JPanel {
 
+
     public FormCalendar() {
 
         initComponents();
@@ -58,7 +59,7 @@ public class FormCalendar extends javax.swing.JPanel {
         estilizarcalendario();
         configuraçãoLayout();
         addMouseListenerToCalendarDays(calendarPanel);
-
+      
     }
 
     private static void addMouseListenerToCalendarDays(CalendarPanel calendarPanel) {
