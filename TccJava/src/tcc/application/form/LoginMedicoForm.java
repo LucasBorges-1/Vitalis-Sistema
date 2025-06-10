@@ -28,20 +28,20 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         setLayout(new MigLayout("al center center"));
 
         btManegerArea.putClientProperty(FlatClientProperties.STYLE, ""
-                + "foreground:$Menu.background;"
+                + "foreground:$Login.textColor;"
                 + "font:$h4.font");
 
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 
         txtUser.putClientProperty(FlatClientProperties.STYLE, ""
-                +"background:$Panel.background;"
-                + "showRevealButton:true;"
-                + "showCapsLock:true");
+                +"background:$Panel.background;");
+             //   + "showRevealButton:true;"
+               // + "showCapsLock:true"
         
         txtPass.putClientProperty(FlatClientProperties.STYLE, ""
                 +"background:$Panel.background;"
-                + "showRevealButton:true;"
+               + "showRevealButton:true;"
                 + "showCapsLock:true");
         cmdLogin.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:$Panel.background;"

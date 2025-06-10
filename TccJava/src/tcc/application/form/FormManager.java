@@ -122,7 +122,7 @@ public class FormManager extends javax.swing.JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
-                + "arc:25;"
+               // + "arc:25;"
                 + "background:$Login.background;"
         );
 
