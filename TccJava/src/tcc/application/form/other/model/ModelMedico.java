@@ -66,7 +66,7 @@ public class ModelMedico extends AbstractTableModel {
 
     public void removerDaTabela(int indice) {
         medicos.remove(indice);
-        fireTableRowsDeleted(indice, indice);
+        fireTableRowsDeleted(indice,indice);
     }
     
     public void limparTabela(){

@@ -41,11 +41,11 @@ public class Medico extends Pessoa implements Serializable{
     private String tipo_medico;
     
     @OneToMany
-    @JoinColumn(name = "id_consultas") 
+    @JoinColumn(name = "id_consulta") 
     private List<Consulta> consultas;
     
     @OneToMany
-    @JoinColumn(name = "id_horarios") 
+    @JoinColumn(name = "id_horario") 
     private List<Horarios> horarios;
 
     @ManyToOne

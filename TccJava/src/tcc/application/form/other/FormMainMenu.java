@@ -86,8 +86,6 @@ public class FormMainMenu extends javax.swing.JPanel {
 
     }
 
-           
-
     public void contadores() {
         labelAgendadas = new JLabel("Agendadas para hoje: " + model.getRowCount());
         labelRealizadas = new JLabel("Já realizadas: " + contFinish);
@@ -114,6 +112,9 @@ public class FormMainMenu extends javax.swing.JPanel {
 
         labelAgendadas.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h2.font");
+
+       
+        
         MainTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h2.font");
         labelAgendadas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -337,8 +338,6 @@ public class FormMainMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     public void concluirConsulta(int indice) {
-        ModelConsultas model = (ModelConsultas) MainTable.getModel();
-
         if (indice >= 0) {
             Consulta c = model.pegarConsulta(indice);
             c.setEstado("CONCLUIDA");
@@ -347,7 +346,7 @@ public class FormMainMenu extends javax.swing.JPanel {
                 model.removerDaTabela(indice);
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
                         "Consulta do paciente " + paciente + ",Concluida com sucesso.");
-                contFinish+=1;
+                contFinish += 1;
                 labelRealizadas.setText("Já realizadas: " + contFinish);
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Não foi possivel concluir a consulta do paciente " + paciente);
@@ -370,7 +369,7 @@ public class FormMainMenu extends javax.swing.JPanel {
                 model.removerDaTabela(indice);
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
                         "Consulta do paciente " + paciente + ",suspensa com sucesso.");
-                contFinish+=1;
+                contFinish += 1;
                 labelRealizadas.setText("Já realizadas: " + contFinish);
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Não foi possivel suspender a consulta do paciente. " + paciente);

@@ -6,8 +6,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 import tcc.application.Application;
 
 
@@ -20,6 +22,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
     public LoginClinicaForm() {
         initComponents();
         init();
+        btManegerArea.setHorizontalTextPosition(SwingConstants.LEFT);
 
     }
 
@@ -27,17 +30,26 @@ public class LoginClinicaForm extends javax.swing.JPanel {
         setLayout(new MigLayout("al center center"));
 
         btManegerArea.putClientProperty(FlatClientProperties.STYLE, ""
+                + "foreground:$Menu.background;"
                 + "font:$h4.font");
-        
+
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 
+        txtUser.putClientProperty(FlatClientProperties.STYLE, ""
+                +"background:$Panel.background;"
+                + "showRevealButton:true;"
+                + "showCapsLock:true");
+        
         txtPass.putClientProperty(FlatClientProperties.STYLE, ""
+                +"background:$Panel.background;"
                 + "showRevealButton:true;"
                 + "showCapsLock:true");
         cmdLogin.putClientProperty(FlatClientProperties.STYLE, ""
+                + "background:$Panel.background;"
                 + "borderWidth:0;"
                 + "focusWidth:0");
+        
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
         
@@ -57,7 +69,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
                     Application.OpenClinicaManeger();
                 } else {
 
-                    JOptionPane.showMessageDialog(null, "Senha incorreta");
+                   Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Nome ou senha incorretos.");
                    
                 }
                 cmdLogin.setText("Login");
@@ -93,7 +105,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
         cmdLogin.setText("Login");
         panelLogin1.add(cmdLogin);
 
-        btManegerArea.setText("                                                                      Voltar");
+        btManegerArea.setText("                                                                 voltar");
         btManegerArea.setBorder(null);
         btManegerArea.setBorderPainted(false);
         btManegerArea.setContentAreaFilled(false);
@@ -109,7 +121,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(217, Short.MAX_VALUE)
+                .addContainerGap(218, Short.MAX_VALUE)
                 .addComponent(panelLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(197, 197, 197))
         );

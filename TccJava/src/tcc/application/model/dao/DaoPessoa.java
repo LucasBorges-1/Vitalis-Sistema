@@ -7,6 +7,8 @@ package tcc.application.model.dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import tcc.application.model.Consulta;
 import tcc.application.model.Medico;
 import tcc.application.model.Pessoa;
 
@@ -50,13 +52,11 @@ public class DaoPessoa extends Dao{
     }
     
     
-    public Pessoa buscarPessoaPorId(Long id) {
-        EntityManager em = emf.createEntityManager();
-        Pessoa pessoa = em.find(Pessoa.class, id);
-        em.close();
-        return pessoa;
-        
-    }
+     public Medico buscarPorId(int id_pessoa) {
+        Query consulta = em.createQuery("select c from Pessoa c where c.id_pessoa=:id_pessoa");
+        consulta.setParameter("id_pessoa",id_pessoa);
+        return (Medico) consulta.getSingleResult();
+     }
     public List<Medico> listarMedico() {
         return em.createQuery("select c from Medico c").getResultList();
     }
@@ -68,9 +68,9 @@ public class DaoPessoa extends Dao{
                  .setParameter("crm", crm)
                  .getSingleResult();
     } catch (NoResultException e) {
-        return null; // Médico não encontrado
+        return null; 
     } catch (Exception e) {
-        e.printStackTrace(); // Log do erro inesperado
+        e.printStackTrace();
         return null;
     } finally {
         em.close();

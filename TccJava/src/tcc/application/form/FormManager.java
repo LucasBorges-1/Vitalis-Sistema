@@ -12,6 +12,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -40,6 +42,7 @@ import raven.toast.Notifications;
 import tcc.application.form.other.model.ModelMedico;
 import tcc.application.model.Consulta;
 import tcc.application.model.Medico;
+import tcc.application.model.Pessoa;
 import tcc.application.model.dao.DaoClinica;
 import tcc.application.model.dao.DaoPessoa;
 
@@ -48,10 +51,13 @@ public class FormManager extends javax.swing.JPanel {
     private tcc.application.form.ControllerPessoa cp;
     private ModelMedico model;
     private DaoPessoa daoPessoa;
+    private DaoClinica daoClinica;
+    private ActionListener listenerCadastrarOriginal;
 
     public FormManager() {
         initComponents();
         daoPessoa = new DaoPessoa();
+        daoClinica = new DaoClinica();
         model = new ModelMedico();
         gerenciandoTabela();
         carregarMedicos();
@@ -75,6 +81,41 @@ public class FormManager extends javax.swing.JPanel {
         edEmail.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Informe o seu Email");
         configurarLayout();
 
+        listenerCadastrarOriginal = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cp = new ControllerPessoa();
+                String cpf = edCpf.getText();
+                String email = edEmail.getText();
+                String crm = edCrm.getText();
+                String senha = edSenha.getText();
+                String dataS = edDataNa.getText();
+                String nome = edNome.getText();
+                String tipo = edAreaAtuacao.getText();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate data = LocalDate.parse(dataS, formatter);
+                cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
+
+                edNome.setText("");
+                edCpf.setText("");
+                edEmail.setText("");
+                edDataNa.setText("");
+                edCrm.setText("");
+                edSenha.setText("");
+                edAreaAtuacao.setText("");
+                carregarMedicos();
+            }
+        };
+
+        BtCadastrar.addActionListener(listenerCadastrarOriginal);
+
+        btExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarMedico();
+            }
+        });
+
     }
 
     public void estiloTabela() {
@@ -90,7 +131,7 @@ public class FormManager extends javax.swing.JPanel {
                 + "hoverBackground:null;"
                 + "pressedBackground:null;"
                 + "background:$Login.background;"
-                );
+        );
 
         TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:$Login.background;"
@@ -241,6 +282,99 @@ public class FormManager extends javax.swing.JPanel {
 
     }
 
+public void editarMedico() {
+    int indice = TbMedico.getSelectedRow();
+
+    if (indice >= 0) {
+        
+        Medico medicoSelecionado = model.pegarMedico(indice);
+        
+        
+        Medico medicoOriginal = daoPessoa.buscarPorId(medicoSelecionado.getId_pessoa());
+        if (medicoOriginal == null) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
+                "Erro: médico não encontrado no banco.");
+            return;
+        }
+
+        
+        String senhaOriginal = medicoOriginal.getSenha();
+
+        edNome.setText(medicoOriginal.getNome());
+        edCpf.setText(medicoOriginal.getCpf());
+        edEmail.setText(medicoOriginal.getEmail());
+        edDataNa.setText(medicoOriginal.getData_nascimento().toString());
+        edCrm.setText(medicoOriginal.getCrm());
+        edAreaAtuacao.setText(medicoOriginal.getTipo_medico());
+
+        edSenha.setEnabled(false);
+        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Não é possível editar a senha.");
+
+        BtCadastrar.setText("Confirmar edição");
+
+
+        for (ActionListener al : BtCadastrar.getActionListeners()) {
+            BtCadastrar.removeActionListener(al);
+        }
+
+        BtCadastrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    
+                    medicoOriginal.setNome(edNome.getText());
+                    medicoOriginal.setCpf(edCpf.getText());
+                    medicoOriginal.setEmail(edEmail.getText());
+                    medicoOriginal.setData_nascimento(LocalDate.parse(edDataNa.getText()));
+                    medicoOriginal.setCrm(edCrm.getText());
+                    medicoOriginal.setTipo_medico(edAreaAtuacao.getText());
+                    medicoOriginal.setSenha(senhaOriginal);
+                    medicoOriginal.setClinica(daoClinica.selecionar());
+
+                    
+                    if (daoPessoa.editar(medicoOriginal)) {
+                        Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
+                                "Médico editado com sucesso.");
+
+                        
+                        edNome.setText("");
+                        edCpf.setText("");
+                        edEmail.setText("");
+                        edDataNa.setText("");
+                        edCrm.setText("");
+                        edSenha.setText("");
+                        edAreaAtuacao.setText("");
+
+                       
+                        carregarMedicos();
+                        BtCadastrar.setText("Cadastrar");
+
+                        
+                        for (ActionListener al : BtCadastrar.getActionListeners()) {
+                            BtCadastrar.removeActionListener(al);
+                        }
+                        BtCadastrar.addActionListener(listenerCadastrarOriginal);
+
+                    } else {
+                        Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
+                                "Erro ao editar o médico.");
+                    }
+
+                } catch (Exception ex) {
+                    Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
+                            "Erro ao processar os dados. Verifique os campos.");
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+    } else {
+        Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.TOP_CENTER,
+                "Selecione um médico para editar.");
+    }
+}
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -258,10 +392,10 @@ public class FormManager extends javax.swing.JPanel {
         lCrm = new javax.swing.JLabel();
         edCrm = new javax.swing.JTextField();
         lSenha = new javax.swing.JLabel();
-        edSenha = new javax.swing.JTextField();
         BtCadastrar = new javax.swing.JButton();
         edAreaAtuacao = new javax.swing.JTextField();
         lAreadeAtuacao = new javax.swing.JLabel();
+        edSenha = new javax.swing.JTextField();
         panelDireita = new javax.swing.JPanel();
         btExcluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -282,11 +416,6 @@ public class FormManager extends javax.swing.JPanel {
         lSenha.setText("Senha");
 
         BtCadastrar.setText("Cadastrar");
-        BtCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtCadastrarActionPerformed(evt);
-            }
-        });
 
         lAreadeAtuacao.setText("Area de Atuação");
 
@@ -297,25 +426,25 @@ public class FormManager extends javax.swing.JPanel {
             .addGroup(panelEsquerdaLayout.createSequentialGroup()
                 .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEsquerdaLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lNome)
-                            .addComponent(edNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lCpf)
-                            .addComponent(edCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lEmail)
-                            .addComponent(edEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lDataNa)
-                            .addComponent(edDataNa, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lCrm)
-                            .addComponent(edCrm, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lSenha)
-                            .addComponent(edSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lAreadeAtuacao)
-                            .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelEsquerdaLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addComponent(BtCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BtCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEsquerdaLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lNome)
+                            .addComponent(edNome, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(lCpf)
+                            .addComponent(edCpf, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(lEmail)
+                            .addComponent(edEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(lDataNa)
+                            .addComponent(edDataNa, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(lCrm)
+                            .addComponent(edCrm, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(lSenha)
+                            .addComponent(lAreadeAtuacao)
+                            .addComponent(edAreaAtuacao, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(edSenha))))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         panelEsquerdaLayout.setVerticalGroup(
@@ -343,9 +472,9 @@ public class FormManager extends javax.swing.JPanel {
                 .addComponent(edCrm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lSenha)
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(edSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lAreadeAtuacao)
                 .addGap(6, 6, 6)
                 .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -431,32 +560,6 @@ public class FormManager extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BtCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtCadastrarActionPerformed
-        cp = new ControllerPessoa();
-        String cpf = this.edCpf.getText();
-        String email = this.edEmail.getText();
-        String crm = this.edCrm.getText();
-        String senha = this.edSenha.getText();
-        String dataS = this.edDataNa.getText();
-        String nome = this.edNome.getText();
-        String tipo = this.edAreaAtuacao.getText();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate data = LocalDate.parse(dataS, formatter);
-        cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
-
-        // (Opcional) Limpar os campos
-        edNome.setText("");
-        edCpf.setText("");
-        edEmail.setText("");
-        edDataNa.setText("");
-        edCrm.setText("");
-        edSenha.setText("");
-        edAreaAtuacao.setText("");
-        carregarMedicos();
-
-
-    }//GEN-LAST:event_BtCadastrarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtCadastrar;
     private javax.swing.JPanel MainPanel;
@@ -468,7 +571,7 @@ public class FormManager extends javax.swing.JPanel {
     public javax.swing.JTextField edDataNa;
     public javax.swing.JTextField edEmail;
     public javax.swing.JTextField edNome;
-    public javax.swing.JTextField edSenha;
+    private javax.swing.JTextField edSenha;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lAreadeAtuacao;
     private javax.swing.JLabel lCpf;

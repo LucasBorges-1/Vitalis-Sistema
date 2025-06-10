@@ -1,6 +1,9 @@
 package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -12,32 +15,45 @@ import tcc.application.Application;
 public class LoginMedicoForm extends javax.swing.JPanel {
 
     ControllerPessoa cp;
+    private Color original;
 
     public LoginMedicoForm() {
         initComponents();
         init();
-        
+
     }
 
     private void init() {
-        System.out.println();
-        setLayout(new MigLayout("al center center"));
         
+        setLayout(new MigLayout("al center center"));
+
         btManegerArea.putClientProperty(FlatClientProperties.STYLE, ""
+                + "foreground:$Menu.background;"
                 + "font:$h4.font");
+
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 
+        txtUser.putClientProperty(FlatClientProperties.STYLE, ""
+                +"background:$Panel.background;"
+                + "showRevealButton:true;"
+                + "showCapsLock:true");
+        
         txtPass.putClientProperty(FlatClientProperties.STYLE, ""
+                +"background:$Panel.background;"
                 + "showRevealButton:true;"
                 + "showCapsLock:true");
         cmdLogin.putClientProperty(FlatClientProperties.STYLE, ""
+                + "background:$Panel.background;"
                 + "borderWidth:0;"
                 + "focusWidth:0");
+
+      // Color hoverColor = btManegerArea.getForeground().darker().darker();
+      //  btManegerArea.setForeground(hoverColor);
+
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe seu Crm");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe sua Senha");
-        
-        
+
         //Botão de login
         cmdLogin.addActionListener(new ActionListener() {
             @Override
@@ -49,30 +65,27 @@ public class LoginMedicoForm extends javax.swing.JPanel {
                 String senhaDigitada = new String(senhaChars);
 
                 if (cp.verificarLoginMedico(txtUser.getText(), senhaDigitada)) {
-                    
+
                     Application.login(txtUser.getText());
 
                 } else {
-                    Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "CRM ou senha incorretos." );
-                   
-                   
+                    Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "CRM ou senha incorretos.");
+
                 }
                 cmdLogin.setText("Login");
 
             }
         });
     }
-    
-    public String pegarCrm(){
-        if (txtUser.getText()!=null) {
+
+    public String pegarCrm() {
+        if (txtUser.getText() != null) {
             return txtUser.getText();
-        }else{
-            return "nuloa"; 
+        } else {
+            return "nuloa";
         }
-        
+
     }
-    
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -102,7 +115,7 @@ public class LoginMedicoForm extends javax.swing.JPanel {
         cmdLogin.setText("Login");
         panelLogin1.add(cmdLogin);
 
-        btManegerArea.setText("                                            Arêa do colaborador");
+        btManegerArea.setText("Arêa do colaborador");
         btManegerArea.setBorder(null);
         btManegerArea.setBorderPainted(false);
         btManegerArea.setContentAreaFilled(false);
@@ -134,6 +147,7 @@ public class LoginMedicoForm extends javax.swing.JPanel {
     private void btManegerAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btManegerAreaActionPerformed
         Application.OpenloginClinica();
     }//GEN-LAST:event_btManegerAreaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btManegerArea;

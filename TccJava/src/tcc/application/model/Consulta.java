@@ -30,6 +30,7 @@ public class Consulta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_consulta")
     private int id_consulta;
     private LocalDate data_consulta;
     @Column(name = "type")
