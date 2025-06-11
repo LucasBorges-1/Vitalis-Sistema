@@ -4,6 +4,7 @@ import tcc.application.form.other.model.ModelHistorico;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -17,10 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import tcc.application.form.other.model.EstadoCellRenderer;
 import tcc.application.model.Consulta;
 import tcc.application.model.Medico;
 import tcc.application.model.dao.DaoConsulta;
@@ -91,9 +94,9 @@ public class FormHistorico extends javax.swing.JPanel {
                 + "rowHeight:30;"
                 + "showHorizontalLines:true;"
                 + "intercellSpacing:0,1;"
-                + "cellFocusColor:$TableHeader.hoverBackground;"
-                + "selectionBackground:$TableHeader.hoverBackground;"
-                + "selectionForeground:$Table.foreground;");
+                + "cellFocusColor:$TableHeader.hoverBackground;");
+               // + "selectionBackground:$TableHeader.hoverBackground;"
+               // + "selectionForeground:$Table.foreground;"
 
         jScrollPane1.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
                 // + "margin:15,15,15,15;"
@@ -172,15 +175,16 @@ public class FormHistorico extends javax.swing.JPanel {
     public void gerenciandoTabela() {
         TableHis.setModel(model);
         TableHis.getTableHeader().setReorderingAllowed(false);
-        
+
         for (int i = 0; i < TableHis.getColumnCount(); i++) {
             TableHis.getColumnModel().getColumn(i).setResizable(false);
         }
-        
+
         TableHis.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         carregarConsultas();
         Font fonteTabela = new Font("Segoe UI", Font.PLAIN, 14);
+
         TableHis.setFont(fonteTabela);
         TableHis.getTableHeader().setFont(fonteTabela);
         TableHis.setRowHeight(28);
@@ -193,6 +197,18 @@ public class FormHistorico extends javax.swing.JPanel {
         TableHis.getColumn("Horário").setCellRenderer(centroRenderer);
         TableHis.getColumn("Data").setCellRenderer(centroRenderer);
         TableHis.getColumn("Estado").setCellRenderer(centroRenderer);
+        TableHis.getColumnModel().getColumn(5).setCellRenderer(new EstadoCellRenderer());
+
+        // Coluna "Ordem" (coluna 0)
+        TableHis.getColumnModel().getColumn(0).setMinWidth(50);
+        TableHis.getColumnModel().getColumn(0).setMaxWidth(60);
+        TableHis.getColumnModel().getColumn(0).setPreferredWidth(55);
+
+       
+        // Coluna "Horário" (coluna 3)
+        TableHis.getColumnModel().getColumn(3).setMinWidth(70);
+        TableHis.getColumnModel().getColumn(3).setMaxWidth(80);
+        TableHis.getColumnModel().getColumn(3).setPreferredWidth(75);
 
     }
 

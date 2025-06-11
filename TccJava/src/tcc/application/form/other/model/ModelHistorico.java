@@ -32,7 +32,7 @@ public class ModelHistorico extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0 -> {
-                return consultas.get(rowIndex).getId_consulta();
+                return rowIndex+1;
             }
             case 1 -> {
                 return consultas.get(rowIndex).getUsuario().getNome();

@@ -117,6 +117,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         
         MainTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h2.font");
+        
         labelAgendadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelAgendadas.setVerticalAlignment(SwingConstants.CENTER);
         painelLinhas.add(labelAgendadas);
@@ -444,9 +445,9 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "rowHeight:30;"
                 + "showHorizontalLines:true;"
                 + "intercellSpacing:0,1;"
-                + "cellFocusColor:$TableHeader.hoverBackground;"
-                + "selectionBackground:$TableHeader.hoverBackground;"
-                + "selectionForeground:$Table.foreground;");
+                + "cellFocusColor:$TableHeader.hoverBackground;");
+              //  + "selectionBackground:$TableHeader.hoverBackground;"
+              //  + "selectionForeground:$Table.foreground;"
 
         jScrollPane1.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
                 + "trackArc:999;"

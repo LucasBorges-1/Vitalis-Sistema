@@ -40,7 +40,7 @@ public class FormImpressão extends javax.swing.JPanel implements Printable {
     private tcc.application.form.ControllerPrincipal app;
     private JPanel panelImpressao;
     private static JTextArea areaTexto;
-    private JButton btnImprimir = new JButton("Imprimir Direto");
+    private JButton btnImprimir = new JButton("Imprimir");
      private static final String RECEITA_TEMPLATE = """
         RECEITA MÉDICA
 
