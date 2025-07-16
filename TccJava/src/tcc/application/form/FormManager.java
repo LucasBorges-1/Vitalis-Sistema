@@ -53,7 +53,9 @@ public class FormManager extends javax.swing.JPanel {
     private DaoPessoa daoPessoa;
     private DaoClinica daoClinica;
     private ActionListener listenerCadastrarOriginal;
-
+    
+    private String[] arrayTipoMedico={"Clínico Geral","Ginecologista e Obstetrícia","Pediatra","Cardiologista","Dermatologista","Ortopedista","Psiquiatra","Oftamologista","Geriatra"};
+    
     public FormManager() {
         initComponents();
         daoPessoa = new DaoPessoa();
@@ -63,7 +65,16 @@ public class FormManager extends javax.swing.JPanel {
         carregarMedicos();
         estiloTabela();
         init();
+        additemComboBox(arrayTipoMedico);
+        
 
+    }
+    
+    public void additemComboBox(String[] array){
+        edAreaAtuacao.removeAllItems();
+        for(String item : array){
+            edAreaAtuacao.addItem(item);
+        }
     }
 
     private void init() {
@@ -91,7 +102,7 @@ public class FormManager extends javax.swing.JPanel {
                 String senha = edSenha.getText();
                 String dataS = edDataNa.getText();
                 String nome = edNome.getText();
-                String tipo = edAreaAtuacao.getText();
+                String tipo = (String) edAreaAtuacao.getSelectedItem();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate data = LocalDate.parse(dataS, formatter);
                 cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
@@ -102,8 +113,9 @@ public class FormManager extends javax.swing.JPanel {
                 edDataNa.setText("");
                 edCrm.setText("");
                 edSenha.setText("");
-                edAreaAtuacao.setText("");
+                //edAreaAtuacao.setText("");
                 carregarMedicos();
+                edSenha.setEnabled(true);
             }
         };
 
@@ -305,7 +317,7 @@ public void editarMedico() {
         edEmail.setText(medicoOriginal.getEmail());
         edDataNa.setText(medicoOriginal.getData_nascimento().toString());
         edCrm.setText(medicoOriginal.getCrm());
-        edAreaAtuacao.setText(medicoOriginal.getTipo_medico());
+        //edAreaAtuacao.setText(medicoOriginal.getTipo_medico());
 
         edSenha.setEnabled(false);
         edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Não é possível editar a senha.");
@@ -327,7 +339,7 @@ public void editarMedico() {
                     medicoOriginal.setEmail(edEmail.getText());
                     medicoOriginal.setData_nascimento(LocalDate.parse(edDataNa.getText()));
                     medicoOriginal.setCrm(edCrm.getText());
-                    medicoOriginal.setTipo_medico(edAreaAtuacao.getText());
+                    medicoOriginal.setTipo_medico((String) edAreaAtuacao.getSelectedItem());
                     medicoOriginal.setSenha(senhaOriginal);
                     medicoOriginal.setClinica(daoClinica.selecionar());
 
@@ -343,7 +355,7 @@ public void editarMedico() {
                         edDataNa.setText("");
                         edCrm.setText("");
                         edSenha.setText("");
-                        edAreaAtuacao.setText("");
+                        //edAreaAtuacao.setText("");
 
                        
                         carregarMedicos();
@@ -393,9 +405,9 @@ public void editarMedico() {
         edCrm = new javax.swing.JTextField();
         lSenha = new javax.swing.JLabel();
         BtCadastrar = new javax.swing.JButton();
-        edAreaAtuacao = new javax.swing.JTextField();
         lAreadeAtuacao = new javax.swing.JLabel();
         edSenha = new javax.swing.JTextField();
+        edAreaAtuacao = new javax.swing.JComboBox<>();
         panelDireita = new javax.swing.JPanel();
         btExcluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -419,32 +431,30 @@ public void editarMedico() {
 
         lAreadeAtuacao.setText("Area de Atuação");
 
+        edAreaAtuacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout panelEsquerdaLayout = new javax.swing.GroupLayout(panelEsquerda);
         panelEsquerda.setLayout(panelEsquerdaLayout);
         panelEsquerdaLayout.setHorizontalGroup(
             panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEsquerdaLayout.createSequentialGroup()
-                .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelEsquerdaLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(BtCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelEsquerdaLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lNome)
-                            .addComponent(edNome, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(lCpf)
-                            .addComponent(edCpf, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(lEmail)
-                            .addComponent(edEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(lDataNa)
-                            .addComponent(edDataNa, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(lCrm)
-                            .addComponent(edCrm, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(lSenha)
-                            .addComponent(lAreadeAtuacao)
-                            .addComponent(edAreaAtuacao, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(edSenha))))
+                .addGap(43, 43, 43)
+                .addGroup(panelEsquerdaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lNome)
+                    .addComponent(edNome, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(lCpf)
+                    .addComponent(edCpf, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(lEmail)
+                    .addComponent(edEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(lDataNa)
+                    .addComponent(edDataNa, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(lCrm)
+                    .addComponent(edCrm, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(lSenha)
+                    .addComponent(lAreadeAtuacao)
+                    .addComponent(edSenha)
+                    .addComponent(edAreaAtuacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BtCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         panelEsquerdaLayout.setVerticalGroup(
@@ -476,9 +486,9 @@ public void editarMedico() {
                 .addComponent(edSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lAreadeAtuacao)
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(edAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(BtCadastrar)
                 .addGap(12, 12, 12))
         );
@@ -565,7 +575,7 @@ public void editarMedico() {
     private javax.swing.JPanel MainPanel;
     public javax.swing.JTable TbMedico;
     public javax.swing.JButton btExcluir;
-    public javax.swing.JTextField edAreaAtuacao;
+    private javax.swing.JComboBox<String> edAreaAtuacao;
     public javax.swing.JTextField edCpf;
     public javax.swing.JTextField edCrm;
     public javax.swing.JTextField edDataNa;

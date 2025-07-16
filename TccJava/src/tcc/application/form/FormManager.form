@@ -64,31 +64,24 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                              <Component id="BtCadastrar" min="-2" pref="250" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lNome" min="-2" max="-2" attributes="0"/>
-                                  <Component id="edNome" pref="250" max="32767" attributes="0"/>
-                                  <Component id="lCpf" min="-2" max="-2" attributes="0"/>
-                                  <Component id="edCpf" pref="250" max="32767" attributes="0"/>
-                                  <Component id="lEmail" min="-2" max="-2" attributes="0"/>
-                                  <Component id="edEmail" pref="250" max="32767" attributes="0"/>
-                                  <Component id="lDataNa" min="-2" max="-2" attributes="0"/>
-                                  <Component id="edDataNa" pref="250" max="32767" attributes="0"/>
-                                  <Component id="lCrm" min="-2" max="-2" attributes="0"/>
-                                  <Component id="edCrm" pref="250" max="32767" attributes="0"/>
-                                  <Component id="lSenha" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lAreadeAtuacao" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="edAreaAtuacao" alignment="0" pref="250" max="32767" attributes="0"/>
-                                  <Component id="edSenha" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lNome" min="-2" max="-2" attributes="0"/>
+                          <Component id="edNome" pref="250" max="32767" attributes="0"/>
+                          <Component id="lCpf" min="-2" max="-2" attributes="0"/>
+                          <Component id="edCpf" pref="250" max="32767" attributes="0"/>
+                          <Component id="lEmail" min="-2" max="-2" attributes="0"/>
+                          <Component id="edEmail" pref="250" max="32767" attributes="0"/>
+                          <Component id="lDataNa" min="-2" max="-2" attributes="0"/>
+                          <Component id="edDataNa" pref="250" max="32767" attributes="0"/>
+                          <Component id="lCrm" min="-2" max="-2" attributes="0"/>
+                          <Component id="edCrm" pref="250" max="32767" attributes="0"/>
+                          <Component id="lSenha" min="-2" max="-2" attributes="0"/>
+                          <Component id="lAreadeAtuacao" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="edSenha" max="32767" attributes="0"/>
+                          <Component id="edAreaAtuacao" max="32767" attributes="0"/>
+                          <Component id="BtCadastrar" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="57" max="32767" attributes="0"/>
                   </Group>
@@ -123,9 +116,9 @@
                       <Component id="edSenha" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="lAreadeAtuacao" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="edAreaAtuacao" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="BtCadastrar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   </Group>
@@ -193,17 +186,27 @@
                 <Property name="text" type="java.lang.String" value="Cadastrar"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="edAreaAtuacao">
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-              </AuxValues>
-            </Component>
             <Component class="javax.swing.JLabel" name="lAreadeAtuacao">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Area de Atua&#xe7;&#xe3;o"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="edSenha">
+            </Component>
+            <Component class="javax.swing.JComboBox" name="edAreaAtuacao">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="4">
+                    <StringItem index="0" value="Item 1"/>
+                    <StringItem index="1" value="Item 2"/>
+                    <StringItem index="2" value="Item 3"/>
+                    <StringItem index="3" value="Item 4"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

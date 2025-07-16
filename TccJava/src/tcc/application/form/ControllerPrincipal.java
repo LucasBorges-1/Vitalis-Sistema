@@ -133,9 +133,9 @@ public class ControllerPrincipal extends JLayeredPane {
                 if (subIndex == 1) {
 
                     try {
-                        URI email = new URI("https://workspace.google.com/intl/pt-BR/gmail/");
+                        URI site = new URI("http://localhost:8000/");
                         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                            Desktop.getDesktop().browse(email);
+                            Desktop.getDesktop().browse(site);
                         } else {
                             System.out.println("A funcionalidade de abrir navegador não é suportada neste sistema.");
                         }
