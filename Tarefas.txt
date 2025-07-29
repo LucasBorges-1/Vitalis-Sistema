@@ -1,0 +1,6 @@
+Tarefas Tcc
+
+- Bug no campo senha (cadastro do medico)
+- Adicionar um grafico no menu principal.
+-Edição de carga horária nos dias selecionados.
+-Correção de Bugs do campo de impressão.

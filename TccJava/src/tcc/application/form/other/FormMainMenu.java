@@ -13,8 +13,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
@@ -30,8 +33,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToolTip;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -42,11 +47,21 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.labels.PieToolTipGenerator;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import raven.toast.Notifications;
 import tcc.application.form.ControllerPrincipal;
 import tcc.application.form.LoginMedicoForm;
 import tcc.application.model.Consulta;
-import tcc.application.model.Consulta_;
 import tcc.application.model.Medico;
 import tcc.application.model.dao.DaoConsulta;
 import tcc.application.model.dao.DaoPessoa;
@@ -101,72 +116,101 @@ public class FormMainMenu extends javax.swing.JPanel {
     }
 
     private void configurarLayout() {
-
-        setLayout(new BorderLayout(10, 10));
-
-        JPanel painelContadores = new JPanel(new GridLayout(1, 2, 10, 0));
-        painelContadores.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
-
-        JPanel painelLinhas = new JPanel();
-        painelLinhas.setName("painelLinhas");
-
-        labelAgendadas.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:$h2.font");
+        setLayout(new BorderLayout());
 
        
+        JPanel painelSuperior = new JPanel(new GridBagLayout());
+        JPanel painelInferior = new JPanel(new BorderLayout());
+
         
-        MainTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:$h2.font");
-        
+        JPanel painelEsquerda = new JPanel(new GridLayout(2, 1, 0, 10)); // margem vertical de 10px
+        painelEsquerda.setPreferredSize(new Dimension(0, 0));
+
+        // Painel "AGENDADAS"
+        JPanel painelLinhas = new JPanel(new GridBagLayout());
+        painelLinhas.setName("painelLinhas");
+        painelLinhas.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10)); // margem interna
+        labelAgendadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
         labelAgendadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelAgendadas.setVerticalAlignment(SwingConstants.CENTER);
         painelLinhas.add(labelAgendadas);
-        painelLinhas.setLayout(new GridBagLayout());
-
         painelLinhas.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:30;"
                 + "border:5,5,5,5;"
-                + "background:$Login.background"
-        );
+                + "background:$Login.background");
+        painelEsquerda.add(painelLinhas);
 
-        painelContadores.add(painelLinhas);
-
-        JPanel painelColunas = new JPanel();
+        // Painel "REALIZADAS"
+        JPanel painelColunas = new JPanel(new GridBagLayout());
         painelColunas.setName("painelColunas");
-
-        labelRealizadas.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:$h2.font");
+        painelColunas.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10)); // margem interna
+        labelRealizadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
         labelRealizadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelRealizadas.setVerticalAlignment(SwingConstants.CENTER);
         painelColunas.add(labelRealizadas);
-        painelColunas.setLayout(new GridBagLayout());
-
         painelColunas.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:30;"
                 + "border:5,5,5,5;"
-                + "background:$Login.background"
-        );
+                + "background:$Login.background");
+        painelEsquerda.add(painelColunas);
 
-        painelContadores.add(painelColunas);
-        add(lb, BorderLayout.NORTH);
-        add(painelContadores, BorderLayout.NORTH);
-        estilizarBotaoFundoTabela(cmdC);
-        estilizarBotaoFundoTabela(cmdX);
+        // Painel da direita 
+        JPanel painelDireita = new JPanel();
+        ChartPanel chartPanel = criarGrafico();
+        chartPanel.setPreferredSize(new Dimension(painelDireita.getWidth(), painelDireita.getHeight() - 15));
+        painelDireita.setLayout(new BorderLayout());
+        painelDireita.add(chartPanel, BorderLayout.CENTER);
 
+        painelDireita.setPreferredSize(new Dimension(0, 0));
+        painelDireita.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelDireita.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:30;"
+                + "border:5,5,5,5;"
+                + "background:$Login.background");
+
+       
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weighty = 1.0;
+
+        gbc.gridx = 0;
+        gbc.weightx = 0.45;
+        painelEsquerda.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        painelSuperior.add(painelEsquerda, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.55;
+        painelSuperior.add(painelDireita, gbc);
+
+        
         panelTable.setLayout(new BorderLayout());
         panelTable.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         txtSearch.setMaximumSize(new Dimension(Integer.MAX_VALUE - 150, txtSearch.getPreferredSize().height));
         panelTable.add(txtSearch, BorderLayout.NORTH);
+
         jScrollPane1.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         panelTable.add(jScrollPane1, BorderLayout.CENTER);
+
         JPanel painelRodape = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         painelRodape.setOpaque(false);
         painelRodape.putClientProperty(FlatClientProperties.STYLE, "background:$Login.background;");
+        estilizarBotaoFundoTabela(cmdC);
+        estilizarBotaoFundoTabela(cmdX);
         painelRodape.add(cmdX);
         painelRodape.add(cmdC);
         panelTable.add(painelRodape, BorderLayout.SOUTH);
-        add(panelTable, BorderLayout.CENTER);
 
+        painelInferior.add(panelTable, BorderLayout.CENTER);
+        painelSuperior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        
+        JPanel painelCentral = new JPanel(new GridLayout(2, 1));
+        painelCentral.add(painelSuperior);
+        painelCentral.add(painelInferior);
+
+        add(lb, BorderLayout.NORTH);
+        add(painelCentral, BorderLayout.CENTER);
     }
 
     public void carregarConsultas() {
@@ -195,7 +239,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         cmdC =  new ActionButton();
 
         lb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lb.setText("Dashboard");
+        lb.setText("Menu Principal");
 
         jButton1.setText("Show Notifications Test");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -446,8 +490,8 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "showHorizontalLines:true;"
                 + "intercellSpacing:0,1;"
                 + "cellFocusColor:$TableHeader.hoverBackground;");
-              //  + "selectionBackground:$TableHeader.hoverBackground;"
-              //  + "selectionForeground:$Table.foreground;"
+        //  + "selectionBackground:$TableHeader.hoverBackground;"
+        //  + "selectionForeground:$Table.foreground;"
 
         jScrollPane1.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
                 + "trackArc:999;"
@@ -508,6 +552,90 @@ public class FormMainMenu extends javax.swing.JPanel {
 
     public void buscarConsulta() {
         pesquisarConsulta(txtSearch.getText());
+    }
+
+    public ChartPanel criarGrafico() {
+
+        int canceladas = dadosGrafico()[1];
+        int concluidas = dadosGrafico()[2];
+
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Canceladas/Suspensas", canceladas);
+        dataset.setValue("Concluidas", concluidas);
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "", dataset, true, false, true
+        );
+
+        chart.removeLegend();
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+       
+        plot.setToolTipGenerator(new StandardPieToolTipGenerator() {
+            @Override
+            public String generateToolTip(PieDataset dataset, Comparable key) {
+                return "<html><div style='"
+                        + "background-color: #FFFFFF;"
+                        + "color: #000000;"
+                        + "padding: 5px;"
+                        + "border: 1px solid #CCCCCC;"
+                        + "'>"
+                        + key + ": " + dataset.getValue(key)
+                        + "</div></html>";
+            }
+        });
+        Color fundoPainel = UIManager.getColor("$Login.background");
+
+        Color corLegenda = UIManager.getColor("$Menu.foreground");
+
+        //cor das fatias
+        plot.setSectionPaint("Canceladas/Suspensas",new Color(50, 168, 82)); 
+        plot.setSectionPaint("Concluidas",new Color(141, 189, 108));
+
+        //Cor da legenda
+        chart.setBackgroundPaint(fundoPainel);
+        plot.setBackgroundPaint(fundoPainel);
+
+        plot.setShadowPaint(null);
+        plot.setOutlineVisible(false);
+        plot.setSectionOutlinesVisible(false);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        plot.setToolTipGenerator(null);
+        chartPanel.setOpaque(false);
+        chartPanel.setBackground(fundoPainel);
+
+        return chartPanel;
+    }
+
+    public int[] dadosGrafico() {
+        LocalDate hoje = LocalDate.now();
+        LocalDate trintaDiasAtras = hoje.minusDays(30);
+        int contAgendadas = 0;
+        int contCanceladas = 0;
+        for (Consulta c : daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa())) {
+            LocalDate dataConsulta = c.getData_consulta();
+
+            if (c.getEstado().equals("CONCLUIDA")
+                    && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()
+                    && (!dataConsulta.isBefore(trintaDiasAtras) && !dataConsulta.isAfter(hoje))) {
+
+                contAgendadas++;
+            }
+
+            if (c.getEstado().equals("CANCELADA")
+                    && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()
+                    && (!dataConsulta.isBefore(trintaDiasAtras) && !dataConsulta.isAfter(hoje))) {
+
+                contCanceladas++;
+            }
+        }
+
+        int total = contAgendadas + contCanceladas;
+
+        int[] dados = {total, contCanceladas, contAgendadas};
+        return dados;
+
     }
 
 
