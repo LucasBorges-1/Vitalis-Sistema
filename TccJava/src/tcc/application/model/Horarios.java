@@ -7,7 +7,12 @@ package tcc.application.model;
 import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,36 +27,40 @@ import org.eclipse.persistence.jpa.jpql.parser.DateTime;
  *
  * @author Borges
  */
+
 @Entity
 @Table(name = "horarios")
+@Access(AccessType.FIELD)
 public class Horarios implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_horario;
-    private LocalDate dia;
-    private Time inicio;
-    private Time fim;
+    @Column(name = "data")
+    private LocalDate data;
+    
+    @Column(name = "iniciomanha")
+    private LocalTime inicioManha;
 
-    //id_medico : int
-    //data-inicio : date
-    //data-final : date
-    //horario-inicio-manha : time
-    //horario-fim-manha : time
-    //horario-inicio-tarde : time
-    //horario-fim-tarde : time
-    
-    
-    
-    public Horarios() {
-        
+    @Column(name = "fimmanha")
+    private LocalTime fimManha;
+
+    @Column(name = "iniciotarde")
+    private LocalTime inicioTarde;
+
+    @Column(name = "fimtarde")
+    private LocalTime fimTarde;
+
+    public Horarios(LocalDate data, LocalTime inicioManha, LocalTime fimManha, LocalTime inicioTarde, LocalTime fimTarde) {
+        this.data = data;
+        this.inicioManha = inicioManha;
+        this.fimManha = fimManha;
+        this.inicioTarde = inicioTarde;
+        this.fimTarde = fimTarde;
     }
 
-    public Horarios(LocalDate dia, Time inicio, Time fim) {
-        this.dia = dia;
-         this.inicio = Time.valueOf("08:00:00");
-        this.fim = Time.valueOf("17:00:00");
-        
-      
+    public Horarios() {
+
     }
 
     public int getId_horario() {
@@ -63,36 +72,43 @@ public class Horarios implements Serializable {
     }
 
     public LocalDate getDia() {
-        return dia;
+        return data;
     }
 
-    public void setDia(LocalDate dia) {
-        this.dia = dia;
+    public void setDia(LocalDate data) {
+        this.data = data;
     }
 
-    public Time getInicio() {
-        return inicio;
+    public LocalTime getInicioManha() {
+        return inicioManha;
     }
 
-    public void setInicio(Time inicio) {
-        this.inicio = inicio;
+    public void setInicioManha(LocalTime inicioManha) {
+        this.inicioManha = inicioManha;
     }
 
-    public Time getFim() {
-        return fim;
+    public LocalTime getFimManha() {
+        return fimManha;
     }
 
-    public void setFim(Time fim) {
-        this.fim = fim;
+    public void setFimManha(LocalTime FimManha) {
+        this.fimManha = FimManha;
     }
 
-    @Override
-    public String toString() {
-        return "Horarios{" + "dia=" + dia + ", inicio=" + inicio + ", fim=" + fim + '}';
+    public LocalTime getInicioTarde() {
+        return inicioTarde;
     }
 
+    public void setInicioTarde(LocalTime inicioTarde) {
+        this.inicioTarde = inicioTarde;
+    }
 
-  
+    public LocalTime getFimTarde() {
+        return fimTarde;
+    }
 
-    
+    public void setFimTarde(LocalTime fimTarde) {
+        this.fimTarde = fimTarde;
+    }
+
 }

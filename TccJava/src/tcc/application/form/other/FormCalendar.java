@@ -1,3 +1,4 @@
+
 package tcc.application.form.other;
 
 import com.github.lgooddatepicker.components.DatePicker;
@@ -7,6 +8,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.FlatLaf;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
@@ -15,11 +17,14 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +33,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -36,18 +43,28 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
+import org.bouncycastle.asn1.cms.Time;
+import raven.toast.Notifications;
 import tcc.application.Application;
+import tcc.application.model.Horarios;
+import tcc.application.model.dao.DaoHorario;
+
 
 public class FormCalendar extends javax.swing.JPanel {
 
+    private static DaoHorario daoH;
 
     public FormCalendar() {
 
@@ -56,14 +73,15 @@ public class FormCalendar extends javax.swing.JPanel {
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 
+        daoH = new DaoHorario();
         estilizarcalendario();
         configuraçãoLayout();
         addMouseListenerToCalendarDays(calendarPanel);
-      
+
     }
 
     private static void addMouseListenerToCalendarDays(CalendarPanel calendarPanel) {
-       
+
         for (Component component : calendarPanel.getComponents()) {
             if (component instanceof JPanel) {
                 JPanel monthViewPanel = (JPanel) component;
@@ -74,23 +92,171 @@ public class FormCalendar extends javax.swing.JPanel {
                             @Override
                             public void mouseClicked(MouseEvent e) {
                                 if (e.getClickCount() == 2) {
-                                    
+                                    LocalDate hoje = LocalDate.now();
                                     LocalDate selectedDate = calendarPanel.getSelectedDate();
-                                    if (selectedDate != null) {
-                                        
-                                        JDialog dialog = new JDialog(); 
-                                        dialog.setName("Data selecionada");
-                                        dialog.setSize(300, 150);
+                                    if (selectedDate == null || selectedDate.isBefore(hoje)) {
+                                        Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Selecione uma data válida (hoje ou futura).");
+                                    } else {
+                                        JDialog dialog = new JDialog((JFrame) null, "Editar carga Horária", true);
 
-                                        
-                                        JLabel label = new JLabel("Data selecionada: " + selectedDate.toString());
-                                        label.setHorizontalAlignment(JLabel.CENTER);
-                                        dialog.add(label, BorderLayout.CENTER);
+                                        dialog.setUndecorated(true);
+                                        dialog.setOpacity(0.92f);
+                                        dialog.setSize(380, 430);
+                                        dialog.setLocationRelativeTo(null);
+                                        dialog.setLayout(new BorderLayout());
 
-                                      
-                                      
+                                        // Topo com título e botão fechar
+                                        JPanel topBar = new JPanel(new BorderLayout());
+                                        topBar.setOpaque(false);
+                                        topBar.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 
+                                        JLabel titulo = new JLabel("Editar carga horária", JLabel.CENTER);
+                                        titulo.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h1.font");
+                                        titulo.setFont(new Font("SansSerif", Font.BOLD, 16));
+                                        topBar.add(titulo, BorderLayout.CENTER);
+
+                                        JButton closeBtn = new JButton("X");
+                                        closeBtn.setFocusPainted(false);
+                                        closeBtn.setMargin(new Insets(2, 8, 2, 8));
+                                        closeBtn.setContentAreaFilled(false);
+                                        closeBtn.setBorder(BorderFactory.createEmptyBorder());
+                                        closeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                                        closeBtn.addActionListener(new ActionListener() {
+                                            public void actionPerformed(ActionEvent e) {
+                                                dialog.dispose();
+                                            }
+                                        });
+                                        topBar.add(closeBtn, BorderLayout.EAST);
+
+                                        dialog.add(topBar, BorderLayout.NORTH);
+
+                                        // Painel principal
+                                        JPanel centerPanel = new JPanel(new GridBagLayout());
+                                        centerPanel.setOpaque(false);
+                                        GridBagConstraints gbc = new GridBagConstraints();
+                                        gbc.gridx = 0;
+                                        gbc.gridwidth = 2;
+                                        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+                                        // Label Data Selecionada - mais próximo do topo
+                                        gbc.gridy = 0;
+                                        gbc.insets = new Insets(0, 20, 10, 20); // reduzido o topo
+                                        JLabel lDataSelecionada = new JLabel("Data Selecionada: " + selectedDate.toString(), JLabel.CENTER);
+                                        lDataSelecionada.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h3.font");
+                                        centerPanel.add(lDataSelecionada, gbc);
+
+                                        // Label Manhã
+                                        gbc.gridy++;
+                                        gbc.insets = new Insets(10, 20, 5, 20);
+                                        JLabel lmanha = new JLabel("Horário Manhã (Início / Fim):", JLabel.CENTER);
+                                        centerPanel.add(lmanha, gbc);
+
+                                        // Campos Manhã
+                                        gbc.gridy++;
+                                        JPanel manhaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+                                        manhaPanel.setOpaque(false);
+                                        TimePicker HinicioManha = new TimePicker();
+                                        TimePicker HFimManha = new TimePicker();
+                                        manhaPanel.add(HinicioManha);
+                                        manhaPanel.add(HFimManha);
+                                        centerPanel.add(manhaPanel, gbc);
+
+                                        // Label Tarde
+                                        gbc.gridy++;
+                                        JLabel ltarde = new JLabel("Horário Tarde (Início / Fim):", JLabel.CENTER);
+                                        centerPanel.add(ltarde, gbc);
+
+                                        // Campos Tarde
+                                        gbc.gridy++;
+                                        JPanel tardePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+                                        tardePanel.setOpaque(false);
+                                        TimePicker HinicioTarde = new TimePicker();
+                                        TimePicker HFimoTarde = new TimePicker();
+                                        tardePanel.add(HinicioTarde);
+                                        tardePanel.add(HFimoTarde);
+                                        centerPanel.add(tardePanel, gbc);
+
+                                        // Espaço extra antes do botão
+                                        gbc.gridy++;
+                                        centerPanel.add(Box.createVerticalStrut(20), gbc); // espaço antes do botão
+
+                                        // Botão Cadastrar - mais abaixo
+                                        gbc.gridy++;
+                                        gbc.insets = new Insets(10, 20, 20, 20); // espaço ao redor do botão
+                                        JButton BtCadastrar = new JButton("Cadastrar");
+                                        BtCadastrar.setFocusPainted(false);
+                                        BtCadastrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                                        BtCadastrar.putClientProperty(FlatClientProperties.STYLE, "borderWidth:0;focusWidth:0");
+                                        BtCadastrar.putClientProperty("JButton.arc", 20);
+
+                                        BtCadastrar.addActionListener(new ActionListener() {
+                                            public void actionPerformed(ActionEvent e) {
+                                                //A data selecionada é uma variavel selectedDate
+
+                                                //Manha
+                                                LocalTime horarioInicioManha = HinicioManha.getTime();
+                                                LocalTime horarioFimManha = HFimManha.getTime();
+                                                //Tarde
+                                                LocalTime horarioInicioTarde = HinicioTarde.getTime();
+                                                LocalTime horarioFimTarde = HFimoTarde.getTime();
+
+                                                if (horarioInicioManha == null || horarioInicioManha == null
+                                                        || horarioInicioTarde == null || horarioFimTarde == null) {
+                                                    Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Você deixou algum campo em branco.");
+                                                } else {
+                                                    
+                                                    Horarios r = new Horarios(selectedDate, horarioInicioManha, horarioFimManha, horarioInicioTarde, horarioFimTarde);
+                                                    // Verifica se já existe cadastro
+                                                    
+                                                    Horarios horarioSelecionado=daoH.selecionar(selectedDate);
+                                                    if (horarioSelecionado==null) {
+                                                        if (daoH.inserir(r)) {
+                                                        Notifications.getInstance().show(
+                                                                Notifications.Type.SUCCESS,
+                                                                Notifications.Location.TOP_CENTER,
+                                                                "Horário cadastrado com sucesso."
+                                                        );
+                                                    } else {
+                                                        Notifications.getInstance().show(
+                                                                Notifications.Type.ERROR,
+                                                                Notifications.Location.TOP_CENTER,
+                                                                "Erro ao cadastrar horário."
+                                                        );
+}
+                                                    }else{
+                                                        Notifications.getInstance().show(
+                                                                Notifications.Type.SUCCESS,
+                                                                Notifications.Location.TOP_CENTER,
+                                                                "Já existe um cadastro para essa data,Por isso ela foi editada."
+                                                        );
+                                                        System.out.println("Já existe? " + daoH.existeCadastroParaData(selectedDate));
+                                                        
+                                                        horarioSelecionado.setInicioManha(horarioInicioManha);
+                                                        horarioSelecionado.setFimManha(horarioFimManha);
+                                                        horarioSelecionado.setInicioTarde(horarioInicioTarde);
+                                                        horarioSelecionado.setFimTarde(horarioFimTarde);
+                                                        
+                                                        daoH.editar(horarioSelecionado);
+                                                        return;
+                                                    }
+
+                                                    
+                                                    }
+
+                                                }
+                                            
+
+                                        });
+
+                                        JPanel botaoPanel = new JPanel();
+                                        botaoPanel.setOpaque(false);
+                                        botaoPanel.add(BtCadastrar);
+
+                                        centerPanel.add(botaoPanel, gbc);
+
+                                        dialog.add(centerPanel, BorderLayout.CENTER);
                                         dialog.setVisible(true);
+
                                     }
                                 }
                             }
@@ -106,7 +272,7 @@ public class FormCalendar extends javax.swing.JPanel {
         setLayout(new BorderLayout(20, 20));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(lb, BorderLayout.NORTH);
-        
+
         PainelCalendario.setLayout(new BorderLayout());
         PainelCalendario.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         PainelCalendario.putClientProperty(FlatClientProperties.STYLE, ""
@@ -138,11 +304,11 @@ public class FormCalendar extends javax.swing.JPanel {
 
         Font customFont = new Font("SansSerif", Font.PLAIN, 15);
 
-        settings.setFontCalendarDateLabels(customFont); 
-        settings.setFontCalendarWeekdayLabels(customFont); 
-        settings.setFontCalendarWeekNumberLabels(customFont); 
+        settings.setFontCalendarDateLabels(customFont);
+        settings.setFontCalendarWeekdayLabels(customFont);
+        settings.setFontCalendarWeekNumberLabels(customFont);
         settings.setFontMonthAndYearMenuLabels(customFont);
-        settings.setFontTodayLabel(customFont); 
+        settings.setFontTodayLabel(customFont);
         settings.setFontClearLabel(customFont);
 
         if (FlatLaf.isLafDark()) {
@@ -165,9 +331,9 @@ public class FormCalendar extends javax.swing.JPanel {
 
             CalendarBorderProperties normalDayBorder = new CalendarBorderProperties(
                     new Point(1, 1),
-                    new Point(5, 5), 
+                    new Point(5, 5),
                     text2,
-                    1 
+                    1
             );
 
             settings.getBorderPropertiesList().add(normalDayBorder);
@@ -194,8 +360,8 @@ public class FormCalendar extends javax.swing.JPanel {
             CalendarBorderProperties normalDayBorder = new CalendarBorderProperties(
                     new Point(1, 1),
                     new Point(5, 5),
-                    text, 
-                    1 
+                    text,
+                    1
             );
             settings.getBorderPropertiesList().add(normalDayBorder);
             settings.setColor(DatePickerSettings.DateArea.CalendarBackgroundSelectedDate, background);
@@ -228,15 +394,6 @@ public class FormCalendar extends javax.swing.JPanel {
         lb = new javax.swing.JLabel();
         PainelCalendario = new javax.swing.JPanel();
         calendarPanel = new com.github.lgooddatepicker.components.CalendarPanel();
-        PainelEdicao = new javax.swing.JPanel();
-        lhim = new javax.swing.JLabel();
-        ComboboxInicioManha = new javax.swing.JComboBox<>();
-        ComboboxFimManha = new javax.swing.JComboBox<>();
-        lhfm = new javax.swing.JLabel();
-        lhit = new javax.swing.JLabel();
-        ComboboxinicioTarde = new javax.swing.JComboBox<>();
-        Comboboxfimtarde = new javax.swing.JComboBox<>();
-        lhft = new javax.swing.JLabel();
 
         lb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lb.setText("Calendario");
@@ -255,65 +412,7 @@ public class FormCalendar extends javax.swing.JPanel {
             .addGroup(PainelCalendarioLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(calendarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        lhim.setText("Hora de inicio da manhã");
-
-        ComboboxInicioManha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        ComboboxFimManha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        lhfm.setText("Hora de término da manhã");
-
-        lhit.setText("Hora de inicio da tarde");
-
-        ComboboxinicioTarde.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        Comboboxfimtarde.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        lhft.setText("Hora de término da tarde");
-
-        javax.swing.GroupLayout PainelEdicaoLayout = new javax.swing.GroupLayout(PainelEdicao);
-        PainelEdicao.setLayout(PainelEdicaoLayout);
-        PainelEdicaoLayout.setHorizontalGroup(
-            PainelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PainelEdicaoLayout.createSequentialGroup()
-                .addGap(95, 95, 95)
-                .addGroup(PainelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PainelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lhft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Comboboxfimtarde, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PainelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lhit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ComboboxinicioTarde, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PainelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lhfm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ComboboxFimManha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lhim, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(ComboboxInicioManha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(112, Short.MAX_VALUE))
-        );
-        PainelEdicaoLayout.setVerticalGroup(
-            PainelEdicaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PainelEdicaoLayout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
-                .addComponent(lhim)
-                .addGap(18, 18, 18)
-                .addComponent(ComboboxInicioManha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(lhfm)
-                .addGap(18, 18, 18)
-                .addComponent(ComboboxFimManha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(lhit)
-                .addGap(18, 18, 18)
-                .addComponent(ComboboxinicioTarde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lhft, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Comboboxfimtarde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -327,9 +426,7 @@ public class FormCalendar extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(PainelCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addComponent(PainelEdicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(397, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,25 +434,14 @@ public class FormCalendar extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lb)
                 .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PainelCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PainelEdicao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(PainelCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ComboboxFimManha;
-    private javax.swing.JComboBox<String> ComboboxInicioManha;
-    private javax.swing.JComboBox<String> Comboboxfimtarde;
-    private javax.swing.JComboBox<String> ComboboxinicioTarde;
     private javax.swing.JPanel PainelCalendario;
-    private javax.swing.JPanel PainelEdicao;
     public com.github.lgooddatepicker.components.CalendarPanel calendarPanel;
     private javax.swing.JLabel lb;
-    private javax.swing.JLabel lhfm;
-    private javax.swing.JLabel lhft;
-    private javax.swing.JLabel lhim;
-    private javax.swing.JLabel lhit;
     // End of variables declaration//GEN-END:variables
 }

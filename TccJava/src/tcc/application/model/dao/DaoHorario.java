@@ -4,16 +4,20 @@
  */
 package tcc.application.model.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import tcc.application.model.Horarios;
 
 /**
  *
  * @author Borges
  */
-public class DaoHorario extends Dao{
+public class DaoHorario extends Dao {
+
     public boolean inserir(Horarios c) {
+        em.getEntityManagerFactory().getCache().evictAll();
         em.getTransaction().begin();
         try {
             em.persist(c);
@@ -23,6 +27,26 @@ public class DaoHorario extends Dao{
             em.getTransaction().rollback();
             return false;
         }
+    }
+
+    public boolean existeCadastroParaData(LocalDate data) {
+        try {
+            TypedQuery<Long> query = em.createQuery(
+                    "SELECT COUNT(h) FROM Horarios h WHERE h.data = :data", Long.class);
+            query.setParameter("data", data);
+            Long count = query.getSingleResult();
+            return count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public Horarios selecionar(LocalDate data) {
+        Query consulta = em.createQuery("select c from Horarios c where c.data=:data");
+        consulta.setParameter("data", data);
+        return (Horarios) consulta.getSingleResult();
     }
 
     public boolean remove(Horarios c) {
@@ -40,14 +64,13 @@ public class DaoHorario extends Dao{
     public List<Horarios> listar() {
         return em.createQuery("select c from Horarios c").getResultList();
     }
-    
-    public Horarios HorariosPorMedico(String cpf){
-        Query consulta=em.createQuery("select c from Horarios c where c.medico.nome=:m");
+
+    public Horarios HorariosPorMedico(String cpf) {
+        Query consulta = em.createQuery("select c from Horarios c where c.medico.nome=:m");
         consulta.setParameter("m", cpf);
         return (Horarios) consulta.getSingleResult();
     }
-    
-    
+
     public boolean editar(Horarios c) {
         em.getTransaction().begin();
         try {

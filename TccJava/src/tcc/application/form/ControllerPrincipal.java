@@ -23,7 +23,7 @@ import tcc.application.form.other.FormCalendar;
 import tcc.application.form.other.FormMainMenu;
 import tcc.application.form.other.FormImpressão;
 import tcc.application.form.other.FormHistorico;
-import tcc.application.form.other.FormHorarios;
+
 
 import tcc.application.form.other.FormPendentes;
 import tcc.application.model.Medico;
@@ -119,13 +119,10 @@ public class ControllerPrincipal extends JLayeredPane {
             } else if (index == 2) {
                 Application.showForm(new FormImpressão());
             } else if (index == 3) {
-
                 if (subIndex == 1) {
-                    Application.showForm(new FormHorarios());
-                } else if (subIndex == 2) {
-                    ControllerPrincipal.setI(3);
+                     ControllerPrincipal.setI(3);
                     Application.showForm(new FormCalendar());
-                } else {
+                }  else {
                     action.cancel();
                 }
 

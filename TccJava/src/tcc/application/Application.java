@@ -195,6 +195,8 @@ public class Application extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
             app.setVisible(true);
+            
+            
             /*
             BCryptUtil bc=new BCryptUtil();
             DaoClinica daoC=new DaoClinica();

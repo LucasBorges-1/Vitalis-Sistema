@@ -29,7 +29,7 @@ public class Menu extends JPanel {
         {"~DADOS~"},
         {"Consultas", "Histórico"},
         {"Impressão"},
-        {"Carga horária","Horários","Calendário"},
+        {"Carga horária","Calendário"},
         {"~Outros~"},
         {"Links", "AgendeAqui","Email","Google drive"},
         {"Logout"}

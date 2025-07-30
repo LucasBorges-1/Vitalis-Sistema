@@ -102,7 +102,7 @@ public class FormMainMenu extends javax.swing.JPanel {
     }
 
     public void contadores() {
-        labelAgendadas = new JLabel("Agendadas para hoje: " + model.getRowCount());
+        labelAgendadas = new JLabel("Agendadas para hoje: " + contConsultasHoje());
         labelRealizadas = new JLabel("Já realizadas: " + contFinish);
 
     }
@@ -118,11 +118,9 @@ public class FormMainMenu extends javax.swing.JPanel {
     private void configurarLayout() {
         setLayout(new BorderLayout());
 
-       
         JPanel painelSuperior = new JPanel(new GridBagLayout());
         JPanel painelInferior = new JPanel(new BorderLayout());
 
-        
         JPanel painelEsquerda = new JPanel(new GridLayout(2, 1, 0, 10)); // margem vertical de 10px
         painelEsquerda.setPreferredSize(new Dimension(0, 0));
 
@@ -154,13 +152,32 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "background:$Login.background");
         painelEsquerda.add(painelColunas);
 
-        // Painel da direita 
         JPanel painelDireita = new JPanel();
         ChartPanel chartPanel = criarGrafico();
-        chartPanel.setPreferredSize(new Dimension(painelDireita.getWidth(), painelDireita.getHeight() - 15));
-        painelDireita.setLayout(new BorderLayout());
-        painelDireita.add(chartPanel, BorderLayout.CENTER);
 
+        if (dadosGrafico()[0] <= 0) {
+            JLabel dadosNull = new JLabel("Nenhum dados para exibir em grafico");
+            dadosNull.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
+            painelDireita.setLayout(new BorderLayout());
+            dadosNull.setHorizontalAlignment(SwingConstants.CENTER);
+            painelDireita.add(dadosNull, BorderLayout.CENTER);
+        } else {
+            chartPanel.setPreferredSize(new Dimension(painelDireita.getWidth(), painelDireita.getHeight() - 15));
+            painelDireita.setLayout(new BorderLayout());
+            painelDireita.add(chartPanel, BorderLayout.CENTER);
+        }
+
+        JLabel info = new JLabel("Total: " + dadosGrafico()[0]
+                + " Concluídas: " + dadosGrafico()[2]
+                + " Canceladas: " + dadosGrafico()[1]);
+        info.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel painelInfo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        painelInfo.setOpaque(false); // para herdar a cor de fundo
+        painelInfo.add(info);
+
+        painelDireita.add(painelInfo, BorderLayout.SOUTH);
         painelDireita.setPreferredSize(new Dimension(0, 0));
         painelDireita.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         painelDireita.putClientProperty(FlatClientProperties.STYLE, ""
@@ -168,7 +185,6 @@ public class FormMainMenu extends javax.swing.JPanel {
                 + "border:5,5,5,5;"
                 + "background:$Login.background");
 
-       
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -183,7 +199,6 @@ public class FormMainMenu extends javax.swing.JPanel {
         gbc.weightx = 0.55;
         painelSuperior.add(painelDireita, gbc);
 
-        
         panelTable.setLayout(new BorderLayout());
         panelTable.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         txtSearch.setMaximumSize(new Dimension(Integer.MAX_VALUE - 150, txtSearch.getPreferredSize().height));
@@ -204,25 +219,12 @@ public class FormMainMenu extends javax.swing.JPanel {
         painelInferior.add(panelTable, BorderLayout.CENTER);
         painelSuperior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        
         JPanel painelCentral = new JPanel(new GridLayout(2, 1));
         painelCentral.add(painelSuperior);
         painelCentral.add(painelInferior);
 
         add(lb, BorderLayout.NORTH);
         add(painelCentral, BorderLayout.CENTER);
-    }
-
-    public void carregarConsultas() {
-        LocalDate hoje = LocalDate.now();
-        model.limpar();
-        for (Consulta c : daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa())) {
-
-            if (c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/
-                    && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()) {
-                model.addConsultas(c);
-            }
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -530,26 +532,6 @@ public class FormMainMenu extends javax.swing.JPanel {
         });
     }
 
-    public void pesquisarConsulta(String nome) {
-        model.limparTabela();
-        model.limpar();
-
-        String termo = nome.toLowerCase();
-        List<Consulta> consultas = daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa());
-
-        for (Consulta c : consultas) {
-            String nomePaciente = c.getUsuario().getNome().toLowerCase();
-
-            if (this.getMedicoSelecionado().getId_pessoa() == c.getMedico().getId_pessoa()) {
-                if ((c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/)
-                        && nomePaciente.contains(termo)) {
-                    model.addConsultas(c);
-                }
-            }
-
-        }
-    }
-
     public void buscarConsulta() {
         pesquisarConsulta(txtSearch.getText());
     }
@@ -570,7 +552,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         chart.removeLegend();
 
         PiePlot plot = (PiePlot) chart.getPlot();
-       
+
         plot.setToolTipGenerator(new StandardPieToolTipGenerator() {
             @Override
             public String generateToolTip(PieDataset dataset, Comparable key) {
@@ -589,8 +571,8 @@ public class FormMainMenu extends javax.swing.JPanel {
         Color corLegenda = UIManager.getColor("$Menu.foreground");
 
         //cor das fatias
-        plot.setSectionPaint("Canceladas/Suspensas",new Color(50, 168, 82)); 
-        plot.setSectionPaint("Concluidas",new Color(141, 189, 108));
+        plot.setSectionPaint("Canceladas/Suspensas", new Color(50, 168, 82));
+        plot.setSectionPaint("Concluidas", new Color(56, 142, 60));
 
         //Cor da legenda
         chart.setBackgroundPaint(fundoPainel);
@@ -637,6 +619,55 @@ public class FormMainMenu extends javax.swing.JPanel {
         return dados;
 
     }
+
+    // Abaixo remover o comentario no filtro de data 
+    public void pesquisarConsulta(String nome) {
+        model.limparTabela();
+        model.limpar();
+
+        String termo = nome.toLowerCase();
+        List<Consulta> consultas = daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa());
+
+        for (Consulta c : consultas) {
+            String nomePaciente = c.getUsuario().getNome().toLowerCase();
+
+            if (this.getMedicoSelecionado().getId_pessoa() == c.getMedico().getId_pessoa()) {
+                if ((c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/)
+                        && nomePaciente.contains(termo)) {
+                    model.addConsultas(c);
+                }
+            }
+
+        }
+    }
+
+    public void carregarConsultas() {
+        LocalDate hoje = LocalDate.now();
+        model.limpar();
+        for (Consulta c : daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa())) {
+
+            if (c.getEstado().equals("AGENDADA") /*&& c.getData_consulta().equals(hoje)*/
+                    && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()) {
+                model.addConsultas(c);
+            }
+        }
+    }
+
+    public int contConsultasHoje() {
+        LocalDate hoje = LocalDate.now();
+        int cont = 0;
+
+        for (Consulta c : daoConsulta.listar(this.getMedicoSelecionado().getId_pessoa())) {
+            if (c.getEstado().equals("AGENDADA") || c.getEstado().equals("CONCLUIDA") /*&& c.getData_consulta().equals(hoje)*/
+                    && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()) {
+                cont++;
+            }
+        }
+
+        return cont;
+    }
+    
+    //Fim
 
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

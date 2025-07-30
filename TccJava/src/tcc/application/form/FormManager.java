@@ -37,12 +37,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import net.miginfocom.swing.MigLayout;
+import org.mindrot.jbcrypt.BCrypt;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 import raven.toast.Notifications;
 import tcc.application.form.other.model.ModelMedico;
 import tcc.application.model.Consulta;
 import tcc.application.model.Medico;
 import tcc.application.model.Pessoa;
+import tcc.application.model.dao.BCryptUtil;
 import tcc.application.model.dao.DaoClinica;
 import tcc.application.model.dao.DaoPessoa;
 
@@ -53,7 +55,7 @@ public class FormManager extends javax.swing.JPanel {
     private DaoPessoa daoPessoa;
     private DaoClinica daoClinica;
     private ActionListener listenerCadastrarOriginal;
-    
+    private tcc.application.model.dao.BCryptUtil bCrypt;
     private String[] arrayTipoMedico={"Clínico Geral","Ginecologista e Obstetrícia","Pediatra","Cardiologista","Dermatologista","Ortopedista","Psiquiatra","Oftamologista","Geriatra"};
     
     public FormManager() {
@@ -61,6 +63,7 @@ public class FormManager extends javax.swing.JPanel {
         daoPessoa = new DaoPessoa();
         daoClinica = new DaoClinica();
         model = new ModelMedico();
+        bCrypt = new BCryptUtil();
         gerenciandoTabela();
         carregarMedicos();
         estiloTabela();
@@ -105,6 +108,7 @@ public class FormManager extends javax.swing.JPanel {
                 String tipo = (String) edAreaAtuacao.getSelectedItem();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate data = LocalDate.parse(dataS, formatter);
+                
                 cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
 
                 edNome.setText("");
@@ -113,9 +117,11 @@ public class FormManager extends javax.swing.JPanel {
                 edDataNa.setText("");
                 edCrm.setText("");
                 edSenha.setText("");
+                
                 //edAreaAtuacao.setText("");
                 carregarMedicos();
                 edSenha.setEnabled(true);
+                
             }
         };
 
@@ -319,8 +325,8 @@ public void editarMedico() {
         edCrm.setText(medicoOriginal.getCrm());
         //edAreaAtuacao.setText(medicoOriginal.getTipo_medico());
 
-        edSenha.setEnabled(false);
-        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Não é possível editar a senha.");
+        //edSenha.setEnabled(false);
+        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Digite a nova senha.");
 
         BtCadastrar.setText("Confirmar edição");
 
@@ -340,9 +346,15 @@ public void editarMedico() {
                     medicoOriginal.setData_nascimento(LocalDate.parse(edDataNa.getText()));
                     medicoOriginal.setCrm(edCrm.getText());
                     medicoOriginal.setTipo_medico((String) edAreaAtuacao.getSelectedItem());
-                    medicoOriginal.setSenha(senhaOriginal);
+                    
                     medicoOriginal.setClinica(daoClinica.selecionar());
-
+                    String senha= edSenha.getText();
+                    
+                    medicoOriginal.setSenha(bCrypt.hashSenha(senha));
+                    
+                    if (edSenha.getText()==null || edSenha.getText().isEmpty()) {
+                        medicoOriginal.setSenha(senhaOriginal);
+                    }
                     
                     if (daoPessoa.editar(medicoOriginal)) {
                         Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
@@ -355,6 +367,7 @@ public void editarMedico() {
                         edDataNa.setText("");
                         edCrm.setText("");
                         edSenha.setText("");
+                        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Senha para acesso");
                         //edAreaAtuacao.setText("");
 
                        
