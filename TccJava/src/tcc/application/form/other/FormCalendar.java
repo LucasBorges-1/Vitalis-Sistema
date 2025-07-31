@@ -1,6 +1,6 @@
-
 package tcc.application.form.other;
 
+import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
@@ -9,8 +9,10 @@ import com.formdev.flatlaf.FlatLaf;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 //import com.sun.org.apache.bcel.internal.generic.AALOAD;
@@ -32,6 +34,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -59,15 +62,20 @@ import org.bouncycastle.asn1.cms.Time;
 import raven.toast.Notifications;
 import tcc.application.Application;
 import tcc.application.model.Horarios;
+import tcc.application.model.Medico;
 import tcc.application.model.dao.DaoHorario;
-
 
 public class FormCalendar extends javax.swing.JPanel {
 
-    private static DaoHorario daoH;
+    private Medico medicoSelecionado;
+    private DaoHorario daoH;
+    private TimePicker HinicioManha;
+    private TimePicker HFimManha;
+    private TimePicker HinicioTarde;
+    private TimePicker HFimTarde;
 
-    public FormCalendar() {
-
+    public FormCalendar(Medico medicoSelecionado) {
+        this.medicoSelecionado = medicoSelecionado;
         initComponents();
 
         lb.putClientProperty(FlatClientProperties.STYLE, ""
@@ -80,7 +88,18 @@ public class FormCalendar extends javax.swing.JPanel {
 
     }
 
-    private static void addMouseListenerToCalendarDays(CalendarPanel calendarPanel) {
+    public FormCalendar() {
+    }
+
+    public Medico getMedicoSelecionado() {
+        return medicoSelecionado;
+    }
+
+    public void setMedicoSelecionado(Medico medicoSelecionado) {
+        this.medicoSelecionado = medicoSelecionado;
+    }
+
+    private void addMouseListenerToCalendarDays(CalendarPanel calendarPanel) {
 
         for (Component component : calendarPanel.getComponents()) {
             if (component instanceof JPanel) {
@@ -138,9 +157,8 @@ public class FormCalendar extends javax.swing.JPanel {
                                         gbc.gridwidth = 2;
                                         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-                                        // Label Data Selecionada - mais próximo do topo
                                         gbc.gridy = 0;
-                                        gbc.insets = new Insets(0, 20, 10, 20); // reduzido o topo
+                                        gbc.insets = new Insets(0, 20, 10, 20);
                                         JLabel lDataSelecionada = new JLabel("Data Selecionada: " + selectedDate.toString(), JLabel.CENTER);
                                         lDataSelecionada.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h3.font");
                                         centerPanel.add(lDataSelecionada, gbc);
@@ -155,8 +173,17 @@ public class FormCalendar extends javax.swing.JPanel {
                                         gbc.gridy++;
                                         JPanel manhaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
                                         manhaPanel.setOpaque(false);
-                                        TimePicker HinicioManha = new TimePicker();
-                                        TimePicker HFimManha = new TimePicker();
+
+                                        // INÍCIO MANHÃ
+                                        TimePickerSettings settings = new TimePickerSettings();
+
+
+                                        
+                                        HinicioManha = new TimePicker();
+                                        HFimManha = new TimePicker();
+                                        HinicioTarde = new TimePicker();
+                                        HFimTarde = new TimePicker();
+
                                         manhaPanel.add(HinicioManha);
                                         manhaPanel.add(HFimManha);
                                         centerPanel.add(manhaPanel, gbc);
@@ -170,10 +197,9 @@ public class FormCalendar extends javax.swing.JPanel {
                                         gbc.gridy++;
                                         JPanel tardePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
                                         tardePanel.setOpaque(false);
-                                        TimePicker HinicioTarde = new TimePicker();
-                                        TimePicker HFimoTarde = new TimePicker();
+
                                         tardePanel.add(HinicioTarde);
-                                        tardePanel.add(HFimoTarde);
+                                        tardePanel.add(HFimTarde);
                                         centerPanel.add(tardePanel, gbc);
 
                                         // Espaço extra antes do botão
@@ -198,53 +224,51 @@ public class FormCalendar extends javax.swing.JPanel {
                                                 LocalTime horarioFimManha = HFimManha.getTime();
                                                 //Tarde
                                                 LocalTime horarioInicioTarde = HinicioTarde.getTime();
-                                                LocalTime horarioFimTarde = HFimoTarde.getTime();
+                                                LocalTime horarioFimTarde = HFimTarde.getTime();
 
                                                 if (horarioInicioManha == null || horarioInicioManha == null
                                                         || horarioInicioTarde == null || horarioFimTarde == null) {
                                                     Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Você deixou algum campo em branco.");
                                                 } else {
-                                                    
-                                                    Horarios r = new Horarios(selectedDate, horarioInicioManha, horarioFimManha, horarioInicioTarde, horarioFimTarde);
+                                                    System.out.println();
+                                                    Horarios r = new Horarios(selectedDate, horarioInicioManha, horarioFimManha, horarioInicioTarde, horarioFimTarde, medicoSelecionado);
                                                     // Verifica se já existe cadastro
-                                                    
-                                                    Horarios horarioSelecionado=daoH.selecionar(selectedDate);
-                                                    if (horarioSelecionado==null) {
+
+                                                    Horarios horarioSelecionado = daoH.selecionar(selectedDate);
+                                                    if (horarioSelecionado == null) {
                                                         if (daoH.inserir(r)) {
-                                                        Notifications.getInstance().show(
-                                                                Notifications.Type.SUCCESS,
-                                                                Notifications.Location.TOP_CENTER,
-                                                                "Horário cadastrado com sucesso."
-                                                        );
+                                                            Notifications.getInstance().show(
+                                                                    Notifications.Type.SUCCESS,
+                                                                    Notifications.Location.TOP_CENTER,
+                                                                    "Horário cadastrado com sucesso."
+                                                            );
+                                                        } else {
+                                                            Notifications.getInstance().show(
+                                                                    Notifications.Type.ERROR,
+                                                                    Notifications.Location.TOP_CENTER,
+                                                                    "Erro ao cadastrar horário."
+                                                            );
+                                                        }
                                                     } else {
-                                                        Notifications.getInstance().show(
-                                                                Notifications.Type.ERROR,
-                                                                Notifications.Location.TOP_CENTER,
-                                                                "Erro ao cadastrar horário."
-                                                        );
-}
-                                                    }else{
                                                         Notifications.getInstance().show(
                                                                 Notifications.Type.SUCCESS,
                                                                 Notifications.Location.TOP_CENTER,
                                                                 "Já existe um cadastro para essa data,Por isso ela foi editada."
                                                         );
                                                         System.out.println("Já existe? " + daoH.existeCadastroParaData(selectedDate));
-                                                        
+
                                                         horarioSelecionado.setInicioManha(horarioInicioManha);
                                                         horarioSelecionado.setFimManha(horarioFimManha);
                                                         horarioSelecionado.setInicioTarde(horarioInicioTarde);
                                                         horarioSelecionado.setFimTarde(horarioFimTarde);
-                                                        
+
                                                         daoH.editar(horarioSelecionado);
                                                         return;
                                                     }
 
-                                                    
-                                                    }
-
                                                 }
-                                            
+
+                                            }
 
                                         });
 

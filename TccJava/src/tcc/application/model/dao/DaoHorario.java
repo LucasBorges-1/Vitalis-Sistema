@@ -6,6 +6,7 @@ package tcc.application.model.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import tcc.application.model.Horarios;
@@ -44,9 +45,14 @@ public class DaoHorario extends Dao {
     }
 
     public Horarios selecionar(LocalDate data) {
-        Query consulta = em.createQuery("select c from Horarios c where c.data=:data");
+        try{
+            Query consulta = em.createQuery("select c from Horarios c where c.data=:data");
         consulta.setParameter("data", data);
         return (Horarios) consulta.getSingleResult();
+        }catch (NoResultException e) {
+        return null; 
+    }
+        
     }
 
     public boolean remove(Horarios c) {

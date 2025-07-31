@@ -121,7 +121,8 @@ public class ControllerPrincipal extends JLayeredPane {
             } else if (index == 3) {
                 if (subIndex == 1) {
                      ControllerPrincipal.setI(3);
-                    Application.showForm(new FormCalendar());
+                     System.out.println(this.getMedico().toString()+1);
+                    Application.showForm(new FormCalendar(this.getMedico()));
                 }  else {
                     action.cancel();
                 }

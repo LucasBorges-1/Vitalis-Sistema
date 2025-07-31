@@ -121,13 +121,13 @@ public class FormMainMenu extends javax.swing.JPanel {
         JPanel painelSuperior = new JPanel(new GridBagLayout());
         JPanel painelInferior = new JPanel(new BorderLayout());
 
-        JPanel painelEsquerda = new JPanel(new GridLayout(2, 1, 0, 10)); // margem vertical de 10px
+        JPanel painelEsquerda = new JPanel(new GridLayout(2, 1, 0, 10));
         painelEsquerda.setPreferredSize(new Dimension(0, 0));
 
         // Painel "AGENDADAS"
         JPanel painelLinhas = new JPanel(new GridBagLayout());
         painelLinhas.setName("painelLinhas");
-        painelLinhas.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10)); // margem interna
+        painelLinhas.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10)); 
         labelAgendadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
         labelAgendadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelAgendadas.setVerticalAlignment(SwingConstants.CENTER);
@@ -141,7 +141,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         // Painel "REALIZADAS"
         JPanel painelColunas = new JPanel(new GridBagLayout());
         painelColunas.setName("painelColunas");
-        painelColunas.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10)); // margem interna
+        painelColunas.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10)); 
         labelRealizadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
         labelRealizadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelRealizadas.setVerticalAlignment(SwingConstants.CENTER);

@@ -50,32 +50,28 @@ public class Horarios implements Serializable {
 
     @Column(name = "fimtarde")
     private LocalTime fimTarde;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_medico")
+    private Medico medico;
 
-    public Horarios(LocalDate data, LocalTime inicioManha, LocalTime fimManha, LocalTime inicioTarde, LocalTime fimTarde) {
+    public Horarios(LocalDate data, LocalTime inicioManha, LocalTime fimManha, LocalTime inicioTarde, LocalTime fimTarde, Medico medico) {
         this.data = data;
         this.inicioManha = inicioManha;
         this.fimManha = fimManha;
         this.inicioTarde = inicioTarde;
         this.fimTarde = fimTarde;
+        this.medico = medico;
     }
 
     public Horarios() {
-
     }
 
-    public int getId_horario() {
-        return id_horario;
-    }
-
-    public void setId_horario(int id_horario) {
-        this.id_horario = id_horario;
-    }
-
-    public LocalDate getDia() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setDia(LocalDate data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
@@ -91,8 +87,8 @@ public class Horarios implements Serializable {
         return fimManha;
     }
 
-    public void setFimManha(LocalTime FimManha) {
-        this.fimManha = FimManha;
+    public void setFimManha(LocalTime fimManha) {
+        this.fimManha = fimManha;
     }
 
     public LocalTime getInicioTarde() {
@@ -111,4 +107,13 @@ public class Horarios implements Serializable {
         this.fimTarde = fimTarde;
     }
 
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+   
 }
