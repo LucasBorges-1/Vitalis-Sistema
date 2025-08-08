@@ -7,15 +7,22 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatUIUtils;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -27,14 +34,17 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolTip;
 import javax.swing.ListSelectionModel;
@@ -127,7 +137,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         // Painel "AGENDADAS"
         JPanel painelLinhas = new JPanel(new GridBagLayout());
         painelLinhas.setName("painelLinhas");
-        painelLinhas.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10)); 
+        painelLinhas.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
         labelAgendadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
         labelAgendadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelAgendadas.setVerticalAlignment(SwingConstants.CENTER);
@@ -141,7 +151,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         // Painel "REALIZADAS"
         JPanel painelColunas = new JPanel(new GridBagLayout());
         painelColunas.setName("painelColunas");
-        painelColunas.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10)); 
+        painelColunas.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
         labelRealizadas.putClientProperty(FlatClientProperties.STYLE, "font:$h2.font");
         labelRealizadas.setHorizontalAlignment(SwingConstants.CENTER);
         labelRealizadas.setVerticalAlignment(SwingConstants.CENTER);
@@ -428,9 +438,126 @@ public class FormMainMenu extends javax.swing.JPanel {
         }
     }
 
+    public void actionTableForm(Consulta c) {
+        JDialog dialog = new JDialog((JFrame) null, "Consultando Paciente", true);
+        dialog.setUndecorated(true);
+        dialog.setOpacity(0.92f);
+        dialog.setSize(450, 600);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+
+        // Topo com título e botão X
+        JPanel topBar = new JPanel(new BorderLayout());
+        topBar.setOpaque(false);
+        topBar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel titulo = new JLabel("CONSULTANDO O PACIENTE \"Nome\"", JLabel.CENTER);
+        titulo.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h2.font");
+        topBar.add(titulo, BorderLayout.CENTER);
+
+        JButton closeBtn = new JButton("X");
+        closeBtn.setFocusPainted(false);
+        closeBtn.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h2.font");
+        closeBtn.setContentAreaFilled(false);
+        closeBtn.setBorder(BorderFactory.createEmptyBorder());
+        closeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        closeBtn.addActionListener(e -> dialog.dispose());
+        topBar.add(closeBtn, BorderLayout.EAST);
+
+        dialog.add(topBar, BorderLayout.NORTH);
+
+        // Painel principal
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 20, 10, 20);
+
+        // Imagem do paciente (círculo)
+        gbc.gridy = 0;
+        JLabel imagemPaciente = new JLabel("", JLabel.CENTER);
+
+        imagemPaciente.setPreferredSize(new Dimension(128, 128));
+        imagemPaciente.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/paciente128.png")));
+        imagemPaciente.setHorizontalTextPosition(SwingConstants.CENTER);
+        imagemPaciente.setVerticalTextPosition(SwingConstants.CENTER);
+        centerPanel.add(imagemPaciente, gbc);
+
+        // Espaço
+        gbc.gridy++;
+        centerPanel.add(Box.createVerticalStrut(20), gbc);
+
+        // Campo de descrição
+        gbc.gridy++;
+        JTextArea descricao = new JTextArea("Descrição da consulta");
+        descricao.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira a descrição");
+        descricao.setLineWrap(true);
+        descricao.setWrapStyleWord(true);
+        descricao.setRows(6);
+
+        JScrollPane scroll = new JScrollPane(descricao);
+        scroll.setPreferredSize(new Dimension(400, 220));
+        centerPanel.add(scroll, gbc);
+
+        // Espaço
+        gbc.gridy++;
+        centerPanel.add(Box.createVerticalStrut(30), gbc);
+
+        // Botões
+        gbc.gridy++;
+        JPanel botoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        JButton finalizar = new JButton("Finalizar");
+        JButton suspender = new JButton("Suspender");
+
+        configurarBotao(finalizar,this);
+        configurarBotao(suspender,this);
+
+        botoes.add(finalizar);
+        botoes.add(suspender);
+        botoes.setOpaque(false);
+        centerPanel.add(botoes, gbc);
+
+        dialog.add(centerPanel, BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
+
+    private static void configurarBotao(JButton botao, JPanel jp) {
+        botao.setFocusPainted(false);
+
+        botao.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h3.font");
+
+        botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botao.setContentAreaFilled(false);
+        botao.setPreferredSize(new Dimension(120, 40));
+
+        // Efeito de hover com base no background do painel pai
+        botao.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botao.setOpaque(false);
+                Color bgColor = jp.getBackground();
+                Color hoverColor = bgColor.darker();
+                botao.setForeground(hoverColor);
+                
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                botao.setOpaque(true);
+                Color fg=jp.getForeground();
+                Color bgColor = jp.getBackground();
+                Color hoverColor = bgColor.darker();
+                botao.setForeground(bgColor);
+                botao.setForeground(fg);
+            }
+        });
+    }
+
     public void gerenciandoTabela() {
         MainTable.setModel(model);
         MainTable.getTableHeader().setReorderingAllowed(false);
+        //
 
         for (int i = 0; i < MainTable.getColumnCount(); i++) {
             MainTable.getColumnModel().getColumn(i).setResizable(false);
@@ -666,9 +793,8 @@ public class FormMainMenu extends javax.swing.JPanel {
 
         return cont;
     }
-    
-    //Fim
 
+    //Fim
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_CENTER, "Hello sample message");
