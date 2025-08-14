@@ -37,6 +37,7 @@ public class Consulta implements Serializable {
     private String tipo;
     private LocalDateTime horario;
     private String estado;
+    private String descricao;
     
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -46,12 +47,13 @@ public class Consulta implements Serializable {
     @JoinColumn(name = "id_medico")
     private Medico medico;
     
-    public Consulta(LocalDate data_consulta, Medico medico, String tipo, LocalDateTime horario, Usuario usuario) {
+    public Consulta(LocalDate data_consulta, Medico medico, String tipo, LocalDateTime horario, Usuario usuario,String descricao) {
         this.data_consulta = data_consulta;
         this.tipo = tipo;
         this.horario = horario;
         this.usuario = usuario;
         this.medico = medico;
+        this.descricao=descricao;
     }
 
     public Consulta() {
@@ -113,11 +115,23 @@ public class Consulta implements Serializable {
         this.medico = medico;
     }
 
-    
-    
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     @Override
     public String toString() {
-        return "Consulta{" + "data_consulta=" + data_consulta + ", tipo=" + tipo + ", horario=" + horario + ", usuario=" + usuario + '}';
+        return "Consulta{" + "id_consulta=" + id_consulta + ", data_consulta=" + data_consulta + ", tipo=" + tipo + ", horario=" + horario + ", estado=" + estado + ", descricao=" + descricao + ", usuario=" + usuario + ", medico=" + medico + '}';
     }
+    
+    
+
+    
+    
+    
 
 }

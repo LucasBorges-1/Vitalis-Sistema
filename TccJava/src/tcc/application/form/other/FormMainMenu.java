@@ -438,7 +438,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         }
     }
 
-    public void actionTableForm(Consulta c) {
+    public void actionTableForm(Consulta c, JTable tabela) {
         JDialog dialog = new JDialog((JFrame) null, "Consultando Paciente", true);
         dialog.setUndecorated(true);
         dialog.setOpacity(0.92f);
@@ -451,7 +451,7 @@ public class FormMainMenu extends javax.swing.JPanel {
         topBar.setOpaque(false);
         topBar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel titulo = new JLabel("CONSULTANDO O PACIENTE \"Nome\"", JLabel.CENTER);
+        JLabel titulo = new JLabel("CONSULTANDO O PACIENTE " + c.getUsuario().getNome(), JLabel.CENTER);
         titulo.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h2.font");
         topBar.add(titulo, BorderLayout.CENTER);
 
@@ -490,7 +490,7 @@ public class FormMainMenu extends javax.swing.JPanel {
 
         // Campo de descrição
         gbc.gridy++;
-        JTextArea descricao = new JTextArea("Descrição da consulta");
+        JTextArea descricao = new JTextArea();
         descricao.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira a descrição");
         descricao.setLineWrap(true);
         descricao.setWrapStyleWord(true);
@@ -510,8 +510,30 @@ public class FormMainMenu extends javax.swing.JPanel {
         JButton finalizar = new JButton("Finalizar");
         JButton suspender = new JButton("Suspender");
 
-        configurarBotao(finalizar,this);
-        configurarBotao(suspender,this);
+        finalizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int indice = tabela.getSelectedRow();
+
+                String desc = descricao.getText();
+                c.setDescricao(desc);
+                dialog.setVisible(false);
+                concluirConsulta(indice);
+            }
+        });
+        suspender.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int indice = tabela.getSelectedRow();
+
+                String desc = descricao.getText();
+                c.setDescricao(desc);
+                dialog.setVisible(false);
+                concluirConsulta(indice);
+            }
+        });
+        configurarBotao(finalizar, this);
+        configurarBotao(suspender, this);
 
         botoes.add(finalizar);
         botoes.add(suspender);
@@ -539,13 +561,13 @@ public class FormMainMenu extends javax.swing.JPanel {
                 Color bgColor = jp.getBackground();
                 Color hoverColor = bgColor.darker();
                 botao.setForeground(hoverColor);
-                
+
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 botao.setOpaque(true);
-                Color fg=jp.getForeground();
+                Color fg = jp.getForeground();
                 Color bgColor = jp.getBackground();
                 Color hoverColor = bgColor.darker();
                 botao.setForeground(bgColor);
@@ -574,6 +596,22 @@ public class FormMainMenu extends javax.swing.JPanel {
         MainTable.getColumn("Nome").setCellRenderer(centroRenderer);
         MainTable.getColumn("Tipo").setCellRenderer(centroRenderer);
         MainTable.getColumn("Horário").setCellRenderer(centroRenderer);
+
+        MainTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.rowAtPoint(e.getPoint());
+                    int column = target.columnAtPoint(e.getPoint());
+
+                    if (row >= 0 && column >= 0) {
+                        actionTableForm(model.pegarConsulta(MainTable.getSelectedRow()), MainTable);
+                    }
+                }
+            }
+        });
+
         // labelAgendadas.setText("Agendadas para hoje: " + model());
         estilizarBotaoFundoTabela(cmdC);
         estilizarBotaoFundoTabela(cmdX);
