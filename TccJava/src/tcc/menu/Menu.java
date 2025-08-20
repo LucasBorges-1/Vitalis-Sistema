@@ -17,7 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import tcc.application.form.ControllerPrincipal;
 import tcc.application.form.other.FormCalendar;
+import tcc.application.model.Medico;
 import tcc.menu.mode.ToolBarAccentColor;
 
 
@@ -31,8 +33,8 @@ public class Menu extends JPanel {
         {"Impressão"},
         {"Carga horária","Calendário"},
         {"~Outros~"},
-        {"Links", "AgendeAqui","Email","Google drive"},
-        {"Logout"}
+        {"Links", "Vitalis-Web","Email","Google drive"},
+        {"Sair"}
     };
 
     public boolean isMenuFull() {
@@ -51,12 +53,17 @@ public class Menu extends JPanel {
     protected final int menuMaxWidth = 250;
     protected final int menuMinWidth = 60;
     protected final int headerFullHgap = 5;
+    private tcc.application.form.ControllerPrincipal app;
+    private Medico medico;
+
+    public Menu(Medico medico) {
+        init();
+        this.medico=medico;
+        
+    }
 
     
-    public Menu( ) {
-        
-        init();
-    }
+    
 
 
     
@@ -79,6 +86,16 @@ public class Menu extends JPanel {
         toolBarAccentColor.setMenuFull(menuFull);
     }
 
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+      
+      
+
     
     
 
@@ -90,7 +107,7 @@ public class Menu extends JPanel {
                 + "arc:10");
         header = new JLabel(headerName);
         header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logoBlack.png")));
-        header.setIconTextGap(20); 
+        header.setIconTextGap(-5); 
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$Menu.header.font;"
                 + "foreground:$Menu.foreground");
@@ -115,13 +132,15 @@ public class Menu extends JPanel {
                 + "background:$Menu.ScrollBar.background;"
                 + "thumb:$Menu.ScrollBar.thumb");
         createMenu();
-        lightDarkMode = new LightDarkMode();
+        
+        lightDarkMode = new LightDarkMode(this.getMedico());
         toolBarAccentColor = new ToolBarAccentColor(this);
         toolBarAccentColor.setVisible(FlatUIUtils.getUIBoolean("AccentControl.show", false));
         add(header);
         add(scroll);
         add(lightDarkMode);
         add(toolBarAccentColor);
+        
     }
 
     private void createMenu() {

@@ -24,13 +24,28 @@ import javax.swing.border.EmptyBorder;
 //  import jdk.internal.org.jline.utils.Display;
 import tcc.application.Application;
 import tcc.application.form.ControllerPrincipal;
+import tcc.application.form.other.DefaultForm;
 import tcc.application.form.other.FormCalendar;
 import tcc.application.form.other.FormMainMenu;
+import tcc.application.model.Medico;
+import tcc.menu.Menu;
 
 public class LightDarkMode extends JPanel {
+
     private tcc.menu.Menu menu;
     private tcc.application.form.other.FormCalendar calendar;
+    private tcc.application.form.other.FormMainMenu fmm;
     private tcc.application.form.ControllerPrincipal app;
+    private tcc.application.form.other.DefaultForm def;
+    private Medico medico;
+
+    public LightDarkMode(Medico medico) {
+        this.medico = medico;
+        calendar = new FormCalendar();
+        def=new DefaultForm("Atualizando");
+        init();
+
+    }
 
     public void setMenuFull(boolean menuFull) {
         this.menuFull = menuFull;
@@ -47,12 +62,12 @@ public class LightDarkMode extends JPanel {
 
     private boolean menuFull = true;
 
-    public LightDarkMode() {
-        calendar = new FormCalendar();
-        
-        init();
-        
+    public Medico getMedico() {
+        return medico;
+    }
 
+    public void setMedico(Medico medico) {
+        this.medico = medico;
     }
 
     public boolean themeActive() {
@@ -64,15 +79,15 @@ public class LightDarkMode extends JPanel {
         }
 
     }
-
+//criar um me4todo atualiarComponente
     private void init() {
         setBorder(new EmptyBorder(2, 2, 2, 2));
         setLayout(new LightDarkModeLayout());
         putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:999;"
                 + "background:$Menu.lightdark.background");
-        buttonLight = new JButton("Light", new FlatSVGIcon("tcc/menu/mode/light.svg"));
-        buttonDark = new JButton("Dark", new FlatSVGIcon("tcc/menu/mode/dark.svg"));
+        buttonLight = new JButton("Claro", new FlatSVGIcon("tcc/menu/mode/light.svg"));
+        buttonDark = new JButton("Escuro", new FlatSVGIcon("tcc/menu/mode/dark.svg"));
         buttonLighDark = new JButton();
         buttonLighDark.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:999;"
@@ -98,6 +113,7 @@ public class LightDarkMode extends JPanel {
         add(buttonLight);
         add(buttonDark);
         add(buttonLighDark);
+
     }
 
     private int change = 0;
@@ -107,36 +123,48 @@ public class LightDarkMode extends JPanel {
         if (FlatLaf.isLafDark() != dark) {
 
             if (dark) {
-                 
+
                 EventQueue.invokeLater(() -> {
-                  
+
                     FlatAnimatedLafChange.showSnapshot();
                     FlatMacDarkLaf.setup();
                     FlatLaf.updateUI();
                     checkStyle();
                     FlatAnimatedLafChange.hideSnapshotWithAnimation();
-                   if (app.getI() == 3) {
-                        Application.showForm(new FormCalendar());
+                    Medico m = this.getMedico();
+                    if (app.getI() == 2) {
+                        Application.atualizarComponentes();
                        
+
+                    } else if (app.getI() == 3) {
+                        
+                        Application.showForm(new FormCalendar(m));
+
                     }
-                   
+
                 });
 
             } else {
-                 
+
                 EventQueue.invokeLater(() -> {
-                    
+
                     FlatAnimatedLafChange.showSnapshot();
                     FlatMacLightLaf.setup();
                     FlatLaf.updateUI();
                     checkStyle();
                     FlatAnimatedLafChange.hideSnapshotWithAnimation();
-                    
-                   if (app.getI()==3) {
-                        Application.showForm(new FormCalendar());
-                        
+                    System.out.println("Valor de I: " + app.getI());
+                    Medico m = this.getMedico();
+                    if (app.getI() == 2) {
+                        Application.atualizarComponentes();
+                       
+                     
+
+                    } else if (app.getI() == 3) {
+                        Application.showForm(new FormCalendar(m));
+
                     }
-                   
+
                     menu.header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logoWhite.png")));
                 });
             }

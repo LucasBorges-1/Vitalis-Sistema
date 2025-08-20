@@ -8,7 +8,7 @@ public class DefaultForm extends javax.swing.JPanel {
 private tcc.application.form.ControllerPrincipal app;
     public DefaultForm(String text) {
         initComponents();
-        lb.putClientProperty(FlatClientProperties.STYLE, ""
+        lb.putClientProperty(FlatClientProperties.STYLE, "Atualizando"
                 + "font:$h1.font");
         lb.setText(text);
         app.setI(0);

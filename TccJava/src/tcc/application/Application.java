@@ -47,7 +47,7 @@ public class Application extends javax.swing.JFrame {
 
     public Application() {
         initComponents();
-        
+
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         daoPessoa = new DaoPessoa();
@@ -56,15 +56,14 @@ public class Application extends javax.swing.JFrame {
         loginclinicaForm = new LoginClinicaForm();
         formManager = new FormManager();
         loginMedicoForm = new LoginMedicoForm();
-        
+
         daoClinica = new DaoClinica();
 
-
         setContentPane(loginForm);
-         
+
         revalidate();
         repaint();
-        
+
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
         Notifications.getInstance().setJFrame(this);
 
@@ -84,7 +83,7 @@ public class Application extends javax.swing.JFrame {
     }
 
     public static void login(String crm) {
-       
+
         medico = daoPessoa.buscarMedicoPorCrm(crm);
         mainForm = new ControllerPrincipal(medico);
         FlatAnimatedLafChange.showSnapshot();
@@ -97,6 +96,16 @@ public class Application extends javax.swing.JFrame {
 
     }
 
+    public static void atualizarComponentes() {
+         FlatAnimatedLafChange.showSnapshot();
+        app.mainForm.applyComponentOrientation(app.getComponentOrientation());
+        app.setContentPane(app.mainForm);
+        setSelectedMenu(0, 1);
+        app.mainForm.hideMenu();
+        SwingUtilities.updateComponentTreeUI(app.mainForm);
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
+    }
+  
     public static void OpenloginClinica() {
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.loginclinicaForm);
@@ -195,8 +204,7 @@ public class Application extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             app = new Application();
             app.setVisible(true);
-            
-            
+
             /*
             BCryptUtil bc=new BCryptUtil();
             DaoClinica daoC=new DaoClinica();
@@ -205,7 +213,6 @@ public class Application extends javax.swing.JFrame {
             Clinica c = new Clinica("11", "clinica", "asd", "asd",bc.hashSenha(senha));
             daoC.inserir(c);
              */
-
         });
     }
 

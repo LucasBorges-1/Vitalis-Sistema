@@ -35,6 +35,7 @@ public class ControllerPrincipal extends JLayeredPane {
 
     private Medico medico;
     private DaoPessoa daoPessoa;
+    
 
     public ControllerPrincipal(Medico medico) {
 
@@ -63,12 +64,14 @@ public class ControllerPrincipal extends JLayeredPane {
     }
 
     private void init() {
-        System.out.println(this.getMedico().toString());
+        
         setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new MainFormLayout());
 
         String nomeDoMedico = this.getMedico().getNome();
-        menu = new Menu();
+        
+       
+        menu = new Menu(this.getMedico());
 
         menu.header.setText("Dr(a) " + nomeDoMedico);
 
@@ -96,6 +99,11 @@ public class ControllerPrincipal extends JLayeredPane {
         super.applyComponentOrientation(o);
         initMenuArrowIcon();
     }
+    
+    public Medico medicoselecionado(){
+         return this.getMedico();
+        
+    }
 
     private void initMenuArrowIcon() {
         if (menuButton == null) {
@@ -108,7 +116,9 @@ public class ControllerPrincipal extends JLayeredPane {
     private void initMenuEvent() {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
+            ControllerPrincipal.setI(2);
             if (index == 0) {
+                ControllerPrincipal.setI(2);
                 Application.showForm(new FormMainMenu(this.getMedico()));
             } else if (index == 1) {
                 if (subIndex == 1) {
@@ -121,11 +131,11 @@ public class ControllerPrincipal extends JLayeredPane {
             } else if (index == 3) {
                 if (subIndex == 1) {
                      ControllerPrincipal.setI(3);
-                     System.out.println(this.getMedico().toString()+1);
-                    Application.showForm(new FormCalendar(this.getMedico()));
+                     Application.showForm(new FormCalendar(medicoselecionado()));
                 }  else {
                     action.cancel();
                 }
+                
 
             } else if (index == 4) {
                 if (subIndex == 1) {

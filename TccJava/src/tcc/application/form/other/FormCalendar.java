@@ -1,3 +1,4 @@
+
 package tcc.application.form.other;
 
 import com.github.lgooddatepicker.components.TimePicker;
@@ -65,6 +66,7 @@ import tcc.application.model.Horarios;
 import tcc.application.model.Medico;
 import tcc.application.model.dao.DaoHorario;
 
+
 public class FormCalendar extends javax.swing.JPanel {
 
     private Medico medicoSelecionado;
@@ -76,6 +78,7 @@ public class FormCalendar extends javax.swing.JPanel {
 
     public FormCalendar(Medico medicoSelecionado) {
         this.medicoSelecionado = medicoSelecionado;
+        
         initComponents();
 
         lb.putClientProperty(FlatClientProperties.STYLE, ""
@@ -85,6 +88,7 @@ public class FormCalendar extends javax.swing.JPanel {
         estilizarcalendario();
         configuraçãoLayout();
         addMouseListenerToCalendarDays(calendarPanel);
+        
 
     }
 
@@ -100,7 +104,7 @@ public class FormCalendar extends javax.swing.JPanel {
     }
 
     private void addMouseListenerToCalendarDays(CalendarPanel calendarPanel) {
-
+        
         for (Component component : calendarPanel.getComponents()) {
             if (component instanceof JPanel) {
                 JPanel monthViewPanel = (JPanel) component;
@@ -177,8 +181,6 @@ public class FormCalendar extends javax.swing.JPanel {
                                         // INÍCIO MANHÃ
                                         TimePickerSettings settings = new TimePickerSettings();
 
-
-                                        
                                         HinicioManha = new TimePicker();
                                         HFimManha = new TimePicker();
                                         HinicioTarde = new TimePicker();
@@ -291,7 +293,7 @@ public class FormCalendar extends javax.swing.JPanel {
         }
     }
 
-    private void configuraçãoLayout() {
+    public void configuraçãoLayout() {
 
         setLayout(new BorderLayout(20, 20));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -410,6 +412,23 @@ public class FormCalendar extends javax.swing.JPanel {
         calendarPanel.repaint();
 
     }
+
+    @Override
+    public void updateUI() {
+    // 1. ESSENCIAL: Deixa o Swing/FlatLaf fazer a atualização padrão primeiro.
+    super.updateUI();
+
+    // 2. Garante que o painel do calendário já foi inicializado (evita erros).
+    if (calendarPanel != null) {
+        revalidate();
+        repaint();
+        calendarPanel.drawCalendar();
+       
+    }
+    
+}
+    
+ 
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
