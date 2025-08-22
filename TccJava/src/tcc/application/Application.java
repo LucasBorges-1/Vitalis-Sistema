@@ -35,9 +35,10 @@ public class Application extends javax.swing.JFrame {
     public static Application app;
     private static ControllerPrincipal mainForm;
     private final LoginMedicoForm loginForm;
-    private LoginClinicaForm loginclinicaForm;
-    private FormManager formManager;
+    private static LoginClinicaForm loginclinicaForm;
+    private  static FormManager formManager;
     private static LoginMedicoForm loginMedicoForm;
+    
     private tcc.application.model.dao.BCryptUtil bCrypt;
     private DaoClinica daoClinica;
     private static DaoPessoa daoPessoa;
@@ -51,12 +52,12 @@ public class Application extends javax.swing.JFrame {
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         daoPessoa = new DaoPessoa();
-
+        
         loginForm = new LoginMedicoForm();
         loginclinicaForm = new LoginClinicaForm();
         formManager = new FormManager();
         loginMedicoForm = new LoginMedicoForm();
-
+        formManager=new FormManager();
         daoClinica = new DaoClinica();
 
         setContentPane(loginForm);
@@ -83,8 +84,9 @@ public class Application extends javax.swing.JFrame {
     }
 
     public static void login(String crm) {
-
+        
         medico = daoPessoa.buscarMedicoPorCrm(crm);
+        
         mainForm = new ControllerPrincipal(medico);
         FlatAnimatedLafChange.showSnapshot();
         app.setContentPane(app.mainForm);
@@ -107,7 +109,9 @@ public class Application extends javax.swing.JFrame {
     }
   
     public static void OpenloginClinica() {
+        
         FlatAnimatedLafChange.showSnapshot();
+        
         app.setContentPane(app.loginclinicaForm);
         app.loginclinicaForm.applyComponentOrientation(app.getComponentOrientation());
         //setSelectedMenu(0, 0);
@@ -137,6 +141,7 @@ public class Application extends javax.swing.JFrame {
                             JOptionPane.YES_NO_OPTION
                     );
                     if (option == JOptionPane.YES_OPTION) {
+                         formManager.setListnerCadastrar();
                         Application.voltar();
                         isOpen = 0;
                     } else {
@@ -161,7 +166,7 @@ public class Application extends javax.swing.JFrame {
         if (isOpen == 0) {
             System.exit(0);
         } else {
-
+           
             FlatAnimatedLafChange.showSnapshot();
             app.setContentPane(app.loginForm);
             app.loginForm.applyComponentOrientation(app.getComponentOrientation());

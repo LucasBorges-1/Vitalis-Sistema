@@ -14,6 +14,8 @@ import tcc.application.Application;
 
 public class LoginMedicoForm extends javax.swing.JPanel {
 
+    private static final int DELAY = 300; // 0.3 segundos
+    private static int dotCount = 0; // Contador de pontosF
     ControllerPessoa cp;
     private Color original;
 
@@ -24,7 +26,7 @@ public class LoginMedicoForm extends javax.swing.JPanel {
     }
 
     private void init() {
-        
+
         setLayout(new MigLayout("al center center"));
 
         btManegerArea.putClientProperty(FlatClientProperties.STYLE, ""
@@ -35,22 +37,21 @@ public class LoginMedicoForm extends javax.swing.JPanel {
                 + "font:$h1.font");
 
         txtUser.putClientProperty(FlatClientProperties.STYLE, ""
-                +"background:$Panel.background;");
-             //   + "showRevealButton:true;"
-               // + "showCapsLock:true"
-        
+                + "background:$Panel.background;");
+        //   + "showRevealButton:true;"
+        // + "showCapsLock:true"
+
         txtPass.putClientProperty(FlatClientProperties.STYLE, ""
-                +"background:$Panel.background;"
-               + "showRevealButton:true;"
+                + "background:$Panel.background;"
+                + "showRevealButton:true;"
                 + "showCapsLock:true");
         cmdLogin.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:$Panel.background;"
                 + "borderWidth:0;"
                 + "focusWidth:0");
 
-      // Color hoverColor = btManegerArea.getForeground().darker().darker();
-      //  btManegerArea.setForeground(hoverColor);
-
+        // Color hoverColor = btManegerArea.getForeground().darker().darker();
+        //  btManegerArea.setForeground(hoverColor);
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe seu Crm");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "informe sua Senha");
 
@@ -65,8 +66,10 @@ public class LoginMedicoForm extends javax.swing.JPanel {
                 String senhaDigitada = new String(senhaChars);
 
                 if (cp.verificarLoginMedico(txtUser.getText(), senhaDigitada)) {
-
+                    
                     Application.login(txtUser.getText());
+                    txtUser.setText("");
+                    txtPass.setText("");
 
                 } else {
                     Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "CRM ou senha incorretos.");
@@ -156,7 +159,7 @@ public class LoginMedicoForm extends javax.swing.JPanel {
     private javax.swing.JLabel lbTitle;
     private javax.swing.JLabel lbUser;
     private tcc.application.form.PanelLogin panelLogin1;
-    private javax.swing.JPasswordField txtPass;
+    public javax.swing.JPasswordField txtPass;
     public javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

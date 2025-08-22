@@ -1,4 +1,3 @@
-
 package tcc.application.form;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -12,10 +11,9 @@ import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
 import tcc.application.Application;
 
-
 public class LoginClinicaForm extends javax.swing.JPanel {
 
-    private static final int DELAY = 600; // 0.6 segundos
+    private static final int DELAY = 300; // 0.3 segundos
     private static int dotCount = 0; // Contador de pontos
     private ControllerPessoa cp;
 
@@ -37,29 +35,27 @@ public class LoginClinicaForm extends javax.swing.JPanel {
                 + "font:$h1.font");
 
         txtUser.putClientProperty(FlatClientProperties.STYLE, ""
-                +"background:$Panel.background;");
-               // + "showRevealButton:true;"
-              //  + "showCapsLock:true"
-        
+                + "background:$Panel.background;");
+        // + "showRevealButton:true;"
+        //  + "showCapsLock:true"
+
         txtPass.putClientProperty(FlatClientProperties.STYLE, ""
-                +"background:$Panel.background;"
+                + "background:$Panel.background;"
                 + "showRevealButton:true;"
-               + "showCapsLock:true");
+                + "showCapsLock:true");
         cmdLogin.putClientProperty(FlatClientProperties.STYLE, ""
                 + "background:$Panel.background;"
                 + "borderWidth:0;"
                 + "focusWidth:0");
-        
+
         txtUser.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "User Name");
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
-        
-       
-        
+
         cmdLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cmdLogin.setText("Entrando...");
-                
+
                 cp = new ControllerPessoa();
                 char[] senhaChars = txtPass.getPassword();
                 String senhaDigitada = new String(senhaChars);
@@ -67,13 +63,15 @@ public class LoginClinicaForm extends javax.swing.JPanel {
                 if (cp.verificarLoginClinica(txtUser.getText(), senhaDigitada)) {
 
                     Application.OpenClinicaManeger();
+                    txtUser.setText("");
+                    txtPass.setText("");
                 } else {
 
-                   Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Nome ou senha incorretos.");
-                   
+                    Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, "Nome ou senha incorretos.");
+
                 }
                 cmdLogin.setText("Login");
-            } 
+            }
         });
     }
 
@@ -147,7 +145,7 @@ public class LoginClinicaForm extends javax.swing.JPanel {
     private javax.swing.JLabel lbTitle;
     private javax.swing.JLabel lbUser;
     private tcc.application.form.PanelLogin panelLogin1;
-    private javax.swing.JPasswordField txtPass;
-    private javax.swing.JTextField txtUser;
+    public javax.swing.JPasswordField txtPass;
+    public javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

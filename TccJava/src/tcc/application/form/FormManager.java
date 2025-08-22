@@ -56,8 +56,8 @@ public class FormManager extends javax.swing.JPanel {
     private DaoClinica daoClinica;
     private ActionListener listenerCadastrarOriginal;
     private tcc.application.model.dao.BCryptUtil bCrypt;
-    private String[] arrayTipoMedico={"Clínico Geral","Ginecologista e Obstetrícia","Pediatra","Cardiologista","Dermatologista","Ortopedista","Psiquiatra","Oftamologista","Geriatra"};
-    
+    private String[] arrayTipoMedico = {"Clínico Geral", "Ginecologista e Obstetrícia", "Pediatra", "Cardiologista", "Dermatologista", "Ortopedista", "Psiquiatra", "Oftamologista", "Geriatra"};
+
     public FormManager() {
         initComponents();
         daoPessoa = new DaoPessoa();
@@ -69,13 +69,11 @@ public class FormManager extends javax.swing.JPanel {
         estiloTabela();
         init();
         additemComboBox(arrayTipoMedico);
-        
-
     }
-    
-    public void additemComboBox(String[] array){
+
+    public void additemComboBox(String[] array) {
         edAreaAtuacao.removeAllItems();
-        for(String item : array){
+        for (String item : array) {
             edAreaAtuacao.addItem(item);
         }
     }
@@ -108,7 +106,7 @@ public class FormManager extends javax.swing.JPanel {
                 String tipo = (String) edAreaAtuacao.getSelectedItem();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate data = LocalDate.parse(dataS, formatter);
-                
+
                 cp.cadastrarMedico(crm, email, nome, senha, cpf, data, tipo);
 
                 edNome.setText("");
@@ -117,11 +115,11 @@ public class FormManager extends javax.swing.JPanel {
                 edDataNa.setText("");
                 edCrm.setText("");
                 edSenha.setText("");
-                
+
                 //edAreaAtuacao.setText("");
                 carregarMedicos();
                 edSenha.setEnabled(true);
-                
+
             }
         };
 
@@ -136,11 +134,26 @@ public class FormManager extends javax.swing.JPanel {
 
     }
 
+    public void setListnerCadastrar() {
+        for (ActionListener al : BtCadastrar.getActionListeners()) {
+            BtCadastrar.removeActionListener(al);
+        }
+
+        edNome.setText("");
+        edCpf.setText("");
+        edEmail.setText("");
+        edDataNa.setText("");
+        edCrm.setText("");
+        edSenha.setText("");
+        edAreaAtuacao.setSelectedIndex(0);
+
+    }
+
     public void estiloTabela() {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         TbMedico.putClientProperty(FlatClientProperties.STYLE, ""
-               // + "arc:25;"
+                // + "arc:25;"
                 + "background:$Login.background;"
         );
 
@@ -300,108 +313,99 @@ public class FormManager extends javax.swing.JPanel {
 
     }
 
-public void editarMedico() {
-    int indice = TbMedico.getSelectedRow();
+    public void editarMedico() {
+        int indice = TbMedico.getSelectedRow();
 
-    if (indice >= 0) {
-        
-        Medico medicoSelecionado = model.pegarMedico(indice);
-        
-        
-        Medico medicoOriginal = daoPessoa.buscarPorId(medicoSelecionado.getId_pessoa());
-        if (medicoOriginal == null) {
-            Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
-                "Erro: médico não encontrado no banco.");
-            return;
-        }
+        if (indice >= 0) {
 
-        
-        String senhaOriginal = medicoOriginal.getSenha();
+            Medico medicoSelecionado = model.pegarMedico(indice);
 
-        edNome.setText(medicoOriginal.getNome());
-        edCpf.setText(medicoOriginal.getCpf());
-        edEmail.setText(medicoOriginal.getEmail());
-        edDataNa.setText(medicoOriginal.getData_nascimento().toString());
-        edCrm.setText(medicoOriginal.getCrm());
-        //edAreaAtuacao.setText(medicoOriginal.getTipo_medico());
-
-        //edSenha.setEnabled(false);
-        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Digite a nova senha.");
-
-        BtCadastrar.setText("Confirmar edição");
-
-
-        for (ActionListener al : BtCadastrar.getActionListeners()) {
-            BtCadastrar.removeActionListener(al);
-        }
-
-        BtCadastrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    
-                    medicoOriginal.setNome(edNome.getText());
-                    medicoOriginal.setCpf(edCpf.getText());
-                    medicoOriginal.setEmail(edEmail.getText());
-                    medicoOriginal.setData_nascimento(LocalDate.parse(edDataNa.getText()));
-                    medicoOriginal.setCrm(edCrm.getText());
-                    medicoOriginal.setTipo_medico((String) edAreaAtuacao.getSelectedItem());
-                    
-                    medicoOriginal.setClinica(daoClinica.selecionar());
-                    String senha= edSenha.getText();
-                    
-                    medicoOriginal.setSenha(bCrypt.hashSenha(senha));
-                    
-                    if (edSenha.getText()==null || edSenha.getText().isEmpty()) {
-                        medicoOriginal.setSenha(senhaOriginal);
-                    }
-                    
-                    if (daoPessoa.editar(medicoOriginal)) {
-                        Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
-                                "Médico editado com sucesso.");
-
-                        
-                        edNome.setText("");
-                        edCpf.setText("");
-                        edEmail.setText("");
-                        edDataNa.setText("");
-                        edCrm.setText("");
-                        edSenha.setText("");
-                        edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Senha para acesso");
-                        //edAreaAtuacao.setText("");
-
-                       
-                        carregarMedicos();
-                        BtCadastrar.setText("Cadastrar");
-
-                        
-                        for (ActionListener al : BtCadastrar.getActionListeners()) {
-                            BtCadastrar.removeActionListener(al);
-                        }
-                        BtCadastrar.addActionListener(listenerCadastrarOriginal);
-
-                    } else {
-                        Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
-                                "Erro ao editar o médico.");
-                    }
-
-                } catch (Exception ex) {
-                    Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
-                            "Erro ao processar os dados. Verifique os campos.");
-                    ex.printStackTrace();
-                }
+            Medico medicoOriginal = daoPessoa.buscarPorId(medicoSelecionado.getId_pessoa());
+            if (medicoOriginal == null) {
+                Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
+                        "Erro: médico não encontrado no banco.");
+                return;
             }
-        });
 
-    } else {
-        Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.TOP_CENTER,
-                "Selecione um médico para editar.");
+            String senhaOriginal = medicoOriginal.getSenha();
+
+            edNome.setText(medicoOriginal.getNome());
+            edCpf.setText(medicoOriginal.getCpf());
+            edEmail.setText(medicoOriginal.getEmail());
+            edDataNa.setText(medicoOriginal.getData_nascimento().toString());
+            edCrm.setText(medicoOriginal.getCrm());
+            edAreaAtuacao.setSelectedItem(medicoOriginal.getTipo_medico());
+
+            //edSenha.setEnabled(false);
+            edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Digite a nova senha.");
+
+            BtCadastrar.setText("Confirmar edição");
+
+            for (ActionListener al : BtCadastrar.getActionListeners()) {
+                BtCadastrar.removeActionListener(al);
+            }
+
+            BtCadastrar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+
+                        medicoOriginal.setNome(edNome.getText());
+                        medicoOriginal.setCpf(edCpf.getText());
+                        medicoOriginal.setEmail(edEmail.getText());
+                        medicoOriginal.setData_nascimento(LocalDate.parse(edDataNa.getText()));
+                        medicoOriginal.setCrm(edCrm.getText());
+                        medicoOriginal.setTipo_medico((String) edAreaAtuacao.getSelectedItem());
+
+                        medicoOriginal.setClinica(daoClinica.selecionar());
+                        String senha = edSenha.getText();
+
+                        medicoOriginal.setSenha(bCrypt.hashSenha(senha));
+
+                        if (edSenha.getText() == null || edSenha.getText().isEmpty()) {
+                            medicoOriginal.setSenha(senhaOriginal);
+                        }
+
+                        if (daoPessoa.editar(medicoOriginal)) {
+                            Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.TOP_CENTER,
+                                    "Médico editado com sucesso.");
+
+                            edNome.setText("");
+                            edCpf.setText("");
+                            edEmail.setText("");
+                            edDataNa.setText("");
+                            edCrm.setText("");
+                            edSenha.setText("");
+                            edSenha.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Senha para acesso");
+                            //edAreaAtuacao.setText("");
+
+                            carregarMedicos();
+                            BtCadastrar.setText("Cadastrar");
+
+                            for (ActionListener al : BtCadastrar.getActionListeners()) {
+                                BtCadastrar.removeActionListener(al);
+                            }
+                            BtCadastrar.addActionListener(listenerCadastrarOriginal);
+
+                        } else {
+                            Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
+                                    "Erro ao editar o médico.");
+                        }
+
+                    } catch (Exception ex) {
+                        Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER,
+                                "Erro ao processar os dados. Verifique os campos.");
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+        } else {
+            Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.TOP_CENTER,
+                    "Selecione um médico para editar.");
+        }
     }
-}
 
-
-  
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
