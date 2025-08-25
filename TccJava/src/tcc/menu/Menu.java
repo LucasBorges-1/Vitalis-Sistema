@@ -106,7 +106,7 @@ public class Menu extends JPanel {
                 + "background:$Menu.background;"
                 + "arc:10");
         header = new JLabel(headerName);
-        header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/logoBlack.png")));
+        header.setIcon(new ImageIcon(getClass().getResource("/tcc/icon/png/LogoBlack.png")));
         header.setIconTextGap(-5); 
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$Menu.header.font;"

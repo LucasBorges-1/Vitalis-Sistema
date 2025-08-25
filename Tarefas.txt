@@ -1,9 +1,0 @@
-Tarefas Tcc 
-
--(X) Bug no campo senha (cadastro do medico) 
--(X) Adicionar um grafico no menu principal.
--(X) Edição de carga horária nos dias selecionados.
--() Correção de Bugs do campo de impressão.
--(X) Bug em agendadas para Hoje
-
-Ao fim do projeto remover o comentario no filtro de data no formulario principal.
