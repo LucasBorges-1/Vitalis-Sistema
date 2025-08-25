@@ -39,6 +39,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -128,7 +129,7 @@ public class FormCalendar extends javax.swing.JPanel {
                                         dialog.setLocationRelativeTo(null);
                                         dialog.setLayout(new BorderLayout());
 
-                                        // Topo com título e botão fechar
+                                       
                                         JPanel topBar = new JPanel(new BorderLayout());
                                         topBar.setOpaque(false);
                                         topBar.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
@@ -153,7 +154,7 @@ public class FormCalendar extends javax.swing.JPanel {
 
                                         dialog.add(topBar, BorderLayout.NORTH);
 
-                                        // Painel principal
+                                       
                                         JPanel centerPanel = new JPanel(new GridBagLayout());
                                         centerPanel.setOpaque(false);
                                         GridBagConstraints gbc = new GridBagConstraints();
@@ -163,22 +164,25 @@ public class FormCalendar extends javax.swing.JPanel {
 
                                         gbc.gridy = 0;
                                         gbc.insets = new Insets(0, 20, 10, 20);
-                                        JLabel lDataSelecionada = new JLabel("Data Selecionada: " + selectedDate.toString(), JLabel.CENTER);
+                                        
+                                        
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                                        String formattedDate = selectedDate.format(formatter);
+                                        JLabel lDataSelecionada = new JLabel("Data Selecionada: " +formattedDate , JLabel.CENTER);
                                         lDataSelecionada.putClientProperty(FlatClientProperties.STYLE, "foreground:$Login.textColor;font:$h3.font");
                                         centerPanel.add(lDataSelecionada, gbc);
 
-                                        // Label Manhã
+                                        
                                         gbc.gridy++;
                                         gbc.insets = new Insets(10, 20, 5, 20);
                                         JLabel lmanha = new JLabel("Horário Manhã (Início / Fim):", JLabel.CENTER);
                                         centerPanel.add(lmanha, gbc);
 
-                                        // Campos Manhã
+                                        
                                         gbc.gridy++;
                                         JPanel manhaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
                                         manhaPanel.setOpaque(false);
 
-                                        // INÍCIO MANHÃ
                                         TimePickerSettings settings = new TimePickerSettings();
 
                                         HinicioManha = new TimePicker();
@@ -190,12 +194,12 @@ public class FormCalendar extends javax.swing.JPanel {
                                         manhaPanel.add(HFimManha);
                                         centerPanel.add(manhaPanel, gbc);
 
-                                        // Label Tarde
+                                       
                                         gbc.gridy++;
                                         JLabel ltarde = new JLabel("Horário Tarde (Início / Fim):", JLabel.CENTER);
                                         centerPanel.add(ltarde, gbc);
 
-                                        // Campos Tarde
+                                       
                                         gbc.gridy++;
                                         JPanel tardePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
                                         tardePanel.setOpaque(false);
@@ -204,13 +208,13 @@ public class FormCalendar extends javax.swing.JPanel {
                                         tardePanel.add(HFimTarde);
                                         centerPanel.add(tardePanel, gbc);
 
-                                        // Espaço extra antes do botão
+                                        
                                         gbc.gridy++;
-                                        centerPanel.add(Box.createVerticalStrut(20), gbc); // espaço antes do botão
+                                        centerPanel.add(Box.createVerticalStrut(20), gbc); 
 
-                                        // Botão Cadastrar - mais abaixo
+                                        
                                         gbc.gridy++;
-                                        gbc.insets = new Insets(10, 20, 20, 20); // espaço ao redor do botão
+                                        gbc.insets = new Insets(10, 20, 20, 20);
                                         JButton BtCadastrar = new JButton("Cadastrar");
                                         BtCadastrar.setFocusPainted(false);
                                         BtCadastrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -219,7 +223,7 @@ public class FormCalendar extends javax.swing.JPanel {
 
                                         BtCadastrar.addActionListener(new ActionListener() {
                                             public void actionPerformed(ActionEvent e) {
-                                                //A data selecionada é uma variavel selectedDate
+                                               
 
                                                 //Manha
                                                 LocalTime horarioInicioManha = HinicioManha.getTime();
@@ -414,11 +418,8 @@ public class FormCalendar extends javax.swing.JPanel {
     }
 
     @Override
-    public void updateUI() {
-    // 1. ESSENCIAL: Deixa o Swing/FlatLaf fazer a atualização padrão primeiro.
-    super.updateUI();
-
-    // 2. Garante que o painel do calendário já foi inicializado (evita erros).
+    public void updateUI() {   
+    super.updateUI(); 
     if (calendarPanel != null) {
         revalidate();
         repaint();
