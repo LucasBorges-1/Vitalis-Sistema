@@ -120,7 +120,9 @@ public class FormMainMenu extends javax.swing.JPanel {
         estiloTabela();
 
         buscar();
-
+        
+        
+        
         //
     }
 
@@ -737,6 +739,7 @@ public class FormMainMenu extends javax.swing.JPanel {
 
         return chartPanel;
     }
+  
 
     public int[] dadosGrafico() {
         LocalDate hoje = LocalDate.now();
@@ -748,21 +751,21 @@ public class FormMainMenu extends javax.swing.JPanel {
 
             if (c.getEstado().equals("CONCLUIDA")
                     && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()
-                    && (!dataConsulta.isBefore(trintaDiasAtras) && !dataConsulta.isAfter(hoje))) {
+                   /* && (!dataConsulta.isBefore(trintaDiasAtras) && !dataConsulta.isAfter(hoje))*/) {
 
                 contAgendadas++;
             }
 
             if (c.getEstado().equals("CANCELADA")
                     && c.getMedico().getId_pessoa() == this.getMedicoSelecionado().getId_pessoa()
-                    && (!dataConsulta.isBefore(trintaDiasAtras) && !dataConsulta.isAfter(hoje))) {
+                  /*  && (!dataConsulta.isBefore(trintaDiasAtras) && !dataConsulta.isAfter(hoje))*/) {
 
                 contCanceladas++;
             }
         }
 
         int total = contAgendadas + contCanceladas;
-
+        
         int[] dados = {total, contCanceladas, contAgendadas};
         return dados;
 
