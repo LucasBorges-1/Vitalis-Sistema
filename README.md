@@ -54,7 +54,7 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 ![Tela De Historico](assets/2.png)
 ![Tela de Impressão](assets/3.png)
 ![Tela De Calendario](assets/4.png)
-![Tela Do ADM](assets/5.png)
+![Tela Do ADM](assets/6.png)
 
 ---
 
