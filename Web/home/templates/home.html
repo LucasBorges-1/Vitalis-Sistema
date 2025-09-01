@@ -1,0 +1,113 @@
+
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitalis</title>
+    {% load static %}  
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home_styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <div class="body-nav_list">
+                    <div class="account-nav_list">
+                        {% if usuario %}
+                        <div class="welcome">
+                            <div>
+                                <img id='profile_img' src="{% static 'img/img_usuario.png' %}" alt="Foto de perfil aleatória">
+                            </div>
+                            <div>
+                                <p> <b> Seja bem-vindo </b> </p>
+                                <p>{{ usuario.nome }}</p>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="welcome">
+                            <a href={% url 'accounts:registrar' %}> 
+                                <div>
+                                    <img id='profile_img' src="{% static 'img/img_usuario.png' %}" alt="Foto de perfil aleatória">
+                                </div>
+                                <div>
+                                    <p id="text-welcome"> <b> Crie uma conta </b> </p>
+                                </div>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="itens-nav_list">
+                        <li><a href="{% url 'home:main' %}">Home</a></li>
+                        {% if usuario %}
+                            <li><a href="{% url 'accounts:minha_conta' %}">Minha conta</a></li>
+                            <li><a href="{% url 'agendamento:agendar' %}">Agendar</a></li>
+                            <li><a href="{% url 'agendamento:historico' %}">Historico de consultas</a></li>
+                        {% else %}
+                            <li><a href="{% url 'accounts:login' %}">Minha conta</a></li>
+                            <li><a href="{% url 'accounts:login' %}">Agendar</a></li>
+                            <li><a href="{% url 'accounts:login' %}">Historico de consultas</a></li>
+                        {% endif %}
+                    </div>
+                </div>
+                
+            </ul>
+
+            <div class="Menu-navbar">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <div class="logo">VITALIS</div>
+    
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Agende sua consulta médica online</h1>
+        <p>Encontre os melhores médicos e agende suas consultas de forma rápida e fácil.</p>
+        <button onclick="window.location.href='{% url 'agendamento:agendar' %}'">Agendar Agora</button>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <h3>Encontre o médico certo</h3>
+            <p>Pesquise por especialidade, localização e avaliações.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Agendamento fácil</h3>
+            <p>Agende suas consultas em poucos cliques.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Lembretes de consulta</h3>
+            <p>Receba lembretes por e-mail e SMS para não perder suas consultas.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Prontuários Online</h3>
+            <p>Acesse seu histórico médico de forma segura e online.</p>
+        </div>
+    </section>
+
+    <section class="about-us" id="about">
+        <h2>Sobre Nós</h2>
+        <p>Somos uma plataforma dedicada a facilitar o agendamento de consultas médicas, conectando pacientes e médicos de forma eficiente e acessível. Nossa missão é proporcionar uma experiência de saúde simplificada e de qualidade.</p>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>Contato</h2>
+        <p>Entre em contato conosco para tirar suas dúvidas ou obter mais informações.</p>
+        <p>Email: vitalis.tcc@gmail.com</p>
+        <p>Telefone: (47) 98851-7883</p>
+    </section>
+
+    <footer>
+        <p>&copy;2025 VITALIS Sistema de Consultas Médicas</p>
+    </footer>
+    <script src="{% static 'js/home.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status de Verificação</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/verificacao_status.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}">
+</head>
+<body>
+    <div class="message-container">
+        {% if status_code == 'success' %}
+            <h2 class="success">Verificação Concluída!</h2>
+            <p class="success">{{ message }}</p>
+            <a href="/accounts/login/" class="login-button">Ir para Login</a>
+        {% elif status_code == 'already_verified' %}
+            <h2 class="info">Já Verificado</h2>
+            <p class="info">{{ message }}</p>
+            <a href="/accounts/login/" class="login-button">Ir para Login</a>
+        {% elif status_code == 'token_missing' %}
+            <h2 class="error">Erro de Verificação</h2>
+            <p class="error">{{ message }}</p>
+        {% elif status_code == 'invalid_format' %}
+            <h2 class="error">Erro de Verificação</h2>
+            <p class="error">{{ message }}</p>
+        {% elif status_code == 'not_found' %}
+            <h2 class="warning">Erro de Verificação</h2>
+            <p class="warning">{{ message }}</p>
+        {% elif status_code == 'error' %}
+            <h2 class="error">Erro Interno</h2>
+            <p class="error">{{ message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

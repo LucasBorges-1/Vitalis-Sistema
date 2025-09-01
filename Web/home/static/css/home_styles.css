@@ -1,0 +1,578 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #f0f2f5, #e1e5ea);
+    color: #4a4a4a;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 900;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 20px;
+}
+
+/* Navbar Lateral */
+.nav-list {
+    position: fixed;
+    top: 0;
+    left: -451px;
+    width: 450px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.2);
+    transition: all 0.4s cubic-bezier(0.65, 0.05, 0.36, 1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.nav-list.active {
+    left: 0;
+}
+
+.nav-list a {
+    color: #000000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+/* Itens do Menu */
+.itens-nav_list {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.itens-nav_list li {
+    padding: 12px 25px;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.itens-nav_list li:hover {
+    background-color: rgb(220, 220, 220);
+    border-left: 4px solid #3498db;
+}
+
+.itens-nav_list li a {
+    display: block;
+    font-size: 20px;
+}
+
+.itens-nav_list li:hover a {
+    color: #3498db;
+    transform: translateX(5px);
+}
+
+.footer-nav_list {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 15px 0;
+}
+
+#nav-exit {
+    padding: 12px 25px;
+}
+
+#nav-exit a {
+    color: #e74c3c;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+#nav-exit a:hover {
+    color: #c0392b;
+    text-decoration: none;
+}
+
+#nav-exit a::before {
+    content: "→";
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+#nav-exit a:hover::before {
+    transform: translateX(-5px);
+}
+
+/* Menu Hamburguer */
+.Menu-navbar {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    width: 35px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Menu-navbar div {
+    height: 3px;
+    width: 100%;
+    background-color: #3498db;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+
+/* Transformação em X quando ativo */
+.Menu-navbar.active .line1 {
+    transform: rotate(45deg) translate(5px, 5px);
+    background-color: #e74c3c;
+}
+
+.Menu-navbar.active .line2 {
+    opacity: 0;
+}
+
+.Menu-navbar.active .line3 {
+    transform: rotate(-45deg) translate(5px, -5px);
+    background-color: #e74c3c;
+}
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    font-weight: bold;
+    color: #3498db;
+    transition: transform 0.1s ease;
+}
+
+
+.logo:hover {
+    color: #2980b9;
+    transform: translateX(-50%) scale(1.02);
+}
+
+/* Área de Boas-Vindas */
+.welcome {
+    margin-top: 70px; /* Compensa a altura do header */
+    display: flex;
+    align-items: center;
+    background-color: #2980b952;
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.welcome > div:first-child {
+    margin-right: 15px;
+}
+
+.welcome > div > p:first-child {
+    font-size: 14px;
+    color: #686868;
+    margin-bottom: 5px;
+}
+
+.welcome > div > p:last-child {
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+}
+
+.welcome > div:first-child > img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #3498db;
+}
+
+.welcome a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Área do usuário no header */
+.welcome-nav {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    z-index: 1000;
+}
+
+.welcome-nav img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3498db;
+}
+
+#profile_img {
+    width: 60px;
+    height: auto;
+    border-radius: 50%;
+}
+
+#text-welcome {
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    padding-left: 10px;
+}
+
+.register-btn {
+    background-color: #2ecc71;
+}
+
+.register-btn:hover {
+    background-color: #27ae60;
+}
+
+.hero {
+    background: linear-gradient(135deg, #e0f2f7, #fff);
+    text-align: center;
+    padding: 120px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 150px auto 30px auto; 
+    max-width: 90%;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.hero p {
+    font-size: 1.3em;
+    color: #666;
+    margin-bottom: 40px;
+    line-height: 1.7;
+}
+
+.hero button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 18px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.3em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.hero button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.feature-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.feature-card:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h3 {
+    color: #3498db;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+}
+
+.feature-card p {
+    color: #777;
+    line-height: 1.6;
+}
+
+footer {
+    background-color: #2c3e50;
+    color: #fff;
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 60px;
+}
+
+.about-us {
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+.about-us h2 {
+    color: #3498db;
+    margin-bottom: 20px;
+}
+
+.about-us p {
+    color: #666;
+    line-height: 1.7;
+}
+
+.contact {
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.4s;
+}
+
+.contact h2 {
+    color: #3498db;
+    margin-bottom: 20px;
+}
+
+.contact p {
+    color: #666;
+    line-height: 1.7;
+}
+
+@media (min-width: 1921px) {
+    nav {
+        max-width: 1920px;
+    }
+
+    .hero {
+        max-width: 80%;
+    }
+
+    .features {
+        max-width: 1600px;
+    }
+
+    .about-us,
+    .contact {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1200px) {
+    nav {
+        padding: 25px 30px;
+    }
+
+    .logo {
+        font-size: 2em;
+    }
+
+    .hero {
+        padding: 150px 30px;
+    }
+
+    .hero h1 {
+        font-size: 3.5em;
+    }
+
+    .hero p {
+        font-size: 1.4em;
+    }
+
+    .features {
+        padding: 60px 30px;
+    }
+
+    .feature-card {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 992px) {
+    nav {
+        padding: 50px;
+    }
+
+    .Menu-navbar div {
+        width: 45px;
+        height: 4px;
+        margin: 4px 0; /* melhor espaçamento */
+    }
+
+    .Menu-navbar {
+        width: 20px;
+        height: auto; /* deixa altura se ajustar */
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 9999;
+    }
+
+    .logo {
+        font-size: 200%;
+    }
+
+    .welcome {
+    margin-top: 90px;
+    }
+
+    .hero {
+        padding: 100px 20px;
+    }
+
+    .hero h1 {
+        font-size: 2.8em;
+    }
+
+    .hero p {
+        font-size: 1.2em;
+    }
+
+    .features {
+        grid-template-columns: repeat(1, 1fr);
+        padding: 40px 15px;
+        gap: 16;
+        flex: 1 1 calc(50% - 16px);
+        max-width: 94%;
+    }
+
+    .feature-card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    header{
+        height: 60px;
+    }
+
+    .Menu-navbar div {
+        width: 35px;
+        height: 3px;
+        margin: 3px 0; /* melhor espaçamento */
+    }
+
+    .logo {
+        font-size: 10px;
+        margin-bottom: 10px;
+        font-size: 1.4em;
+    }
+
+    .nav-list {
+        left: -300;
+        width: 300;
+    }
+
+    .welcome {
+        margin-top: 60px;
+    }
+
+    .hero {
+        padding: 70px 15px;
+        margin: 120px auto 30px auto; 
+    }
+
+    .hero h1 {
+        font-size: 2.3em;
+        margin-bottom: 20px;
+    }
+
+    .hero p {
+        font-size: 1.1em;
+        margin-bottom: 30px;
+    }
+
+    .hero button {
+        padding: 15px 35px;
+        font-size: 1.2em;
+    }
+
+    .features {
+        padding: 30px 15px;
+    }
+
+    .feature-card {
+        padding: 20px;
+    }
+}

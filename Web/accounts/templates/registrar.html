@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registrar_styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}">
+    </head>
+<body>
+    <div class="register-container">
+        {% if email_sent_flag %}
+            <h2 style="color: #3498db; margin-bottom: 20px;">Conta Criada com Sucesso!</h2>
+            <p style="color: #555; font-size: 1.1em; line-height: 1.6;">
+                Enviamos um e-mail de verificação para **{{ request.POST.email }}**.
+                Por favor, verifique sua caixa de entrada (e a pasta de spam) para ativar sua conta.
+            </p>
+            <p style="color: #777; font-size: 0.9em; margin-top: 20px;">
+                Você precisará confirmar seu e-mail antes de fazer login.
+            </p>
+            <p class="login-link">Já tem uma conta verificada? <a href="/accounts/login/">Login aqui</a></p>
+
+        {% else %}
+            <h2>Registrar-se</h2>
+
+            {% if status %}
+                <p class="error-message" style="display: block;">
+                    {% if status == '1' %}Email inválido.{% endif %}
+                    {% if status == '2' %}Já existe uma conta com este email.{% endif %}
+                    {% if status == '3' %}Nome não pode conter números.{% endif %}
+                    {% if status == '4' %}Nome muito curto.{% endif %}
+                    {% if status == '5' %}CPF inválido.{% endif %}
+                    {% if status == '6' %}Já existe uma conta com este CPF.{% endif %}
+                    {% if status == '7' %}Senha muito curta.{% endif %}
+                    {% if status == '8' %}Data de nascimento inválida.{% endif %}
+                    {% if status == '10' %}Por favor, selecione um valor válido para o campo Sexo.{% endif %}
+                    {% if status == '99' %}Ocorreu um erro inesperado. Tente novamente mais tarde.{% endif %}
+                </p>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_nome">Nome:</label>
+                    <input type="text" id="id_nome" name="nome" placeholder="Digite seu nome" required value="{{ request.POST.nome }}">
+                </div>
+                
+                <div class="form-group"> <label for="id_sexo">Sexo:</label>
+                    <select id="id_sexo" name="sexo" required>
+                        <option value="">Selecione...</option>
+                        <option value="M" {% if request.POST.sexo == 'M' %}selected{% endif %}>Masculino</option>
+                        <option value="F" {% if request.POST.sexo == 'F' %}selected{% endif %}>Feminino</option>
+                        <option value="O" {% if request.POST.sexo == 'O' %}selected{% endif %}>Outro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_email">Email:</label>
+                    <input type="email" id="id_email" name="email" placeholder="Digite seu email" required value="{{ request.POST.email }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_data_nascimento">Data de Nascimento:</label>
+                    <input type="date" id="id_data_nascimento" name="data_nascimento" placeholder="dd/mm/aaaa" required value="{{ request.POST.data_nascimento }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_endereco">Endereço:</label>
+                    <input type="text" id="id_endereco" name="endereco" placeholder="Digite seu endereço" required value="{{ request.POST.endereco }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_cpf">CPF:</label>
+                    <input type="text" id="id_cpf" name="cpf" placeholder="000.000.000-00" required value="{{ request.POST.cpf }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_senha">Senha:</label>
+                    <input type="password" id="id_senha" name="senha" placeholder="******" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_confirmar_senha">Confirme a senha:</label>
+                    <input type="password" id="id_confirmar_senha" name="confirmar_senha" placeholder="Confirme sua senha" required>
+                </div>
+                
+                <button type="submit" class="register-btn">Registrar</button>
+            </form>
+            
+            <p class="login-link">Já tem uma conta? <a href="/accounts/login/">Login aqui</a></p>
+        {% endif %}
+    </div>
+</body>
+</html>

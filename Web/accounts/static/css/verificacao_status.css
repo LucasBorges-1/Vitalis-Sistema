@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #f0f2f5, #e1e5ea);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    text-align: center;
+}
+.message-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 90%;
+}
+h2 {
+    color: #3498db;
+    margin-bottom: 20px;
+}
+p {
+    color: #555;
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+.success {
+    color: #28a745; /* Verde */
+}
+.error, .warning {
+    color: #dc3545; /* Vermelho */
+}
+.info {
+    color: #007bff; /* Azul */
+}
+.login-button {
+    display: inline-block;
+    background-color: #3498db;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none; /* Remover sublinhado do link */
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+.login-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}

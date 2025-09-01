@@ -1,0 +1,13 @@
+from django.urls import path, include
+from django.views.generic.base import RedirectView
+from . import views
+
+app_name = 'accounts'
+
+urlpatterns = [
+    path('login/', views.login, name='login'),
+    path('registrar/', views.registrar, name='registrar'),
+    path('verificar/', views.verificar_email, name='verificar_email'),
+    path('logout/', views.logout, name='logout'),
+    path('minha-conta/', views.minha_conta, name='minha_conta'),
+]
