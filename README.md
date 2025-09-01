@@ -41,10 +41,20 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 ---
 
 ## 📸 Capturas de Tela
-![Tela Principal](assets/tela-principal.PNG)
-![Tela De Login](assets/tela-login.PNG)
-![Tela De Historico](assets/tela-historico.PNG)
-![Tela De Calendario](assets/tela-calendario.PNG)
+
+## Site
+
+![Tela Principal](assets/Site-1.png)
+![Agendamento](assets/Site-2.png)
+![Histórico](assets/Site-3.png)
+
+## Aplicativo
+
+![Tela Principal](assets/1.png)
+![Tela De Historico](assets/2.png)
+![Tela de Impressão](assets/3.png)
+![Tela De Calendario](assets/4.png)
+![Tela Do ADM](assets/5.png)
 
 ---
 
