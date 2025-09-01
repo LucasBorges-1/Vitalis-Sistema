@@ -1,6 +1,6 @@
 # 🩺 Sistema de Gerenciamento de Consultas Médicas
 
-Este projeto é um sistema desktop desenvolvido como Trabalho de Conclusão de Curso (TCC), com o objetivo de gerenciar consultas médicas de forma simples, eficiente e organizada.
+Este projeto é um sistema  desenvolvido como Trabalho de Conclusão de Curso (TCC), com o objetivo de gerenciar consultas médicas e permitir que os pacientes agendem suas consultas.
 
 ---
 
@@ -8,11 +8,11 @@ Este projeto é um sistema desktop desenvolvido como Trabalho de Conclusão de C
 
 O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, consultórios ou profissionais da área da saúde possam:
 
-- Cadastrar pacientes e médicos
+- Cadastrar médicos
 - Agendar, editar e cancelar consultas
 - Visualizar histórico de atendimentos
-- Gerar relatórios simples
-- Facilitar o controle administrativo de maneira intuitiva
+- Emitir atestados ou receitas
+
 
 ---
 
@@ -22,9 +22,7 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 ✅ Cadastro de médicos  
 ✅ Agendamento de consultas  
 ✅ Edição e cancelamento de agendamentos  
-✅ Relatórios de consultas por período  
-✅ Interface gráfica com Java Swing  
-✅ Persistência de dados com banco de dados
+✅ Emitir atestado ou receita  
 
 ---
 
@@ -32,7 +30,8 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 
 | Tecnologia     | Descrição                   |
 |----------------|-----------------------------|
-| Java           | Linguagem principal          |
+| Java           | Linguagem           |
+| Python(Django)  | Linguagem            |
 | Swing          | Interface gráfica            |
 | JDBC           | Conexão com o banco de dados |
 | PostgreSQL | Banco de dados relacional    |
@@ -54,8 +53,10 @@ O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, cons
 ### Pré-requisitos:
 - Java JDK 8 ou superior
 - IDE como NetBeans, Eclipse ou IntelliJ
+- Vscode
 - Banco de dados PostgreSQL
 - Git
+- Python
 
 ```bash
 # Clone o repositório
