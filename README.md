@@ -69,7 +69,9 @@ O **Sistema de agendamento de Consultas Médicas** permite que clínicas, consul
 - Python
 
 ```bash
+
 # Clone o repositório
 git clone https://github.com/seu-usuario/seu-repo.git
 
-# Acesse o projeto na IDE e configure a conexão com o banco
+# Acesse o projeto do site no vscode e configure a conexão com o banco por meio do arquivo .env. as instruções de inicialização estão em um documento dentro do projeto.
+# A mesma coisa para o aplicativo desktop, abre o projeto na IDE Netbeans e forneca a conexão com o banco de dados.
