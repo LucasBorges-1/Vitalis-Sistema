@@ -1,4 +1,4 @@
-# 🩺 Sistema de Gerenciamento de Consultas Médicas
+# 🩺 Sistema de agendamento de Consultas Médicas
 
 Este projeto é um sistema  desenvolvido como Trabalho de Conclusão de Curso (TCC), com o objetivo de gerenciar consultas médicas e permitir que os pacientes agendem suas consultas.
 
@@ -6,7 +6,7 @@ Este projeto é um sistema  desenvolvido como Trabalho de Conclusão de Curso (T
 
 ## 📌 Sobre o Projeto
 
-O **Sistema de Gerenciamento de Consultas Médicas** permite que clínicas, consultórios ou profissionais da área da saúde possam:
+O **Sistema de agendamento de Consultas Médicas** permite que clínicas, consultórios ou profissionais da área da saúde possam:
 
 - Cadastrar médicos
 - Agendar, editar e cancelar consultas
